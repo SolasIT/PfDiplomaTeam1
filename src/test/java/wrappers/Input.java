@@ -17,11 +17,11 @@ public class Input {
         $(By.id(String.format("%s", id))).val(text);
     }
 
-    public void increaseValue() { // заполнение текстового поля
+    public void increaseValue() { // нажатие на стрелочку вверх в поле ввода
         $(By.id(String.format("%s", id))).sendKeys(Keys.ARROW_UP);
     }
 
-    public void decreaseValue() { // заполнение текстового поля
+    public void decreaseValue() { // нажатие на стрелочку вниз в поле ввода
         $(By.id(String.format("%s", id))).sendKeys(Keys.ARROW_DOWN);
     }
 }
