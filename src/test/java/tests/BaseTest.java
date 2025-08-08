@@ -27,8 +27,9 @@ public class BaseTest {
         Map<String, Object> chromePrefs = new HashMap<>();
         chromePrefs.put("credentials_enable_service", false);
         chromePrefs.put("profile.password_manager_enabled", false);
+        chromePrefs.put("profile.default_content_setting_values.notifications", 2);
         options.setExperimentalOption("prefs", chromePrefs);
-        options.addArguments("--incognito"); // в этом режиме ругается на незащищённое подключение
+        //options.addArguments("--incognito"); // в этом режиме ругается на незащищённое подключение
         options.addArguments("--disable-notifications");
         options.addArguments("--disable-popup-blocking");
         options.addArguments("--disable-infobars");

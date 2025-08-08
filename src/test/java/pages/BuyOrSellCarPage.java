@@ -3,8 +3,8 @@ package pages;
 import com.codeborne.selenide.Selenide;
 import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.testng.Assert;
+import wrappers.Input;
 
 import java.util.Objects;
 
@@ -37,15 +37,23 @@ public class BuyOrSellCarPage extends BasePage {
         return this;
     }
 
-    public BuyOrSellCarPage increaseValue(String id) {
-        log.info("Increasing value of field {}", id);
-        $(By.id(String.format("%s", id))).sendKeys(Keys.ARROW_UP);
-        if (Objects.equals($(By.id(String.format("%s", id))).getValue(), "1")) { // после увеличения новое значение поля = 1
-            log.info("The value of field {} has been successfully increased", id);
+    public BuyOrSellCarPage ChangeFieldValueByKeys(String field_id, boolean isIncreasing, String newValue) {
+        log.info("Changing value of field \"{}\"", field_id);
+        if (isIncreasing) {
+            new Input(field_id).increaseValue();
         } else {
-            log.error("The value of field {} hasn't been increased", id);
+            new Input(field_id).decreaseValue();
+        }
+        if (Objects.equals(getFieldValue(field_id), newValue)) {
+            log.info("The value of field \"{}\" has been successfully changed to {}", field_id, newValue);
+        } else {
+            log.error("The value of field \"{}\" hasn't been changed to {}", field_id, newValue);
         }
         return this;
     }
 
+    public String getFieldValue(String field_id) {
+        log.info("Getting value of field \"{}\"", field_id);
+        return $(By.id(String.format("%s", field_id))).getValue();
+    }
 }
