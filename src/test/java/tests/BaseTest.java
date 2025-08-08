@@ -17,7 +17,6 @@ import static com.codeborne.selenide.Selenide.closeWebDriver;
 public class BaseTest {
 
     MainPage mainPage;
-    AddMoneyPage addMoneyPage;
     BuyOrSellCarPage buyOrSellCarPage;
 
     @BeforeMethod (alwaysRun = true)
@@ -49,7 +48,6 @@ public class BaseTest {
 
         // Инициализация страниц
         mainPage = new MainPage();
-        addMoneyPage = new AddMoneyPage();
         buyOrSellCarPage = new BuyOrSellCarPage();
     }
 

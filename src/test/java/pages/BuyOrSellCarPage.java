@@ -13,6 +13,7 @@ import java.util.Objects;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.sleep;
 
 @Log4j2
 public class BuyOrSellCarPage extends BasePage {
@@ -77,11 +78,13 @@ public class BuyOrSellCarPage extends BasePage {
 
     @Step("Покупка или продажа автомобиля пользователем")
     public BuyOrSellCarPage buyOrSellCar(String user_id, String car_id, String checkboxLabel) {
+        $(By.id(ID_FIELD_USER_ID)).shouldBe(visible); // поле ввода User ID должно отображаться
         log.info("Filling field \"{}\"", ID_FIELD_USER_ID);
         new Input(ID_FIELD_USER_ID).write(user_id);
         log.info("Field \"{}\" is filled with value \"{}\"", ID_FIELD_USER_ID, user_id);
+        $(By.id(ID_FIELD_CAR_ID)).shouldBe(visible); // поле ввода Car Id должно отображаться
         log.info("Filling field \"{}\"", ID_FIELD_CAR_ID);
-        new Input(ID_FIELD_USER_ID).write(car_id);
+        new Input(ID_FIELD_CAR_ID).write(car_id);
         log.info("Field \"{}\" is filled with value \"{}\"", ID_FIELD_CAR_ID, car_id);
         if (!checkboxLabel.isEmpty()) {
             log.info("Activating checkbox \"{}\"", checkboxLabel);
@@ -90,6 +93,7 @@ public class BuyOrSellCarPage extends BasePage {
         }
         log.info("Pushing button to proceeding");
         $(PUSH_TO_API_BUTTON).click();
+        sleep(100); // без него как будто мимо кнопки нажимает
         log.info("Button is pushed");
         return this;
     }

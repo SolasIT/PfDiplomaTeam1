@@ -1,7 +1,6 @@
 package wrappers;
 
-import static com.codeborne.selenide.Selectors.withText;
-import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$x;
 
 public class Checkbox {
 
@@ -12,6 +11,6 @@ public class Checkbox {
     }
 
     public void activateCheckbox() {
-        $(withText(String.format("%s", label))).ancestor("div").find("input").click();
+        $x(String.format("//div[contains(text(),'%s')]/input", label)).click();
     }
 }
