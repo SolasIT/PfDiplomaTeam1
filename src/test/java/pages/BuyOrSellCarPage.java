@@ -1,6 +1,7 @@
 package pages;
 
 import com.codeborne.selenide.Selenide;
+import io.qameta.allure.Step;
 import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.By;
 import org.testng.Assert;
@@ -19,6 +20,7 @@ public class BuyOrSellCarPage extends BasePage {
     private final By PUSH_TO_API_BUTTON = withText("PUSH"); // локатор кнопки PUSH TO API
 
     @Override
+    @Step("Открытие страницы Buy or sell car")
     public BuyOrSellCarPage open() {
         log.info("Opening BuyOrSellCarPage");
         Selenide.open(ENDPOINT_URL); // открытие страницы Buy or sell car по прямой ссылке
@@ -26,6 +28,7 @@ public class BuyOrSellCarPage extends BasePage {
     }
 
     @Override
+    @Step("Проверка открытия страницы Buy or sell car")
     public BuyOrSellCarPage isPageOpened() { // проверка отображения формы для заполнения на странице Buy or sell car
         try {
             $(PUSH_TO_API_BUTTON).shouldBe(visible);
@@ -37,12 +40,15 @@ public class BuyOrSellCarPage extends BasePage {
         return this;
     }
 
-    public BuyOrSellCarPage ChangeFieldValueByKeys(String field_id, boolean isIncreasing, String newValue) {
+    @Step("Изменение значения полей ввода нажатием на стрелочки")
+    public BuyOrSellCarPage changeFieldValueByKeys(String field_id, boolean isIncreasing, String newValue) {
         log.info("Changing value of field \"{}\"", field_id);
         if (isIncreasing) {
             new Input(field_id).increaseValue();
+            log.info("Value of the field \"{}\" was increased", field_id);
         } else {
             new Input(field_id).decreaseValue();
+            log.info("Value of the field \"{}\" was decreased", field_id);
         }
         if (Objects.equals(getFieldValue(field_id), newValue)) {
             log.info("The value of field \"{}\" has been successfully changed to {}", field_id, newValue);
@@ -52,8 +58,16 @@ public class BuyOrSellCarPage extends BasePage {
         return this;
     }
 
+    @Step("Получение текущего значения в поле ввода")
     public String getFieldValue(String field_id) {
         log.info("Getting value of field \"{}\"", field_id);
         return $(By.id(String.format("%s", field_id))).getValue();
+    }
+
+    @Step("Заполнение полей ввода")
+    public BuyOrSellCarPage InputTextInField(String field_id, String text) {
+        log.info("Trying to input text \"{}\" in the field \"{}\"", text, field_id);
+        new Input(field_id).write(text);
+        return this;
     }
 }

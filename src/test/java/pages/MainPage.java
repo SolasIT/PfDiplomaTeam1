@@ -45,10 +45,13 @@ public class MainPage extends BasePage {
         log.info("Authentication");
         log.info("Filling field \"Enter your email...\"");
         LOGIN_FIELD.val("user@pflb.ru");
+        log.info("Field is filled");
         log.info("Filling field \"Enter your password...\"");
         PASSWORD_FIELD.val("user");
+        log.info("Field is filled");
         log.info("Pushing button \"GO\"");
         AUTH_BUTTON_GO.click();
+        log.info("Button is pushed");
         sleep(200); // согласовано
         return this;
     }
