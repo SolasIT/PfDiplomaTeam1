@@ -49,7 +49,7 @@ public class MainPage extends BasePage {
         PASSWORD_FIELD.val("user");
         log.info("Pushing button \"GO\"");
         AUTH_BUTTON_GO.click();
-        sleep(200); //!!!!!
+        sleep(200); // согласовано
         return this;
     }
 }
