@@ -2,8 +2,6 @@ package dto;
 
 import com.github.javafaker.Faker;
 
-import java.util.Arrays;
-
 public class UserFactory {
     public static User getUser() {
         Faker faker = new Faker();

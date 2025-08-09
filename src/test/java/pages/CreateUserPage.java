@@ -6,9 +6,6 @@ import io.qameta.allure.Step;
 import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.By;
 import org.testng.Assert;
-import org.testng.annotations.Test;
-
-import java.util.Arrays;
 
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.*;
@@ -29,7 +26,7 @@ public class CreateUserPage extends BasePage {
     @Override
     @Step("Открытие страницы Create User Page")
     public CreateUserPage open() {
-        Selenide.open(BASE_URL+"#/create/user");
+        Selenide.open(BASE_URL + "#/create/user");
         return this;
     }
 
@@ -46,33 +43,33 @@ public class CreateUserPage extends BasePage {
         return this;
     }
 
-    @Step ("Создание User")
-    public CreateUserPage createUser (User user){
+    @Step("Создание User")
+    public CreateUserPage createUser(User user) {
         try {
-        if (user.getFirstname() !=null) {
-            $(INPUT_FIRSTNAME).sendKeys(user.getFirstname());
-            log.info("Entering a Firstname: {}",user.getFirstname());
-        }
-        if (user.getLastname() !=null) {
-            $(INPUT_LASTTNAME).sendKeys(user.getLastname());
-            log.info("Entering a Lastname: {}",user.getLastname());
-        }
-        if (user.getAge() != 0) {
-            $(INPUT_AGE).sendKeys(Integer.toString(user.getAge()));
-            log.info("Entering a Age: {}",user.getAge());
-        }
-        if (user.getMoney() != 0) {
-            $(INPUT_MONEY).sendKeys(String.valueOf(user.getMoney()));
-            log.info("Entering a Money: {}",user.getMoney());
-        }
-        if(!user.getSex().isEmpty()) {
-            addSex(user.getSex());
-        }
-        $(PUSH_TO_API_BUTTON).click();
+            if (user.getFirstname() != null) {
+                $(INPUT_FIRSTNAME).sendKeys(user.getFirstname());
+                log.info("Entering a Firstname: {}", user.getFirstname());
+            }
+            if (user.getLastname() != null) {
+                $(INPUT_LASTTNAME).sendKeys(user.getLastname());
+                log.info("Entering a Lastname: {}", user.getLastname());
+            }
+            if (user.getAge() != 0) {
+                $(INPUT_AGE).sendKeys(Integer.toString(user.getAge()));
+                log.info("Entering a Age: {}", user.getAge());
+            }
+            if (user.getMoney() != 0) {
+                $(INPUT_MONEY).sendKeys(String.valueOf(user.getMoney()));
+                log.info("Entering a Money: {}", user.getMoney());
+            }
+            if (!user.getSex().isEmpty()) {
+                addSex(user.getSex());
+            }
+            $(PUSH_TO_API_BUTTON).click();
             sleep(1000);
-        log.info("Click to PUSH_TO_API_BUTTON");
-        addStatus(user);
-        addID(user);
+            log.info("Click to PUSH_TO_API_BUTTON");
+            addStatus(user);
+            addID(user);
         } catch (Exception e) {
             log.error("Error creating user: {}", e.getMessage());
             Assert.fail("Error creating user: " + e.getMessage());
@@ -80,22 +77,22 @@ public class CreateUserPage extends BasePage {
         return this;
     }
 
-    @Step ("Установка чекбокса 'Пол': {sex}")
-    private void addSex(String sex){
+    @Step("Установка чекбокса 'Пол': {sex}")
+    private void addSex(String sex) {
         $x(String.format(CHECBOX_SEX, sex)).click();
         log.info("Entering a Sex: {}", sex);
     }
 
     @Step("Запись статуса")
-    private void addStatus(User user){
+    private void addStatus(User user) {
         user.setStatus($(BUTTON_STATUS).text());
-        log.info("add Status: {}",user.getStatus());
+        log.info("add Status: {}", user.getStatus());
     }
 
     @Step("Запись ID Клиента")
-    private void addID(User user){
+    private void addID(User user) {
         String status = user.getStatus();
-        if(status.equals("Status: Successfully pushed, code: 201")) {
+        if (status.equals("Status: Successfully pushed, code: 201")) {
             String id = $(BUTTON_ID).text();
             user.setId(Integer.parseInt(id.replace("New user ID: ", "")));
             log.info("add User ID: {}", user.getId());

@@ -22,10 +22,9 @@ public class AddMoneyTest extends BaseTest {
     public void validAddMoney() {
         User user = getUser();
         double oldMoney = user.getMoney();
-        loginPage.open()
+        mainPage.open()
                 .isPageOpened()
-                .login(email, password)
-                .isPageOpened()
+                .auth(email, password)
                 .clickUserButton("Create new");
         createUserPage
                 .isPageOpened()
@@ -36,11 +35,11 @@ public class AddMoneyTest extends BaseTest {
         assertEquals(oldMoney + 200, user.getMoney());
     }
 
-    @DataProvider(name =  "Money")
-    public  Object[][] users(){
+    @DataProvider(name = "Money")
+    public Object[][] users() {
         return new Object[][]{
-                {0,200},
-                {7000,0}
+                {0, 200},
+                {7000, 0}
         };
     }
 
@@ -51,16 +50,15 @@ public class AddMoneyTest extends BaseTest {
     @Link("http://82.142.167.37:4881/#/update/users/plusMoney")
     @Feature("Add Money")
     @Description("Проверка ошибок при неккоректном заполнении полей добавление денег")
-    public void notValidAddMoney(int id,double money) {
+    public void notValidAddMoney(int id, double money) {
         User user = new User();
         user.setId(id);
-        loginPage.open()
+        mainPage.open()
                 .isPageOpened()
-                .login(email, password)
-                .isPageOpened()
+                .auth(email, password)
                 .clickUserButton("Add money");
         addMoneyPage.isPageOpened()
                 .addMoney(user, money);
-        assertEquals("Status: Incorrect input data",user.getStatus());
+        assertEquals("Status: Incorrect input data", user.getStatus());
     }
 }

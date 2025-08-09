@@ -7,8 +7,7 @@ import lombok.extern.log4j.Log4j2;
 import org.testng.Assert;
 
 import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.$x;
-import static com.codeborne.selenide.Selenide.sleep;
+import static com.codeborne.selenide.Selenide.*;
 
 @Log4j2
 public class MainPage extends BasePage {
@@ -20,6 +19,9 @@ public class MainPage extends BasePage {
     private final SelenideElement allDeleteButton = $x("//a[@class='nav-link' and text()='All DELETE']");
     private final SelenideElement CreateNew = $x("//a[@class='nav-link' and text()='All DELETE']");
     private final String BUTTON = "//a[text()='%s']";
+    private final SelenideElement LOGIN_FIELD = $("[placeholder='Enter your email...']");
+    private final SelenideElement PASSWORD_FIELD = $("[placeholder='Enter your password...']");
+    private final SelenideElement AUTH_BUTTON_GO = $(".btn-primary");
 
     @Step("Открытие страницы сайта")
     @Override
@@ -42,9 +44,25 @@ public class MainPage extends BasePage {
     }
 
     @Step("Клик по кнопкe: {buttonname}")
-    public void clickUserButton(String buttonname){
+    public MainPage clickUserButton(String buttonname) {
         userDropdown.click();
-        $x(String.format(BUTTON,buttonname)).click();
-        log.info("Click to button {}",buttonname);
+        $x(String.format(BUTTON, buttonname)).click();
+        log.info("Click to button {}", buttonname);
+        return this;
+    }
+
+    public MainPage auth(String email, String password) {
+        log.info("Authentication");
+        log.info("Filling field \"Enter your email...\"");
+        LOGIN_FIELD.val(email);
+        log.info("Field is filled");
+        log.info("Filling field \"Enter your password...\"");
+        PASSWORD_FIELD.val(password);
+        log.info("Field is filled");
+        log.info("Pushing button \"GO\"");
+        AUTH_BUTTON_GO.click();
+        log.info("Button is pushed");
+        sleep(1500); // согласовано
+        return this;
     }
 }
