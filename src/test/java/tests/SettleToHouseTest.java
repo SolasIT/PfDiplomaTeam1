@@ -43,7 +43,7 @@ public class SettleToHouseTest extends BaseTest {
     @Link("http://82.142.167.37:4881/#/update/houseAndUser")
     @Feature("Settle to house")
     @Description("Попытка заселения / выселения пользователя при неполном заполнении формы")
-    public void buyOrSellCarWithEmptyFieldsValues(String user_id, String house_id, String checkboxLabel) {
+    public void settleUserToOrEvictFromHouseWithEmptyFieldsValues(String user_id, String house_id, String checkboxLabel) {
         mainPage.open()
                 .auth();
         settleToHousePage.open()
@@ -60,7 +60,7 @@ public class SettleToHouseTest extends BaseTest {
     @Link("http://82.142.167.37:4881/#/update/houseAndUser")
     @Feature("Settle to house")
     @Description("Попытка заселения / выселения пользователя с отсутствующими в БД значениями")
-    public void buyOrSellCarWithNonExistentValues(String user_id, String house_id, String checkboxLabel) {
+    public void settleUserToOrEvictFromHouseWithNonExistentValues(String user_id, String house_id, String checkboxLabel) {
         mainPage.open()
                 .auth();
         settleToHousePage.open()
