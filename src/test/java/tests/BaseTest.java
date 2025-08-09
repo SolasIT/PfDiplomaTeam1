@@ -6,6 +6,7 @@ import io.qameta.allure.selenide.AllureSelenide;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.annotations.*;
 import pages.*;
+import utils.PropertyReader;
 import utils.TestListener;
 
 import java.util.HashMap;
@@ -17,7 +18,12 @@ import static com.codeborne.selenide.Selenide.closeWebDriver;
 public class BaseTest {
 
     MainPage mainPage;
+    CreateUserPage createUserPage;
+    LoginPage loginPage;
+    AddMoneyPage addMoneyPage;
 
+    String email = System.getProperty("email", PropertyReader.getProperty("email"));
+    String password = System.getProperty("password",PropertyReader.getProperty("password"));
 
     @BeforeMethod
     public void setup() {
@@ -27,7 +33,7 @@ public class BaseTest {
         chromePrefs.put("credentials_enable_service", false);
         chromePrefs.put("profile.password_manager_enabled", false);
         options.setExperimentalOption("prefs", chromePrefs);
-        options.addArguments("--incognito");
+      //  options.addArguments("--incognito");
         options.addArguments("--disable-notifications");
         options.addArguments("--disable-popup-blocking");
         options.addArguments("--disable-infobars");
@@ -47,6 +53,9 @@ public class BaseTest {
 
         // Инициализация страниц
         mainPage = new MainPage();
+        createUserPage = new CreateUserPage();
+        loginPage = new LoginPage();
+        addMoneyPage = new AddMoneyPage();
     }
 
     @AfterMethod(alwaysRun = true)

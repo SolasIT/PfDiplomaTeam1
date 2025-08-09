@@ -8,6 +8,7 @@ import org.testng.Assert;
 
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$x;
+import static com.codeborne.selenide.Selenide.sleep;
 
 @Log4j2
 public class MainPage extends BasePage {
@@ -17,6 +18,8 @@ public class MainPage extends BasePage {
     private final SelenideElement housesDropdown = $x("//a[@class='dropdown-toggle nav-link' and text()='Houses']");
     private final SelenideElement allPostButton = $x("//a[@class='nav-link' and text()='All POST']");
     private final SelenideElement allDeleteButton = $x("//a[@class='nav-link' and text()='All DELETE']");
+    private final SelenideElement CreateNew = $x("//a[@class='nav-link' and text()='All DELETE']");
+    private final String BUTTON = "//a[text()='%s']";
 
     @Step("Открытие страницы сайта")
     @Override
@@ -27,6 +30,7 @@ public class MainPage extends BasePage {
     }
 
     @Override
+    @Step("Проверка открытия страницы сайта")
     public MainPage isPageOpened() {
         try {
             userDropdown.shouldBe(visible);
@@ -35,5 +39,12 @@ public class MainPage extends BasePage {
             Assert.fail("Page isn't opened: " + e.getMessage());
         }
         return this;
+    }
+
+    @Step("Клик по кнопкe: {buttonname}")
+    public void clickUserButton(String buttonname){
+        userDropdown.click();
+        $x(String.format(BUTTON,buttonname)).click();
+        log.info("Click to button {}",buttonname);
     }
 }
