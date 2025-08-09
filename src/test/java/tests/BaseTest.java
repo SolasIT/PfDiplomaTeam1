@@ -17,17 +17,18 @@ import static com.codeborne.selenide.Selenide.closeWebDriver;
 public class BaseTest {
 
     MainPage mainPage;
+    SettleToHousePage settleToHousePage;
 
-
-    @BeforeMethod
+    @BeforeMethod (alwaysRun = true)
     public void setup() {
         // Настройки Chrome
         ChromeOptions options = new ChromeOptions();
         Map<String, Object> chromePrefs = new HashMap<>();
         chromePrefs.put("credentials_enable_service", false);
         chromePrefs.put("profile.password_manager_enabled", false);
+        chromePrefs.put("profile.default_content_setting_values.notifications", 2);
         options.setExperimentalOption("prefs", chromePrefs);
-        options.addArguments("--incognito");
+        //options.addArguments("--incognito"); // в этом режиме ругается на незащищённое подключение
         options.addArguments("--disable-notifications");
         options.addArguments("--disable-popup-blocking");
         options.addArguments("--disable-infobars");
@@ -47,6 +48,7 @@ public class BaseTest {
 
         // Инициализация страниц
         mainPage = new MainPage();
+        settleToHousePage = new SettleToHousePage();
     }
 
     @AfterMethod(alwaysRun = true)
