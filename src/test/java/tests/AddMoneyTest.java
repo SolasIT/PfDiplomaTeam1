@@ -38,8 +38,11 @@ public class AddMoneyTest extends BaseTest {
     @DataProvider(name = "Money")
     public Object[][] users() {
         return new Object[][]{
-                {0, 200},
-                {7000, 0}
+                {0, 200, "Status: Incorrect input data"},
+                {7000, 0, "Status: Incorrect input data"},
+                {999999, 2000, "Status: AxiosError: Request failed with status code 404"},
+                {0, 0, "Status: Incorrect input data"},
+                {7000, -1000, "Status: Incorrect input data"},
         };
     }
 
@@ -50,7 +53,7 @@ public class AddMoneyTest extends BaseTest {
     @Link("http://82.142.167.37:4881/#/update/users/plusMoney")
     @Feature("Add Money")
     @Description("Проверка ошибок при неккоректном заполнении полей добавление денег")
-    public void notValidAddMoney(int id, double money) {
+    public void notValidAddMoney(int id, double money, String status) {
         User user = new User();
         user.setId(id);
         mainPage.open()
@@ -59,6 +62,6 @@ public class AddMoneyTest extends BaseTest {
                 .clickUserButton("Add money");
         addMoneyPage.isPageOpened()
                 .addMoney(user, money);
-        assertEquals("Status: Incorrect input data", user.getStatus());
+        assertEquals(status, user.getStatus());
     }
 }

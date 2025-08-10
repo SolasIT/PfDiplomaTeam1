@@ -5,6 +5,7 @@ import dto.User;
 import io.qameta.allure.Step;
 import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.testng.Assert;
 
 import static com.codeborne.selenide.Condition.visible;
@@ -97,5 +98,48 @@ public class CreateUserPage extends BasePage {
             user.setId(Integer.parseInt(id.replace("New user ID: ", "")));
             log.info("add User ID: {}", user.getId());
         }
+    }
+
+    @Step("Изменение значений поля {} нажатием кнопки")
+    public CreateUserPage arrowClick(String fild, double value) {
+        if (fild.equals("Age")) {
+            if (value > 0) {
+                for (double i = 0; i < value; i++) {
+                    $(INPUT_AGE).sendKeys(Keys.ARROW_UP);
+                }
+                log.info("Entering a Age ARROW_UP " + value + " times");
+            } else {
+                for (double i = 0; i > value; i--) {
+                    $(INPUT_AGE).sendKeys(Keys.ARROW_DOWN);
+                }
+                log.info("Entering a Age ARROW_DOWN " + (value * -1) + " times");
+            }
+        }
+        if (fild.equals("Money")) {
+            if (value > 0) {
+                for (double i = 0; i < value; i++) {
+                    $(INPUT_MONEY).sendKeys(Keys.ARROW_UP);
+                }
+                log.info("Entering a Money ARROW_UP " + value + " times");
+            } else {
+                for (double i = 0; i > value; i--) {
+                    $(INPUT_MONEY).sendKeys(Keys.ARROW_DOWN);
+                }
+                log.info("Entering a Money ARROW_DOWN " + (value * -1) + " times");
+            }
+        }
+        return this;
+    }
+
+    @Step("Получение значения поля 'Age'")
+    public double getAge() {
+        log.info("Get Value AGE: {}", $(INPUT_AGE).getValue());
+        return Double.parseDouble($(INPUT_AGE).getValue());
+    }
+
+    @Step("Получение значения поля 'Money'")
+    public double getMoney() {
+        log.info("Get Value MONEY: {}", $(INPUT_MONEY).getValue());
+        return Double.parseDouble($(INPUT_MONEY).getValue());
     }
 }

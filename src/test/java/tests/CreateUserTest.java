@@ -20,7 +20,7 @@ public class CreateUserTest extends BaseTest {
                 {"qwerty", "", 20, "MALE", 1, "Status: Invalid request data"},
                 {"qwerty", "qwerty", 0, "MALE", 1, "Status: Invalid request data"},
                 {"qwerty", "qwerty", 20, "", 1, "Status: Invalid request data"},
-                {"qwerty", "qwerty", 20, "MALE", 0, "Status: Invalid request data"},
+                {"qwerty", "qwerty", 20, "MALE", 0, "Status: Invalid request data"}
         };
     }
 
@@ -64,5 +64,67 @@ public class CreateUserTest extends BaseTest {
                 .isPageOpened()
                 .createUser(user);
         assertEquals("Status: Successfully pushed, code: 201", user.getStatus());
+    }
+
+    @DataProvider(name = "arrowClickAge")
+    public Object[][] Age() {
+        return new Object[][]{
+                {"Age", 10},
+                {"Age", -10},
+                {"Age", 8},
+                {"Age", -4}
+        };
+    }
+
+    @Test(dataProvider = "arrowClickAge",
+            description = "Проверка изменения значения возраста нажатием стрелочек",
+            testName = "Проверка изменения значения возраста нажатием стрелочек")
+    @Owner("Laptev Denis")
+    @Link("http://82.142.167.37:4881/#/create/user")
+    @Feature("Create New")
+    @Description("Проверка изменения значения возраста нажатием стрелочек")
+    public void arrowClickAge(String fild, double value) {
+        User user = getUser();
+        mainPage.open()
+                .isPageOpened()
+                .auth(email, password)
+                .clickUserButton("Create new");
+        createUserPage
+                .isPageOpened()
+                .createUser(user)
+                .arrowClick(fild, value);
+        assertEquals((user.getAge() + value), createUserPage.getAge());
+    }
+
+    @DataProvider(name = "arrowClickMoney")
+    public Object[][] Money() {
+        return new Object[][]{
+                {"Money", 100},
+                {"Money", -100},
+                {"Money", -5},
+                {"Money", 12}
+        };
+    }
+
+    @Test(dataProvider = "arrowClickMoney",
+            description = "Проверка изменения значения денег нажатием стрелочек",
+            testName = "Проверка изменения значения денег нажатием стрелочек")
+    @Owner("Laptev Denis")
+    @Link("http://82.142.167.37:4881/#/create/user")
+    @Feature("Create New")
+    @Description("Проверка изменения значения денег нажатием стрелочек")
+    public void arrowClickMoney(String fild, double value) {
+        User user = getUser();
+        mainPage.open()
+                .isPageOpened()
+                .auth(email, password)
+                .clickUserButton("Create new");
+        createUserPage
+                .isPageOpened()
+                .createUser(user)
+                .arrowClick(fild, value);
+        value = value * 0.01;
+        double sum = user.getMoney() + value;
+        assertEquals(sum, createUserPage.getMoney());
     }
 }

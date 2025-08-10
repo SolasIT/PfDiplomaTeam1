@@ -7,9 +7,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
-import pages.AddMoneyPage;
-import pages.CreateUserPage;
-import pages.MainPage;
+import pages.*;
 import utils.PropertyReader;
 import utils.TestListener;
 
@@ -24,11 +22,13 @@ public class BaseTest {
     MainPage mainPage;
     CreateUserPage createUserPage;
     AddMoneyPage addMoneyPage;
+    BuyOrSellCarPage buyOrSellCarPage;
+    AllDeletePage allDeletePage;
 
     String email = System.getProperty("email", PropertyReader.getProperty("email"));
     String password = System.getProperty("password", PropertyReader.getProperty("password"));
 
-    @BeforeMethod
+    @BeforeMethod (alwaysRun = true)
     public void setup() {
         // Настройки Chrome
         ChromeOptions options = new ChromeOptions();
@@ -36,7 +36,7 @@ public class BaseTest {
         chromePrefs.put("credentials_enable_service", false);
         chromePrefs.put("profile.password_manager_enabled", false);
         options.setExperimentalOption("prefs", chromePrefs);
-        //  options.addArguments("--incognito");
+        //  options.addArguments("--incognito"); // в этом режиме ругается на незащищённое подключение
         options.addArguments("--disable-notifications");
         options.addArguments("--disable-popup-blocking");
         options.addArguments("--disable-infobars");
@@ -58,6 +58,8 @@ public class BaseTest {
         mainPage = new MainPage();
         createUserPage = new CreateUserPage();
         addMoneyPage = new AddMoneyPage();
+        buyOrSellCarPage = new BuyOrSellCarPage();
+        allDeletePage = new AllDeletePage();
     }
 
     @AfterMethod(alwaysRun = true)

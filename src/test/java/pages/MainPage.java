@@ -51,14 +51,23 @@ public class MainPage extends BasePage {
         return this;
     }
 
+    @Step("Клик по кнопкe: All DELETE")
+    public AllDeletePage clickAllDelete(){
+        allDeleteButton.click();
+        switchTo().window(1);
+        log.info("Click All DELETE");
+       return new AllDeletePage();
+    }
+
+    @Step("Авторизация email: {email}, password {password}")
     public MainPage auth(String email, String password) {
         log.info("Authentication");
         log.info("Filling field \"Enter your email...\"");
         LOGIN_FIELD.val(email);
-        log.info("Field is filled");
+        log.info("Field email is filled: {}",email);
         log.info("Filling field \"Enter your password...\"");
         PASSWORD_FIELD.val(password);
-        log.info("Field is filled");
+        log.info("Field password is filled: {}",password);
         log.info("Pushing button \"GO\"");
         AUTH_BUTTON_GO.click();
         log.info("Button is pushed");

@@ -21,7 +21,6 @@ public class AddMoneyPage extends BasePage {
     private final By BUTTON_STATUS = byCssSelector(".status"); // локатор ввода днег
     private final By BUTTON_MONEY = byCssSelector(".money"); // локатор ввода днег
 
-
     @Override
     @Step("Открытие страницы Add Money")
     public AddMoneyPage open() {
