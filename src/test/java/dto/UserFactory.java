@@ -2,9 +2,12 @@ package dto;
 
 import com.github.javafaker.Faker;
 
+import java.util.Arrays;
+import java.util.Locale;
+
 public class UserFactory {
-    public static User getUser() {
-        Faker faker = new Faker();
+    public static User getUser(String locale) {
+        Faker faker = new Faker(new Locale(locale));
         String[] gender = {"MALE", "FEMALE"};
         return User.builder()
                 .firstname(faker.name().firstName())

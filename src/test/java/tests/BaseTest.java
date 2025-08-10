@@ -40,7 +40,9 @@ public class BaseTest {
         options.addArguments("--disable-notifications");
         options.addArguments("--disable-popup-blocking");
         options.addArguments("--disable-infobars");
-        //options.addArguments(("--headless"));
+        if (System.getProperty("email")!=null) {
+            options.addArguments(("--headless"));
+        }
         Configuration.browser = "chrome";
         Configuration.browserCapabilities = options;
         Configuration.baseUrl = "http://82.142.167.37:4881/";
@@ -48,7 +50,7 @@ public class BaseTest {
         Configuration.timeout = 5000;
         Configuration.pageLoadTimeout = 30000;
         Configuration.screenshots = true;
-        Configuration.savePageSource = false;
+        Configuration.savePageSource = true;
 
         SelenideLogger.addListener("AllureSelenide", new AllureSelenide()
                 .screenshots(true)

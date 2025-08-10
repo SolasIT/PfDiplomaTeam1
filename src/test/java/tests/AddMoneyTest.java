@@ -20,7 +20,7 @@ public class AddMoneyTest extends BaseTest {
     @Feature("Add Money")
     @Description("Проверка добавления денег")
     public void validAddMoney() {
-        User user = getUser();
+        User user = getUser("us");
         double oldMoney = user.getMoney();
         mainPage.open()
                 .isPageOpened()

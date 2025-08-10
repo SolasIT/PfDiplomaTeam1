@@ -11,6 +11,7 @@ import org.testng.annotations.Test;
 import static dto.UserFactory.getUser;
 import static org.testng.AssertJUnit.assertEquals;
 
+
 public class CreateUserTest extends BaseTest {
 
     @DataProvider(name = "Users")
@@ -20,7 +21,18 @@ public class CreateUserTest extends BaseTest {
                 {"qwerty", "", 20, "MALE", 1, "Status: Invalid request data"},
                 {"qwerty", "qwerty", 0, "MALE", 1, "Status: Invalid request data"},
                 {"qwerty", "qwerty", 20, "", 1, "Status: Invalid request data"},
-                {"qwerty", "qwerty", 20, "MALE", 0, "Status: Invalid request data"}
+                {"qwerty", "qwerty", 20, "MALE", 0, "Status: Invalid request data"},
+                {"qwerty", "qwerty", 20, "MALE", -100, "Status: Invalid request data"},
+                {"123", "qwerty", 20, "MALE", 100, "Status: AxiosError: Request failed with status code 400"},
+                {"qwerty", "123", 20, "MALE", 100, "Status: AxiosError: Request failed with status code 400"},
+                {"", "Иванов", 20, "MALE", 1, "Status: Invalid request data"},
+                {"Иван", "", 20, "MALE", 1, "Status: Invalid request data"},
+                {"Иван", "Иванов", 0, "MALE", 1, "Status: Invalid request data"},
+                {"Иван", "Иванов", 20, "", 1, "Status: Invalid request data"},
+                {"Иван", "Иванов", 20, "MALE", 0, "Status: Invalid request data"},
+                {"Иван", "Иванов", 20, "MALE", -100, "Status: Invalid request data"},
+                {"122", "Иванов", 20, "MALE", 100, "Status: AxiosError: Request failed with status code 400"},
+                {"Иван", "123", 20, "MALE", 100, "Status: AxiosError: Request failed with status code 400"},
         };
     }
 
@@ -48,14 +60,23 @@ public class CreateUserTest extends BaseTest {
         assertEquals(status, user.getStatus());
     }
 
-    @Test(description = "Проверка создания клиента",
+    @DataProvider(name = "lang")
+    public Object[][] lang() {
+        return new Object[][]{
+                {"ru"},
+                {"us"}
+        };
+    }
+
+    @Test(dataProvider = "lang",
+            description = "Проверка создания клиента",
             testName = "Проверка создания клиента")
     @Owner("Laptev Denis")
     @Link("http://82.142.167.37:4881/#/create/user")
     @Feature("Create New")
     @Description("Проверка создания клиента")
-    public void createUser() {
-        User user = getUser();
+    public void createUser(String lang) {
+        User user = getUser(lang);
         mainPage.open()
                 .isPageOpened()
                 .auth(email, password)
@@ -84,7 +105,7 @@ public class CreateUserTest extends BaseTest {
     @Feature("Create New")
     @Description("Проверка изменения значения возраста нажатием стрелочек")
     public void arrowClickAge(String fild, double value) {
-        User user = getUser();
+        User user = getUser("us");
         mainPage.open()
                 .isPageOpened()
                 .auth(email, password)
@@ -114,7 +135,7 @@ public class CreateUserTest extends BaseTest {
     @Feature("Create New")
     @Description("Проверка изменения значения денег нажатием стрелочек")
     public void arrowClickMoney(String fild, double value) {
-        User user = getUser();
+        User user = getUser("us");
         mainPage.open()
                 .isPageOpened()
                 .auth(email, password)
