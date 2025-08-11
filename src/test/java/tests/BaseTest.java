@@ -17,6 +17,7 @@ import static com.codeborne.selenide.Selenide.closeWebDriver;
 public class BaseTest {
 
     MainPage mainPage;
+    AllPostPage allPostPage;
 
 
     @BeforeMethod
@@ -27,7 +28,6 @@ public class BaseTest {
         chromePrefs.put("credentials_enable_service", false);
         chromePrefs.put("profile.password_manager_enabled", false);
         options.setExperimentalOption("prefs", chromePrefs);
-        options.addArguments("--incognito");
         options.addArguments("--disable-notifications");
         options.addArguments("--disable-popup-blocking");
         options.addArguments("--disable-infobars");
@@ -47,6 +47,8 @@ public class BaseTest {
 
         // Инициализация страниц
         mainPage = new MainPage();
+        allPostPage = new AllPostPage();
+
     }
 
     @AfterMethod(alwaysRun = true)
