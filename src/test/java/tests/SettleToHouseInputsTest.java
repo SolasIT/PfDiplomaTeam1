@@ -51,14 +51,14 @@ public class SettleToHouseInputsTest extends BaseTest {
     @Link("http://82.142.167.37:4881/#/update/houseAndUser")
     @Feature("Settle to house")
     @Description("Проверка изменения значений в полях ввода по нажатию на стрелочки в этих полях")
-    public void changeFieldsValue(String field_id, boolean isIncrease, String newValue) {
+    public void changeFieldsValue(String fieldId, boolean isIncrease, String newValue) {
         mainPage.open()
                 .isPageOpened()
                 .auth();
         settleToHousePage.open()
                 .isPageOpened()
-                .changeFieldValueByKeys(field_id, isIncrease, newValue);
-        assertEquals(settleToHousePage.getFieldValue(field_id),
+                .changeFieldValueByKeys(fieldId, isIncrease, newValue);
+        assertEquals(settleToHousePage.getFieldValue(fieldId),
                 newValue,
                 "Новое значение поля не соответствует ожидаемому");
     }
@@ -70,14 +70,14 @@ public class SettleToHouseInputsTest extends BaseTest {
     @Link("http://82.142.167.37:4881/#/update/houseAndUser")
     @Feature("Settle to house")
     @Description("Позитивная проверка на ввод цифр в поля ввода")
-    public void positiveInputInFields(String field_id, String text) {
+    public void positiveInputInFields(String fieldId, String text) {
         mainPage.open()
                 .isPageOpened()
                 .auth();
         settleToHousePage.open()
                 .isPageOpened()
-                .inputTextInField(field_id, text);
-        assertEquals(settleToHousePage.getFieldValue(field_id),
+                .inputTextInField(fieldId, text);
+        assertEquals(settleToHousePage.getFieldValue(fieldId),
                 text,
                 "Отображаемый текст не соответствует введённому");
     }
@@ -89,14 +89,14 @@ public class SettleToHouseInputsTest extends BaseTest {
     @Link("http://82.142.167.37:4881/#/update/houseAndUser")
     @Feature("Settle to house")
     @Description("Негативные проверки на ввод цифр в поля ввода")
-    public void negativeInputInFields(String field_id, String text) {
+    public void negativeInputInFields(String fieldId, String text) {
         mainPage.open()
                 .isPageOpened()
                 .auth();
         settleToHousePage.open()
                 .isPageOpened()
-                .inputTextInField(field_id, text);
-        assertTrue(settleToHousePage.getFieldValue(field_id).isEmpty(),
+                .inputTextInField(fieldId, text);
+        assertTrue(settleToHousePage.getFieldValue(fieldId).isEmpty(),
                 String.format("В поле ввода отображается значение \"%s\"", text));
     }
 }

@@ -43,12 +43,12 @@ public class SettleToHouseTest extends BaseTest {
     @Link("http://82.142.167.37:4881/#/update/houseAndUser")
     @Feature("Settle to house")
     @Description("Попытка заселения / выселения пользователя при неполном заполнении формы")
-    public void settleUserToOrEvictFromHouseWithEmptyFieldsValues(String user_id, String house_id, String checkboxLabel) {
+    public void settleUserToOrEvictFromHouseWithEmptyFieldsValues(String userId, String houseId, String checkboxLabel) {
         mainPage.open()
                 .auth();
         settleToHousePage.open()
                 .isPageOpened()
-                .settleToOrEvictFromHouse(user_id, house_id, checkboxLabel);
+                .settleToOrEvictFromHouse(userId, houseId, checkboxLabel);
         assertTrue($(withText("Status: Incorrect input data")).isDisplayed(),
                 "Статус выполненного процесса не соответствует ожидаемому");
     }
@@ -60,12 +60,12 @@ public class SettleToHouseTest extends BaseTest {
     @Link("http://82.142.167.37:4881/#/update/houseAndUser")
     @Feature("Settle to house")
     @Description("Попытка заселения / выселения пользователя с отсутствующими в БД значениями")
-    public void settleUserToOrEvictFromHouseWithNonExistentValues(String user_id, String house_id, String checkboxLabel) {
+    public void settleUserToOrEvictFromHouseWithNonExistentValues(String userId, String houseId, String checkboxLabel) {
         mainPage.open()
                 .auth();
         settleToHousePage.open()
                 .isPageOpened()
-                .settleToOrEvictFromHouse(user_id, house_id, checkboxLabel);
+                .settleToOrEvictFromHouse(userId, houseId, checkboxLabel);
         assertTrue($(withText("Status: AxiosError: Request failed with status code 404")).isDisplayed(),
                 "Статус выполненного процесса не соответствует ожидаемому");
     }

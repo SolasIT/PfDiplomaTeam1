@@ -46,46 +46,46 @@ public class SettleToHousePage extends BasePage {
     }
 
     @Step("Изменение значения полей ввода нажатием на стрелочки")
-    public SettleToHousePage changeFieldValueByKeys(String field_id, boolean isIncreasing, String newValue) {
-        log.info("Changing value of field \"{}\"", field_id);
+    public SettleToHousePage changeFieldValueByKeys(String fieldId, boolean isIncreasing, String newValue) {
+        log.info("Changing value of field \"{}\"", fieldId);
         if (isIncreasing) {
-            new Input(field_id).increaseValue();
-            log.info("Value of the field \"{}\" was increased", field_id);
+            new Input(fieldId).increaseValue();
+            log.info("Value of the field \"{}\" was increased", fieldId);
         } else {
-            new Input(field_id).decreaseValue();
-            log.info("Value of the field \"{}\" was decreased", field_id);
+            new Input(fieldId).decreaseValue();
+            log.info("Value of the field \"{}\" was decreased", fieldId);
         }
-        if (Objects.equals(getFieldValue(field_id), newValue)) {
-            log.info("The value of field \"{}\" has been successfully changed to {}", field_id, newValue);
+        if (Objects.equals(getFieldValue(fieldId), newValue)) {
+            log.info("The value of field \"{}\" has been successfully changed to {}", fieldId, newValue);
         } else {
-            log.error("The value of field \"{}\" hasn't been changed to {}", field_id, newValue);
+            log.error("The value of field \"{}\" hasn't been changed to {}", fieldId, newValue);
         }
         return this;
     }
 
     @Step("Получение текущего значения в поле ввода")
-    public String getFieldValue(String field_id) {
-        log.info("Getting value of field \"{}\"", field_id);
-        return $(By.id(String.format("%s", field_id))).getValue();
+    public String getFieldValue(String fieldId) {
+        log.info("Getting value of field \"{}\"", fieldId);
+        return $(By.id(String.format("%s", fieldId))).getValue();
     }
 
     @Step("Заполнение полей ввода")
-    public SettleToHousePage inputTextInField(String field_id, String text) {
-        log.info("Trying to input text \"{}\" in the field \"{}\"", text, field_id);
-        new Input(field_id).write(text);
+    public SettleToHousePage inputTextInField(String fieldId, String text) {
+        log.info("Trying to input text \"{}\" in the field \"{}\"", text, fieldId);
+        new Input(fieldId).write(text);
         return this;
     }
 
     @Step("Заселение или выселение пользователя из дома")
-    public SettleToHousePage settleToOrEvictFromHouse(String user_id, String house_id, String checkboxLabel) {
+    public SettleToHousePage settleToOrEvictFromHouse(String userId, String houseId, String checkboxLabel) {
         $(By.id(ID_FIELD_USER_ID)).shouldBe(visible); // поле ввода User ID должно отображаться
         log.info("Filling field \"{}\"", ID_FIELD_USER_ID);
-        new Input(ID_FIELD_USER_ID).write(user_id);
-        log.info("Field \"{}\" is filled with value \"{}\"", ID_FIELD_USER_ID, user_id);
+        new Input(ID_FIELD_USER_ID).write(userId);
+        log.info("Field \"{}\" is filled with value \"{}\"", ID_FIELD_USER_ID, userId);
         $(By.id(ID_FIELD_HOUSE_ID)).shouldBe(visible); // поле ввода House ID должно отображаться
         log.info("Filling field \"{}\"", ID_FIELD_HOUSE_ID);
-        new Input(ID_FIELD_HOUSE_ID).write(house_id);
-        log.info("Field \"{}\" is filled with value \"{}\"", ID_FIELD_HOUSE_ID, house_id);
+        new Input(ID_FIELD_HOUSE_ID).write(houseId);
+        log.info("Field \"{}\" is filled with value \"{}\"", ID_FIELD_HOUSE_ID, houseId);
         if (!checkboxLabel.isEmpty()) {
             log.info("Activating checkbox \"{}\"", checkboxLabel);
             new Checkbox(checkboxLabel).activateCheckbox();
