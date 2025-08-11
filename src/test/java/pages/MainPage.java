@@ -8,6 +8,7 @@ import org.testng.Assert;
 
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$x;
+import static com.codeborne.selenide.Selenide.webdriver;
 
 @Log4j2
 public class MainPage extends BasePage {
@@ -35,5 +36,11 @@ public class MainPage extends BasePage {
             Assert.fail("Page isn't opened: " + e.getMessage());
         }
         return this;
+    }
+
+    @Step("Открытие страницы ALL POST")
+    public AllPostPage clickButtonAllPost() {
+        allPostButton.shouldBe(visible).click();
+        return new AllPostPage();
     }
 }
