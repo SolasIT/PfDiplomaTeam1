@@ -4,18 +4,17 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import org.testng.asserts.SoftAssert;
-import pages.CarsReadAllPage;
 
-public class TestCarsReadAll {
-    private CarsReadAllPage carsPage;
-    private SoftAssert softAssert;
+import java.util.*;
+
+import static com.codeborne.selenide.Condition.exactText;
+import static com.codeborne.selenide.Condition.visible;
+
+public class TestCarsReadAll extends BaseTest {
 
     @BeforeMethod
     public void setUp() {
-        softAssert = new SoftAssert();
-        carsPage = new CarsReadAllPage()
-                .open()
+        carsReadAllPage.open()
                 .isPageOpened();
     }
 
@@ -23,26 +22,32 @@ public class TestCarsReadAll {
     @Owner("Martyanova Olga")
     @Feature("Car Read All")
     public void testPageElements() {
-        carsPage.checkBasicElementsVisible();
-        try {
-            carsPage.checkHeadersText();
-        } catch (AssertionError e) {
-            softAssert.fail("Некорректные заголовки");
-        }
-        softAssert.assertAll();
+        carsReadAllPage.getIdColumn().shouldBe(visible);
+        carsReadAllPage.getReloadButton().shouldBe(visible);
+        carsReadAllPage.getIdColumn().shouldHave(exactText("ID:"));
+        carsReadAllPage.getMarkColumn().shouldHave(exactText("Mark:"));
+        carsReadAllPage.getModelColumn().shouldHave(exactText("Model:"));
+        carsReadAllPage.getPriceColumn().shouldHave(exactText("Price:"));
     }
 
     @Test(description = "Проверка сортировки по ID (возрастание и убывание)")
     @Owner("Martyanova Olga")
     @Feature("Car Read All")
     public void testIdSorting() {
-            SoftAssert softAssert = new SoftAssert();
-            // Проверка сортировки по возрастанию
-            carsPage.sortByIdAsc()
-                    .verifyIdOrder(true, softAssert);
-            // Проверка сортировки по убыванию
-            carsPage.sortByIdDsc()
-                    .verifyIdOrder(false, softAssert);
-            softAssert.assertAll();
-        }
+        // Проверка сортировки по возрастанию
+        carsReadAllPage.sortByIdAsc();
+        List<Integer> ascendingIds = carsReadAllPage.getIds();
+        Set<Integer> ascendingSortedIds = new TreeSet<>(ascendingIds);
+        softAssert.assertEquals(ascendingIds, new ArrayList<>(ascendingSortedIds),
+                "ID должны быть отсортированы по возрастанию");
+
+        // Проверка сортировки по убыванию
+        carsReadAllPage.sortByIdDsc();
+        List<Integer> descendingIds = carsReadAllPage.getIds();
+        Set<Integer> descendingSortedIds = new TreeSet<>(Comparator.reverseOrder());
+        descendingSortedIds.addAll(descendingIds);
+        softAssert.assertEquals(descendingIds, new ArrayList<>(descendingSortedIds),
+                "ID должны быть отсортированы по убыванию");
+        softAssert.assertAll();
+    }
 }

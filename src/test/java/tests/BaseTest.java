@@ -5,6 +5,7 @@ import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.annotations.*;
+import org.testng.asserts.SoftAssert;
 import pages.*;
 import utils.TestListener;
 
@@ -15,8 +16,10 @@ import static com.codeborne.selenide.Selenide.closeWebDriver;
 
 @Listeners(TestListener.class)
 public class BaseTest {
-
+    SoftAssert softAssert;
     MainPage mainPage;
+    CarsCreateNewPage carsCreateNewPage;
+    CarsReadAllPage carsReadAllPage;
 
 
     @BeforeMethod
@@ -27,7 +30,7 @@ public class BaseTest {
         chromePrefs.put("credentials_enable_service", false);
         chromePrefs.put("profile.password_manager_enabled", false);
         options.setExperimentalOption("prefs", chromePrefs);
-        options.addArguments("--incognito");
+        //options.addArguments("--incognito");
         options.addArguments("--disable-notifications");
         options.addArguments("--disable-popup-blocking");
         options.addArguments("--disable-infobars");
@@ -36,7 +39,7 @@ public class BaseTest {
         Configuration.browserCapabilities = options;
         Configuration.baseUrl = "http://82.142.167.37:4881/";
         Configuration.clickViaJs = true;
-        Configuration.timeout = 5000;
+        Configuration.timeout = 10000;
         Configuration.pageLoadTimeout = 30000;
         Configuration.screenshots = true;
         Configuration.savePageSource = false;
@@ -45,8 +48,12 @@ public class BaseTest {
                 .screenshots(true)
                 .savePageSource(true));
 
+        softAssert = new SoftAssert();
+
         // Инициализация страниц
         mainPage = new MainPage();
+        carsCreateNewPage = new CarsCreateNewPage();
+        carsReadAllPage = new CarsReadAllPage();
     }
 
     @AfterMethod(alwaysRun = true)

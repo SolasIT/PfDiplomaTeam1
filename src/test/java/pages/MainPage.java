@@ -6,9 +6,10 @@ import io.qameta.allure.Step;
 import lombok.extern.log4j.Log4j2;
 import org.testng.Assert;
 
+import java.time.Duration;
+
 import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$x;
+import static com.codeborne.selenide.Selenide.*;
 
 @Log4j2
 public class MainPage extends BasePage {
@@ -21,6 +22,9 @@ public class MainPage extends BasePage {
     private final SelenideElement housesDropdown = $x("//a[@class='dropdown-toggle nav-link' and text()='Houses']");
     private final SelenideElement allPostButton = $x("//a[@class='nav-link' and text()='All POST']");
     private final SelenideElement allDeleteButton = $x("//a[@class='nav-link' and text()='All DELETE']");
+    private final SelenideElement LOGIN_FIELD = $("[placeholder='Enter your email...']");
+    private final SelenideElement PASSWORD_FIELD = $("[placeholder='Enter your password...']");
+    private final SelenideElement AUTH_BUTTON_GO = $(".btn-primary");
 
     @Step("Открытие страницы сайта")
     @Override
@@ -51,17 +55,27 @@ public class MainPage extends BasePage {
 
     @Step("Открытие раздела Cars: CreateNew")
     public CarsCreateNewPage openCarsCreateNew() {
-        log.info("Open Cars: CreateNew");
-        $(carsDropdown).click();
-        $(carsCreateNew).click();
+        log.info("Opening Cars dropdown");
+        $(carsDropdown).shouldBe(visible, Duration.ofSeconds(10)).click();
+        log.info("Clicking Create new link");
+        $(carsCreateNew).shouldBe(visible, Duration.ofSeconds(10)).click();
+        log.info("Creating new CarsCreateNewPage instance");
         return new CarsCreateNewPage();
     }
 
-    @Step("Открытие раздела Cars: BuyOrSellCar")
-    public CarsBuyOrSellCarPage openCarsBuyOrSellCar() {
-        log.info("Open Cars: BuyOrSellCar");
-        $(carsDropdown).click();
-        $(carsBuyOrSellCar).click();
-        return new CarsBuyOrSellCarPage();
+    @Step("Авторизация email: {email}, password {password}")
+    public MainPage auth(String email, String password) {
+        log.info("Authentication");
+        log.info("Filling field \"Enter your email...\"");
+        LOGIN_FIELD.val(email);
+        log.info("Field email is filled: {}",email);
+        log.info("Filling field \"Enter your password...\"");
+        PASSWORD_FIELD.val(password);
+        log.info("Field password is filled: {}",password);
+        log.info("Pushing button \"GO\"");
+        AUTH_BUTTON_GO.click();
+        log.info("Button is pushed");
+        sleep(1500); // согласовано
+        return this;
     }
 }
