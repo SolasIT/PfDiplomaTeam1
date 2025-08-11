@@ -51,14 +51,14 @@ public class BuyOrSellCarInputsTest extends BaseTest {
     @Link("http://82.142.167.37:4881/#/update/users/buyCar")
     @Feature("Buy or sell car")
     @Description("Проверка изменения значений в полях ввода по нажатию на стрелочки в этих полях")
-    public void changeFieldsValue(String field_id, boolean isIncrease, String newValue) {
+    public void changeFieldsValue(String fieldId, boolean isIncrease, String newValue) {
         mainPage.open()
                 .isPageOpened()
                 .auth(email, password);
         buyOrSellCarPage.open()
                 .isPageOpened()
-                .changeFieldValueByKeys(field_id, isIncrease, newValue);
-        assertEquals(buyOrSellCarPage.getFieldValue(field_id),
+                .changeFieldValueByKeys(fieldId, isIncrease, newValue);
+        assertEquals(buyOrSellCarPage.getFieldValue(fieldId),
                 newValue,
                 "Новое значение поля не соответствует ожидаемому");
     }
@@ -70,14 +70,14 @@ public class BuyOrSellCarInputsTest extends BaseTest {
     @Link("http://82.142.167.37:4881/#/update/users/buyCar")
     @Feature("Buy or sell car")
     @Description("Позитивная проверка на ввод цифр в поля ввода")
-    public void positiveInputInFields(String field_id, String text) {
+    public void positiveInputInFields(String fieldId, String text) {
         mainPage.open()
                 .isPageOpened()
                 .auth(email, password);
         buyOrSellCarPage.open()
                 .isPageOpened()
-                .inputTextInField(field_id, text);
-        assertEquals(buyOrSellCarPage.getFieldValue(field_id),
+                .inputTextInField(fieldId, text);
+        assertEquals(buyOrSellCarPage.getFieldValue(fieldId),
                 text,
                 "Отображаемый текст не соответствует введённому");
     }
@@ -89,14 +89,14 @@ public class BuyOrSellCarInputsTest extends BaseTest {
     @Link("http://82.142.167.37:4881/#/update/users/buyCar")
     @Feature("Buy or sell car")
     @Description("Негативные проверки на ввод цифр в поля ввода")
-    public void negativeInputInFields(String field_id, String text) {
+    public void negativeInputInFields(String fieldId, String text) {
         mainPage.open()
                 .isPageOpened()
                 .auth(email, password);
         buyOrSellCarPage.open()
                 .isPageOpened()
-                .inputTextInField(field_id, text);
-        assertTrue(buyOrSellCarPage.getFieldValue(field_id).isEmpty(),
+                .inputTextInField(fieldId, text);
+        assertTrue(buyOrSellCarPage.getFieldValue(fieldId).isEmpty(),
                 String.format("В поле ввода отображается значение \"%s\"", text));
     }
 }

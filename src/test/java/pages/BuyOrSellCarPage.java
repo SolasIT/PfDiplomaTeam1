@@ -45,46 +45,46 @@ public class BuyOrSellCarPage extends BasePage {
     }
 
     @Step("Изменение значения полей ввода нажатием на стрелочки")
-    public BuyOrSellCarPage changeFieldValueByKeys(String field_id, boolean isIncreasing, String newValue) {
-        log.info("Changing value of field \"{}\"", field_id);
+    public BuyOrSellCarPage changeFieldValueByKeys(String fieldId, boolean isIncreasing, String newValue) {
+        log.info("Changing value of field \"{}\"", fieldId);
         if (isIncreasing) {
-            new Input(field_id).increaseValue();
-            log.info("Value of the field \"{}\" was increased", field_id);
+            new Input(fieldId).increaseValue();
+            log.info("Value of the field \"{}\" was increased", fieldId);
         } else {
-            new Input(field_id).decreaseValue();
-            log.info("Value of the field \"{}\" was decreased", field_id);
+            new Input(fieldId).decreaseValue();
+            log.info("Value of the field \"{}\" was decreased", fieldId);
         }
-        if (Objects.equals(getFieldValue(field_id), newValue)) {
-            log.info("The value of field \"{}\" has been successfully changed to {}", field_id, newValue);
+        if (Objects.equals(getFieldValue(fieldId), newValue)) {
+            log.info("The value of field \"{}\" has been successfully changed to {}", fieldId, newValue);
         } else {
-            log.error("The value of field \"{}\" hasn't been changed to {}", field_id, newValue);
+            log.error("The value of field \"{}\" hasn't been changed to {}", fieldId, newValue);
         }
         return this;
     }
 
     @Step("Получение текущего значения в поле ввода")
-    public String getFieldValue(String field_id) {
-        log.info("Getting value of field \"{}\"", field_id);
-        return $(By.id(String.format("%s", field_id))).getValue();
+    public String getFieldValue(String fieldId) {
+        log.info("Getting value of field \"{}\"", fieldId);
+        return $(By.id(String.format("%s", fieldId))).getValue();
     }
 
     @Step("Заполнение полей ввода")
-    public BuyOrSellCarPage inputTextInField(String field_id, String text) {
-        log.info("Trying to input text \"{}\" in the field \"{}\"", text, field_id);
-        new Input(field_id).write(text);
+    public BuyOrSellCarPage inputTextInField(String fieldId, String text) {
+        log.info("Trying to input text \"{}\" in the field \"{}\"", text, fieldId);
+        new Input(fieldId).write(text);
         return this;
     }
 
     @Step("Покупка или продажа автомобиля пользователем")
-    public BuyOrSellCarPage buyOrSellCar(String user_id, String car_id, String checkboxLabel) {
+    public BuyOrSellCarPage buyOrSellCar(String userId, String carId, String checkboxLabel) {
         $(By.id(ID_FIELD_USER_ID)).shouldBe(visible); // поле ввода User ID должно отображаться
         log.info("Filling field \"{}\"", ID_FIELD_USER_ID);
-        new Input(ID_FIELD_USER_ID).write(user_id);
-        log.info("Field \"{}\" is filled with value \"{}\"", ID_FIELD_USER_ID, user_id);
+        new Input(ID_FIELD_USER_ID).write(userId);
+        log.info("Field \"{}\" is filled with value \"{}\"", ID_FIELD_USER_ID, userId);
         $(By.id(ID_FIELD_CAR_ID)).shouldBe(visible); // поле ввода Car Id должно отображаться
         log.info("Filling field \"{}\"", ID_FIELD_CAR_ID);
-        new Input(ID_FIELD_CAR_ID).write(car_id);
-        log.info("Field \"{}\" is filled with value \"{}\"", ID_FIELD_CAR_ID, car_id);
+        new Input(ID_FIELD_CAR_ID).write(carId);
+        log.info("Field \"{}\" is filled with value \"{}\"", ID_FIELD_CAR_ID, carId);
         if (!checkboxLabel.isEmpty()) {
             log.info("Activating checkbox \"{}\"", checkboxLabel);
             new Checkbox(checkboxLabel).activateCheckbox();
