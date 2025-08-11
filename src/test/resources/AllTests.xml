@@ -7,11 +7,11 @@
     </listeners>
     <test name="All Tests">
         <classes>
-            <class name="tests.BuyOrSellCarInputsTest"/>
-            <class name="tests.BuyOrSellCarTest"/>
-            <class name="tests.AddMoneyTest"/>
-            <class name="tests.CreateUserTest"/>
-            <class name="tests.AllDeleteTest"/>
+            <class name="tests.ui.BuyOrSellCarInputsTest"/>
+            <class name="tests.ui.BuyOrSellCarTest"/>
+            <class name="tests.ui.AddMoneyTest"/>
+            <class name="tests.ui.CreateUserTest"/>
+            <class name="tests.ui.AllDeleteTest"/>
         </classes>
     </test> <!-- Test -->
 </suite>

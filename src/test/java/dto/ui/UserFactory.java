@@ -1,8 +1,7 @@
-package dto;
+package dto.ui;
 
 import com.github.javafaker.Faker;
 
-import java.util.Arrays;
 import java.util.Locale;
 
 public class UserFactory {
