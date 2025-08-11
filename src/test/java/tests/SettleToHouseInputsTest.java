@@ -54,7 +54,7 @@ public class SettleToHouseInputsTest extends BaseTest {
     public void changeFieldsValue(String fieldId, boolean isIncrease, String newValue) {
         mainPage.open()
                 .isPageOpened()
-                .auth();
+                .auth(email, password);
         settleToHousePage.open()
                 .isPageOpened()
                 .changeFieldValueByKeys(fieldId, isIncrease, newValue);
@@ -73,7 +73,7 @@ public class SettleToHouseInputsTest extends BaseTest {
     public void positiveInputInFields(String fieldId, String text) {
         mainPage.open()
                 .isPageOpened()
-                .auth();
+                .auth(email, password);
         settleToHousePage.open()
                 .isPageOpened()
                 .inputTextInField(fieldId, text);
@@ -92,7 +92,7 @@ public class SettleToHouseInputsTest extends BaseTest {
     public void negativeInputInFields(String fieldId, String text) {
         mainPage.open()
                 .isPageOpened()
-                .auth();
+                .auth(email, password);
         settleToHousePage.open()
                 .isPageOpened()
                 .inputTextInField(fieldId, text);

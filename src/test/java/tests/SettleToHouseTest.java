@@ -45,7 +45,7 @@ public class SettleToHouseTest extends BaseTest {
     @Description("Попытка заселения / выселения пользователя при неполном заполнении формы")
     public void settleUserToOrEvictFromHouseWithEmptyFieldsValues(String userId, String houseId, String checkboxLabel) {
         mainPage.open()
-                .auth();
+                .auth(email, password);
         settleToHousePage.open()
                 .isPageOpened()
                 .settleToOrEvictFromHouse(userId, houseId, checkboxLabel);
@@ -62,7 +62,7 @@ public class SettleToHouseTest extends BaseTest {
     @Description("Попытка заселения / выселения пользователя с отсутствующими в БД значениями")
     public void settleUserToOrEvictFromHouseWithNonExistentValues(String userId, String houseId, String checkboxLabel) {
         mainPage.open()
-                .auth();
+                .auth(email, password);
         settleToHousePage.open()
                 .isPageOpened()
                 .settleToOrEvictFromHouse(userId, houseId, checkboxLabel);
