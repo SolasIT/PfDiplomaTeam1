@@ -20,24 +20,24 @@ public class PersonControllerTest {
                 .firstName(faker.name().firstName())
                 .secondName(faker.name().lastName())
                 .age(faker.number().numberBetween(18, 65))
-                .sex(faker.demographic().sex())
-                .money(faker.number().numberBetween(0, 999999999))
+                .sex(faker.demographic().sex().toUpperCase())
+                .money(faker.number().numberBetween(0, 999999))
                 .build();
-        User rs = usersAdapter.createUser(user);
+        User rq = usersAdapter.createUser(user);
         softAssert.assertEquals(user.getFirstName(),
-                rs.getFirstName(),
+                rq.getFirstName(),
                 "Значение параметра firstName не соответствует ожидаемому");
         softAssert.assertEquals(user.getSecondName(),
-                rs.getSecondName(),
+                rq.getSecondName(),
                 "Значение параметра secondName не соответствует ожидаемому");
         softAssert.assertEquals(user.getAge(),
-                rs.getAge(),
+                rq.getAge(),
                 "Значение параметра age не соответствует ожидаемому");
         softAssert.assertEquals(user.getSex(),
-                rs.getSex(),
+                rq.getSex(),
                 "Значение параметра sex не соответствует ожидаемому");
         softAssert.assertEquals(user.getMoney(),
-                rs.getMoney(),
+                rq.getMoney(),
                 "Значение параметра money не соответствует ожидаемому");
     }
 }

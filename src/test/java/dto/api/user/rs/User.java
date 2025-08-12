@@ -2,11 +2,15 @@ package dto.api.user.rs;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@AllArgsConstructor
 @Data
 @Builder
+@NoArgsConstructor
 public class User {
 
     @SerializedName("id")
@@ -26,5 +30,5 @@ public class User {
     private String sex;
     @SerializedName("money")
     @Expose
-    private Integer money;
+    private long money;
 }

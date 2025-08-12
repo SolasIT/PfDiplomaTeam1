@@ -2,13 +2,21 @@ package dto.api.user.rq;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@AllArgsConstructor
 @Data
 @Builder
+@NoArgsConstructor
 public class User {
 
+    @SerializedName("id")
+    @Expose
+    @Builder.Default
+    private Integer id = null;
     @SerializedName("firstName")
     @Expose
     private String firstName;
