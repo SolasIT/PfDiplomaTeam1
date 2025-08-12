@@ -36,7 +36,7 @@ public class BaseTest {
         options.addArguments("--disable-notifications");
         options.addArguments("--disable-popup-blocking");
         options.addArguments("--disable-infobars");
-        //options.addArguments(("--headless"));
+        options.addArguments(("--headless"));
         Configuration.browser = "chrome";
         Configuration.browserCapabilities = options;
         Configuration.baseUrl = "http://82.142.167.37:4881/";
