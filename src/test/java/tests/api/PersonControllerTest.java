@@ -2,7 +2,7 @@ package tests.api;
 
 import adapters.UsersAdapter;
 import com.github.javafaker.Faker;
-import dto.api.user.rq.User;
+import dto.api.user.rs.User;
 import lombok.extern.slf4j.Slf4j;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
@@ -23,7 +23,7 @@ public class PersonControllerTest {
                 .sex(faker.demographic().sex().toUpperCase())
                 .money(faker.number().randomDouble(2, 0, 99999))
                 .build();
-        User rs = usersAdapter.createUserPositive(user);
+        User rs = usersAdapter.createUser(user); // создание пользователя POST
         softAssert.assertEquals(user.getFirstName(),
                 rs.getFirstName(),
                 "Значение параметра firstName не соответствует ожидаемому");
@@ -39,5 +39,6 @@ public class PersonControllerTest {
         softAssert.assertEquals(rs.getMoney(),
                 user.getMoney(),
                 "Значение параметра money не соответствует ожидаемому");
+        softAssert.assertAll();
     }
 }
