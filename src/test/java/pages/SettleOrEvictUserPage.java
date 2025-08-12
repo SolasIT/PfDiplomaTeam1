@@ -1,12 +1,9 @@
-package pages.houses;
+package pages;
 
 import com.codeborne.selenide.Selectors;
 import com.codeborne.selenide.Selenide;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
-import pages.BasePage;
-
-import java.nio.channels.Selector;
 
 import static com.codeborne.selenide.Selenide.$;
 
@@ -16,7 +13,7 @@ public class SettleOrEvictUserPage extends BasePage {
     private final By HOUSE_ID = Selectors.byId("house_send");
     private final By SETTLE_BUTTON = Selectors.byValue("settle");
     private final By EVICT_BUTTON = Selectors.byValue("evict");
-    private final By BUTTON_PUSH = Selectors.byClassName("tableButton btn btn-primary");
+    private final By BUTTON_PUSH = By.cssSelector(".tableButton.btn.btn-primary");
     private final By STATUS_TEXT = Selectors.withText("Status");
 
     public SettleOrEvictUserPage openPage(){
@@ -75,9 +72,8 @@ public class SettleOrEvictUserPage extends BasePage {
         return this;
     }
 
-    public SettleOrEvictUserPage getStatusText(){
-        $(STATUS_TEXT).getText();
-        return this;
+    public String getStatusText(){
+        return $(STATUS_TEXT).getText();
     }
 
     @Override

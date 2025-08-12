@@ -1,10 +1,10 @@
-package pages.houses;
+package pages;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selectors;
 import com.codeborne.selenide.Selenide;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
-import pages.BasePage;
 
 import static com.codeborne.selenide.Selenide.$;
 
@@ -16,7 +16,7 @@ public class CreateNewPage extends BasePage {
     private final By WARM_AND_NOT_COVERED_PLACES_INPUT = Selectors.byId("parking_second_send");
     private final By NOT_WARM_AND_COVERED_PLACES_INPUT = Selectors.byId("parking_third_send");
     private final By NOT_WARM_AND_NOT_COVERED_PLACES_INPUT = Selectors.byId("parking_fourth_send");
-    private final By BUTTON_PUSH = Selectors.byClassName("tableButton btn btn-primary");
+    private final By BUTTON_PUSH = Selectors.byXpath("//button[contains(normalize-space(text()), 'PUSH TO API')]");
     private final By STATUS_TEXT = Selectors.withText("Status");
     private final By NEW_HOUSE_ID = Selectors.withText("New house ID");
 
@@ -135,13 +135,12 @@ public class CreateNewPage extends BasePage {
     }
 
     public CreateNewPage clickPushButton(){
-        $(BUTTON_PUSH).click();
+        $(BUTTON_PUSH).shouldBe(Condition.visible, Condition.enabled).click();
         return this;
     }
 
-    public CreateNewPage getStatus(){
-        $(STATUS_TEXT).getText();
-        return this;
+    public String getStatus(){
+        return $(STATUS_TEXT).getText();
     }
 
     public CreateNewPage getHouseId(){

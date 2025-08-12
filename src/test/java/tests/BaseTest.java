@@ -5,8 +5,14 @@ import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.annotations.*;
+import org.testng.asserts.SoftAssert;
 import pages.*;
+import pages.CreateNewPage;
+import pages.ReadAllPage;
+import pages.ReadOneByIdPage;
+import pages.SettleOrEvictUserPage;
 import utils.TestListener;
+import utils.PropertyReader;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +23,14 @@ import static com.codeborne.selenide.Selenide.closeWebDriver;
 public class BaseTest {
 
     MainPage mainPage;
+    ReadAllPage readAllPage;
+    ReadOneByIdPage readOneByIdPage;
+    CreateNewPage createNewPage;
+    SettleOrEvictUserPage settleOrEvictUserPage;
+    SoftAssert softAssert;
 
+    String email = System.getProperty("email", PropertyReader.getProperty("email"));
+    String password = System.getProperty("password", PropertyReader.getProperty("password"));
 
     @BeforeMethod
     public void setup() {
@@ -47,6 +60,11 @@ public class BaseTest {
 
         // Инициализация страниц
         mainPage = new MainPage();
+        readAllPage = new ReadAllPage();
+        readOneByIdPage = new ReadOneByIdPage();
+        createNewPage = new CreateNewPage();
+        settleOrEvictUserPage = new SettleOrEvictUserPage();
+        softAssert = new SoftAssert();
     }
 
     @AfterMethod(alwaysRun = true)

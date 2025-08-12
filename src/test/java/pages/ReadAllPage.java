@@ -1,10 +1,8 @@
-package pages.houses;
+package pages;
 
 import com.codeborne.selenide.Selectors;
 import com.codeborne.selenide.Selenide;
-import com.codeborne.selenide.selector.ByText;
 import org.openqa.selenium.By;
-import pages.BasePage;
 
 import static com.codeborne.selenide.Selenide.$;
 
