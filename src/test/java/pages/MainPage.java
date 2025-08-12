@@ -22,6 +22,7 @@ public class MainPage extends BasePage {
     private final SelenideElement housesDropdown = $x("//a[@class='dropdown-toggle nav-link' and text()='Houses']");
     private final SelenideElement allPostButton = $x("//a[@class='nav-link' and text()='All POST']");
     private final SelenideElement allDeleteButton = $x("//a[@class='nav-link' and text()='All DELETE']");
+    private final String BUTTON = "//a[text()='%s']";
     private final SelenideElement LOGIN_FIELD = $("[placeholder='Enter your email...']");
     private final SelenideElement PASSWORD_FIELD = $("[placeholder='Enter your password...']");
     private final SelenideElement AUTH_BUTTON_GO = $(".btn-primary");
@@ -35,6 +36,7 @@ public class MainPage extends BasePage {
     }
 
     @Override
+    @Step("Проверка открытия страницы сайта")
     public MainPage isPageOpened() {
         try {
             userDropdown.shouldBe(visible);
@@ -61,6 +63,22 @@ public class MainPage extends BasePage {
         $(carsCreateNew).shouldBe(visible, Duration.ofSeconds(10)).click();
         log.info("Creating new CarsCreateNewPage instance");
         return new CarsCreateNewPage();
+    }
+
+    @Step("Клик по кнопкe: {buttonname}")
+    public MainPage clickUserButton(String buttonname) {
+        userDropdown.click();
+        $x(String.format(BUTTON, buttonname)).click();
+        log.info("Click to button {}", buttonname);
+        return this;
+    }
+
+    @Step("Клик по кнопкe: All DELETE")
+    public AllDeletePage clickAllDelete(){
+        allDeleteButton.click();
+        switchTo().window(1);
+        log.info("Click All DELETE");
+        return new AllDeletePage();
     }
 
     @Step("Авторизация email: {email}, password {password}")

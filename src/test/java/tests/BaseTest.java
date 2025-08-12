@@ -7,6 +7,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.annotations.*;
 import org.testng.asserts.SoftAssert;
 import pages.*;
+import utils.PropertyReader;
 import utils.TestListener;
 
 import java.util.HashMap;
@@ -20,23 +21,32 @@ public class BaseTest {
     MainPage mainPage;
     CarsCreateNewPage carsCreateNewPage;
     CarsReadAllPage carsReadAllPage;
+    CreateUserPage createUserPage;
+    AddMoneyPage addMoneyPage;
+    BuyOrSellCarPage buyOrSellCarPage;
+    AllDeletePage allDeletePage;
+    SettleToHousePage settleToHousePage;
 
-    String email = System.getProperty("email");
-    String password = System.getProperty("password");
+    String email = System.getProperty("email", PropertyReader.getProperty("email"));
+    String password = System.getProperty("password", PropertyReader.getProperty("password"));
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void setup() {
         // Настройки Chrome
         ChromeOptions options = new ChromeOptions();
         Map<String, Object> chromePrefs = new HashMap<>();
         chromePrefs.put("credentials_enable_service", false);
         chromePrefs.put("profile.password_manager_enabled", false);
+        chromePrefs.put("profile.default_content_setting_values.notifications", 2);
         options.setExperimentalOption("prefs", chromePrefs);
-        //options.addArguments("--incognito");
+        // options.addArguments("--incognito"); // в этом режиме ругается на незащищённое подключение
         options.addArguments("--disable-notifications");
         options.addArguments("--disable-popup-blocking");
         options.addArguments("--disable-infobars");
-        options.addArguments(("--headless"));
+        if (System.getProperty("email") != null) {
+            options.addArguments("--headless");
+        }
+        
         Configuration.browser = "chrome";
         Configuration.browserCapabilities = options;
         Configuration.baseUrl = "http://82.142.167.37:4881/";
@@ -44,18 +54,22 @@ public class BaseTest {
         Configuration.timeout = 10000;
         Configuration.pageLoadTimeout = 30000;
         Configuration.screenshots = true;
-        Configuration.savePageSource = false;
+        Configuration.savePageSource = true;
 
         SelenideLogger.addListener("AllureSelenide", new AllureSelenide()
                 .screenshots(true)
                 .savePageSource(true));
 
         softAssert = new SoftAssert();
-
-        // Инициализация страниц
+      
         mainPage = new MainPage();
         carsCreateNewPage = new CarsCreateNewPage();
         carsReadAllPage = new CarsReadAllPage();
+        createUserPage = new CreateUserPage();
+        addMoneyPage = new AddMoneyPage();
+        buyOrSellCarPage = new BuyOrSellCarPage();
+        allDeletePage = new AllDeletePage();
+        settleToHousePage = new SettleToHousePage();
     }
 
     @AfterMethod(alwaysRun = true)

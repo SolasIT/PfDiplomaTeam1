@@ -17,6 +17,14 @@
         <testng.version>7.11.0</testng.version>
         <allure-maven.version>2.12.0</allure-maven.version>
         <surefire.version>3.1.2</surefire.version>
+        <selenide.version>7.9.3</selenide.version>
+        <lombok.version>1.18.38</lombok.version>
+        <log4j.version>2.24.3</log4j.version>
+        <jackson.version>2.12.3</jackson.version>
+        <rest-assured.version>5.5.5</rest-assured.version>
+        <gson.version>2.13.1</gson.version>
+        <allure-selenide.version>2.29.1</allure-selenide.version>
+        <javafaker.version>1.0.2</javafaker.version>
     </properties>
 
     <dependencyManagement>
@@ -36,29 +44,35 @@
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
-            <version>7.11.0</version>
+            <version>${testng.version}</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.codeborne/selenide -->
         <dependency>
             <groupId>com.codeborne</groupId>
             <artifactId>selenide</artifactId>
-            <version>7.9.3</version>
+            <version>${selenide.version}</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.38</version>
+            <version>${lombok.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
-            <version>2.24.3</version>
+            <version>${log4j.version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.github.javafaker/javafaker -->
+        <dependency>
+            <groupId>com.github.javafaker</groupId>
+            <artifactId>javafaker</artifactId>
+            <version>${javafaker.version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-yaml</artifactId>
-            <version>2.12.3</version>
+            <version>${jackson.version}</version>
         </dependency>
         <dependency>
             <groupId>org.aspectj</groupId>
@@ -73,20 +87,20 @@
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
-            <version>5.5.5</version>
+            <version>${rest-assured.version}</version>
             <scope>test</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
-            <version>2.13.1</version>
+            <version>${gson.version}</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/io.qameta.allure/allure-selenide -->
         <dependency>
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-selenide</artifactId>
-            <version>2.29.1</version>
+            <version>${allure-selenide.version}</version>
         </dependency>
         <dependency>
             <groupId>com.github.javafaker</groupId>
