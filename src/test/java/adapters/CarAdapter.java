@@ -12,6 +12,7 @@ public class CarAdapter extends BaseAPI {
     public Car getCar(int id) {
         return spec
                 .header("Authorization", authAPI.getToken())
+                .log().all()
                 .when()
                 .get(BASE_URI + "/car/" + String.valueOf(id))
                 .then()
@@ -37,6 +38,7 @@ public class CarAdapter extends BaseAPI {
     public Car getCarByUserId(int id) {
         return spec
                 .header("Authorization", authAPI.getToken())
+                .log().all()
                 .when()
                 .get(BASE_URI + "/user/" + String.valueOf(id) + "cars")
                 .then()
