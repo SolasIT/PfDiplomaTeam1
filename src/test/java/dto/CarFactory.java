@@ -5,7 +5,7 @@ import java.util.Locale;
 
 public class CarFactory {
     private static final Faker faker = new Faker(new Locale("en"));
-    private static final String[] VALID_ENGINE_TYPES = {"Gasoline", "Diesel", "Electric"};
+    private static final String[] VALID_ENGINE_TYPES = {"Gasoline", "Diesel", "Electric", "CNG", "Hydrogenic ", "PHEV"};
 
     public static Car getCar() {
         return getCar("en");

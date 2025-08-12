@@ -21,6 +21,8 @@ public class BaseTest {
     CarsCreateNewPage carsCreateNewPage;
     CarsReadAllPage carsReadAllPage;
 
+    String email = System.getProperty("email");
+    String password = System.getProperty("password");
 
     @BeforeMethod
     public void setup() {

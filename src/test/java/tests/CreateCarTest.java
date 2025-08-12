@@ -15,7 +15,7 @@ public class CreateCarTest extends BaseTest {
     public void setUp() {
         mainPage.open()
                 .isPageOpened()
-                .auth("user@pflb.ru", "user")
+                .auth(email, password)
                 .openCarsCreateNew()
                 .isPageOpened();
     }

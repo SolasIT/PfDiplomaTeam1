@@ -40,10 +40,10 @@ public class CarsReadAllPage extends BasePage {
     public CarsReadAllPage isPageOpened() {
         try {
             $(ID_COLUMN).shouldBe(visible);
-            log.info("CarsReadAllPage is opened"); // Исправлено название страницы
+            log.info("CarsReadAllPage is opened");
         } catch (Exception e) {
             log.error("Page isn't opened: {}", e.getMessage());
-            Assert.fail("Failed to open CarsReadAllPage: " + e.getMessage()); // Уточнено сообщение
+            Assert.fail("Failed to open CarsReadAllPage: " + e.getMessage());
         }
         return this;
     }

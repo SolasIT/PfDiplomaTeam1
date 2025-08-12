@@ -24,7 +24,7 @@ public class CarsCreateNewPage extends BasePage {
     private final By NEW_ID = byCssSelector(".newId");
 
     @Override
-    @Step("Opening Cars Create New Page")
+    @Step("Открытие страницы Cars Create New")
     public CarsCreateNewPage open() {
         try {
             log.info("Opening Create New Car page");
@@ -38,7 +38,7 @@ public class CarsCreateNewPage extends BasePage {
     }
 
     @Override
-    @Step("Verifying Cars Create New Page is opened")
+    @Step("Проверка открытия Cars Create New")
     public CarsCreateNewPage isPageOpened() {
         try {
             $(PUSH_TO_API_BUTTON).shouldBe(visible, Duration.ofSeconds(10));
@@ -51,7 +51,7 @@ public class CarsCreateNewPage extends BasePage {
         }
     }
 
-    @Step("Creating car with data: {car}")
+    @Step("Создание карточки машины с данными: {car}")
     public CarsCreateNewPage createCar(Car car) {
         try {
             log.info("Starting car creation process");
