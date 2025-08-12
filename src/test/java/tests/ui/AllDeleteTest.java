@@ -1,6 +1,5 @@
-package tests;
+package tests.ui;
 
-import dto.User;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Link;
@@ -8,7 +7,6 @@ import io.qameta.allure.Owner;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import static dto.UserFactory.getUser;
 import static org.testng.AssertJUnit.assertEquals;
 
 public class AllDeleteTest extends BaseTest{
