@@ -30,5 +30,5 @@ public class User {
     private String sex;
     @SerializedName("money")
     @Expose
-    private long money;
+    private Double money;
 }

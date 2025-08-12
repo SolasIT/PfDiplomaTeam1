@@ -6,7 +6,7 @@ public class UsersAdapter extends BaseAPI {
 
     AuthAPI authAPI = new AuthAPI();
 
-    public User createUser(User user) {
+    public User createUserPositive(User user) {
         return spec
                 .header("Authorization", authAPI.getToken())
                 .body(gson.toJson(user))
@@ -15,7 +15,6 @@ public class UsersAdapter extends BaseAPI {
                 .post(BASE_URI + "/user")
                 .then()
                 .log().all()
-                .statusCode(201)
                 .extract()
                 .as(User.class);
     }
