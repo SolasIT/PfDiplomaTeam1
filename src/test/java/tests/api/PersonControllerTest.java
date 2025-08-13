@@ -13,7 +13,12 @@ public class PersonControllerTest {
 
     SoftAssert softAssert = new SoftAssert();
     UsersAdapter usersAdapter = new UsersAdapter();
-    String user_id;
+    Integer createdUserId,
+            createdUserAge;
+    String createdUserFirstName,
+            createdUserSecondName,
+            createdUserSex;
+    Double createdUserMoney;
 
     @Test
     public void createUser() {
@@ -42,11 +47,35 @@ public class PersonControllerTest {
                 userRequest.getMoney(),
                 "Значение параметра money не соответствует ожидаемому");
         softAssert.assertAll();
-        user_id = Integer.toString(userResponse.getId());
+        createdUserId = userResponse.getId();
+        createdUserFirstName = userResponse.getFirstName();
+        createdUserSecondName = userResponse.getSecondName();
+        createdUserAge = userResponse.getAge();
+        createdUserSex = userResponse.getSex();
+        createdUserMoney = userResponse.getMoney();
     }
 
     @Test (dependsOnMethods = "createUser")
     public void getUserById() {
-        UserResponse userResponse = usersAdapter.getUserById(user_id);
+        UserResponse userResponse = usersAdapter.getUserById(createdUserId);
+        softAssert.assertEquals(userResponse.getId(),
+                createdUserId,
+                "Значение параметра id не соответствует ожидаемому");
+        softAssert.assertEquals(userResponse.getFirstName(),
+                createdUserFirstName,
+                "Значение параметра firstName не соответствует ожидаемому");
+        softAssert.assertEquals(userResponse.getSecondName(),
+                createdUserSecondName,
+                "Значение параметра secondName не соответствует ожидаемому");
+        softAssert.assertEquals(userResponse.getAge(),
+                createdUserAge,
+                "Значение параметра age не соответствует ожидаемому");
+        softAssert.assertEquals(userResponse.getSex(),
+                createdUserSex,
+                "Значение параметра sex не соответствует ожидаемому");
+        softAssert.assertEquals(userResponse.getMoney(),
+                createdUserMoney,
+                "Значение параметра money не соответствует ожидаемому");
+        softAssert.assertAll();
     }
 }

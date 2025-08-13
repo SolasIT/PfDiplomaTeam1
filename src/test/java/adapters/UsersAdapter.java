@@ -9,6 +9,7 @@ public class UsersAdapter extends BaseAPI {
 
     public UserResponse createUser(UserRequest user) {
         return spec
+                .removeHeader("Authorization")
                 .header("Authorization", authAPI.getToken())
                 .body(gson.toJson(user))
                 .log().all()
@@ -20,8 +21,9 @@ public class UsersAdapter extends BaseAPI {
                 .as(UserResponse.class);
     }
 
-    public UserResponse getUserById(String id) {
+    public UserResponse getUserById(Integer id) {
         return spec
+                .removeHeader("Authorization")
                 .header("Authorization", authAPI.getToken())
                 .log().all()
                 .when()
