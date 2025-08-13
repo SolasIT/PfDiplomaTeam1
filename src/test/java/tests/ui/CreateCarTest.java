@@ -1,7 +1,7 @@
-package tests;
+package tests.ui;
 
-import dto.Car;
-import dto.CarFactory;
+import dto.ui.Car;
+import dto.ui.CarFactory;
 import io.qameta.allure.*;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;

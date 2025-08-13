@@ -11,6 +11,7 @@ public class CarAdapter extends BaseAPI {
 
     public Car getCar(int id) {
         return spec
+                .removeHeader("Authorization")
                 .header("Authorization", authAPI.getToken())
                 .log().all()
                 .when()
@@ -24,6 +25,7 @@ public class CarAdapter extends BaseAPI {
 
     public Car createCar(Car car) {
         return spec
+                .removeHeader("Authorization")
                 .header("Authorization", authAPI.getToken())
                 .log().all()
                 .body(gson.toJson(car))
@@ -37,6 +39,7 @@ public class CarAdapter extends BaseAPI {
 
     public Car getCarByUserId(int id) {
         return spec
+                .removeHeader("Authorization")
                 .header("Authorization", authAPI.getToken())
                 .log().all()
                 .when()
@@ -50,6 +53,7 @@ public class CarAdapter extends BaseAPI {
 
     public Car changeCar(Car car, int id) {
         return spec
+                .removeHeader("Authorization")
                 .header("Authorization", authAPI.getToken())
                 .log().all()
                 .body(gson.toJson(car))
@@ -63,6 +67,7 @@ public class CarAdapter extends BaseAPI {
 
     public void deleteCar(int id) {
         spec
+                .removeHeader("Authorization")
                 .header("Authorization", authAPI.getToken())
                 .log().all()
                 .when()
