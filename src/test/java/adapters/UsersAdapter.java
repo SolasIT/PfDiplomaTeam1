@@ -1,7 +1,6 @@
 package adapters;
 
 import dto.api.user.rs.User;
-import org.testng.annotations.Test;
 
 public class UsersAdapter extends BaseAPI {
 
