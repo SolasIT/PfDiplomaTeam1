@@ -1,4 +1,4 @@
-package dto;
+package dto.ui;
 
 import com.github.javafaker.Faker;
 import java.util.Locale;
