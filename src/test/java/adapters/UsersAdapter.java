@@ -9,7 +9,7 @@ public class UsersAdapter extends BaseAPI {
 
     public UserResponse createUser(UserRequest user) {
         return spec
-                .removeHeader("Authorization")
+                .removeHeader("Authorization") // для избежания дублирующегося header'а Authorization
                 .header("Authorization", authAPI.getToken())
                 .body(gson.toJson(user))
                 .log().all()
@@ -22,9 +22,11 @@ public class UsersAdapter extends BaseAPI {
     }
 
     public UserResponse getUserById(Integer id) {
+        spec.body(""); // в GET не передаётся тело запроса
         return spec
                 .removeHeader("Authorization")
                 .header("Authorization", authAPI.getToken())
+                .request()
                 .log().all()
                 .when()
                 .get(BASE_URI + "/user/" + id)
