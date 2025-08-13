@@ -16,27 +16,28 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.sleep;
 
 @Log4j2
-public class BuyOrSellCarPage extends BasePage {
+public class SettleToHousePage extends BasePage {
 
-    private final String ENDPOINT_URL = "#/update/users/buyCar"; // endpoint страницы Buy or sell car
+    private final String ENDPOINT_URL = "#/update/houseAndUser"; // endpoint страницы Settle to house
     private final By PUSH_TO_API_BUTTON = withText("PUSH"); // локатор кнопки PUSH TO API
     private final String ID_FIELD_USER_ID = "id_send"; // Id поля User ID
-    private final String ID_FIELD_CAR_ID = "car_send"; // Id поля Car Id
+    private final String ID_FIELD_HOUSE_ID = "house_send"; // Id поля House ID
+
 
     @Override
-    @Step("Открытие страницы Buy or sell car")
-    public BuyOrSellCarPage open() {
-        log.info("Opening BuyOrSellCarPage");
-        Selenide.open(ENDPOINT_URL); // открытие страницы Buy or sell car по прямой ссылке
+    @Step("Открытие страницы Settle to house")
+    public SettleToHousePage open() {
+        log.info("Opening SettleToHousePage");
+        Selenide.open(ENDPOINT_URL); // открытие страницы Settle to house по прямой ссылке
         return this;
     }
 
     @Override
-    @Step("Проверка открытия страницы Buy or sell car")
-    public BuyOrSellCarPage isPageOpened() { // проверка отображения формы для заполнения на странице Buy or sell car
+    @Step("Проверка открытия страницы Settle to house")
+    public SettleToHousePage isPageOpened() { // проверка отображения формы для заполнения на странице Settle to house
         try {
             $(PUSH_TO_API_BUTTON).shouldBe(visible);
-            log.info("BuyOrSellCarPage is opened");
+            log.info("SettleToHousePage is opened");
         } catch (Exception e) {
             log.error("Page isn't opened: {}", e.getMessage());
             Assert.fail("Page isn't opened: " + e.getMessage());
@@ -45,7 +46,7 @@ public class BuyOrSellCarPage extends BasePage {
     }
 
     @Step("Изменение значения полей ввода нажатием на стрелочки")
-    public BuyOrSellCarPage changeFieldValueByKeys(String fieldId, boolean isIncreasing, String newValue) {
+    public SettleToHousePage changeFieldValueByKeys(String fieldId, boolean isIncreasing, String newValue) {
         log.info("Changing value of field \"{}\"", fieldId);
         if (isIncreasing) {
             new Input(fieldId).increaseValue();
@@ -69,22 +70,22 @@ public class BuyOrSellCarPage extends BasePage {
     }
 
     @Step("Заполнение полей ввода")
-    public BuyOrSellCarPage inputTextInField(String fieldId, String text) {
+    public SettleToHousePage inputTextInField(String fieldId, String text) {
         log.info("Trying to input text \"{}\" in the field \"{}\"", text, fieldId);
         new Input(fieldId).write(text);
         return this;
     }
 
-    @Step("Покупка или продажа автомобиля пользователем")
-    public BuyOrSellCarPage buyOrSellCar(String userId, String carId, String checkboxLabel) {
+    @Step("Заселение или выселение пользователя из дома")
+    public SettleToHousePage settleToOrEvictFromHouse(String userId, String houseId, String checkboxLabel) {
         $(By.id(ID_FIELD_USER_ID)).shouldBe(visible); // поле ввода User ID должно отображаться
         log.info("Filling field \"{}\"", ID_FIELD_USER_ID);
         new Input(ID_FIELD_USER_ID).write(userId);
         log.info("Field \"{}\" is filled with value \"{}\"", ID_FIELD_USER_ID, userId);
-        $(By.id(ID_FIELD_CAR_ID)).shouldBe(visible); // поле ввода Car Id должно отображаться
-        log.info("Filling field \"{}\"", ID_FIELD_CAR_ID);
-        new Input(ID_FIELD_CAR_ID).write(carId);
-        log.info("Field \"{}\" is filled with value \"{}\"", ID_FIELD_CAR_ID, carId);
+        $(By.id(ID_FIELD_HOUSE_ID)).shouldBe(visible); // поле ввода House ID должно отображаться
+        log.info("Filling field \"{}\"", ID_FIELD_HOUSE_ID);
+        new Input(ID_FIELD_HOUSE_ID).write(houseId);
+        log.info("Field \"{}\" is filled with value \"{}\"", ID_FIELD_HOUSE_ID, houseId);
         if (!checkboxLabel.isEmpty()) {
             log.info("Activating checkbox \"{}\"", checkboxLabel);
             new Checkbox(checkboxLabel).activateCheckbox();
@@ -92,7 +93,7 @@ public class BuyOrSellCarPage extends BasePage {
         }
         log.info("Pushing button to proceeding");
         $(PUSH_TO_API_BUTTON).click();
-        sleep(100); // без него как будто мимо кнопки нажимает
+        sleep(100);
         log.info("Button is pushed");
         return this;
     }

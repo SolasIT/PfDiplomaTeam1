@@ -43,12 +43,12 @@ public class BuyOrSellCarTest extends BaseTest {
     @Link("http://82.142.167.37:4881/#/update/users/buyCar")
     @Feature("Buy or sell car")
     @Description("Попытка совершения продажи/покупки авто при неполном заполнении формы")
-    public void buyOrSellCarWithEmptyFieldsValues(String user_id, String car_id, String checkboxLabel) {
+    public void buyOrSellCarWithEmptyFieldsValues(String userId, String carId, String checkboxLabel) {
         mainPage.open()
                 .auth(email, password);
         buyOrSellCarPage.open()
                 .isPageOpened()
-                .buyOrSellCar(user_id, car_id, checkboxLabel);
+                .buyOrSellCar(userId, carId, checkboxLabel);
         assertTrue($(withText("Status: Incorrect input data")).isDisplayed(),
                 "Статус выполненного процесса не соответствует ожидаемому");
     }
@@ -60,12 +60,12 @@ public class BuyOrSellCarTest extends BaseTest {
     @Link("http://82.142.167.37:4881/#/update/users/buyCar")
     @Feature("Buy or sell car")
     @Description("Попытка совершения продажи/покупки авто с отсутствующими в БД значениями")
-    public void buyOrSellCarWithNonExistentValues(String user_id, String car_id, String checkboxLabel) {
+    public void buyOrSellCarWithNonExistentValues(String userId, String carId, String checkboxLabel) {
         mainPage.open()
                 .auth(email, password);
         buyOrSellCarPage.open()
                 .isPageOpened()
-                .buyOrSellCar(user_id, car_id, checkboxLabel);
+                .buyOrSellCar(userId, carId, checkboxLabel);
         assertTrue($(withText("Status: AxiosError: Request failed with status code 404")).isDisplayed(),
                 "Статус выполненного процесса не соответствует ожидаемому");
     }
