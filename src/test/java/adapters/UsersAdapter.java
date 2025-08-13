@@ -35,4 +35,18 @@ public class UsersAdapter extends BaseAPI {
                 .extract()
                 .as(UserResponse.class);
     }
+
+    public UserResponse changeUserData(UserRequest user, Integer id) {
+        return spec
+                .removeHeader("Authorization") // для избежания дублирующегося header'а Authorization
+                .header("Authorization", authAPI.getToken())
+                .body(gson.toJson(user))
+                .log().all()
+                .when()
+                .put(BASE_URI + "/user/" + id)
+                .then()
+                .log().all()
+                .extract()
+                .as(UserResponse.class);
+    }
 }

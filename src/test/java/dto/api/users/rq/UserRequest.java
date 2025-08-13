@@ -13,6 +13,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserRequest {
 
+    @SerializedName("id")
+    @Expose
+    private Integer id;
     @SerializedName("firstName")
     @Expose
     private String firstName;
