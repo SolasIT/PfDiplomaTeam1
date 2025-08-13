@@ -1,6 +1,8 @@
 package tests.ui;
 
 import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.Selenide;
+import com.codeborne.selenide.WebDriverRunner;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -74,6 +76,8 @@ public class BaseTest {
 
     @AfterMethod(alwaysRun = true)
     public void tearDown() {
-        closeWebDriver();
+        if(WebDriverRunner.getWebDriver()!=null) {
+            closeWebDriver();
+        }
     }
 }

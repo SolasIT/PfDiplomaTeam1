@@ -25,6 +25,7 @@
         <allure-selenide.version>2.29.1</allure-selenide.version>
         <javafaker.version>1.0.2</javafaker.version>
         <gson.version>2.13.1</gson.version>
+        <postgresql.version>42.7.7</postgresql.version>
     </properties>
 
     <dependencyManagement>
@@ -102,10 +103,11 @@
             <artifactId>allure-selenide</artifactId>
             <version>${allure-selenide.version}</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
         <dependency>
-            <groupId>com.github.javafaker</groupId>
-            <artifactId>javafaker</artifactId>
-            <version>1.0.2</version>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
         </dependency>
     </dependencies>
     <build>
