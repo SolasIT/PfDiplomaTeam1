@@ -1,12 +1,13 @@
 package adapters;
 
-import dto.api.user.rs.User;
+import dto.api.users.rq.UserRequest;
+import dto.api.users.rs.UserResponse;
 
 public class UsersAdapter extends BaseAPI {
 
     AuthAPI authAPI = new AuthAPI();
 
-    public User createUser(User user) {
+    public UserResponse createUser(UserRequest user) {
         return spec
                 .header("Authorization", authAPI.getToken())
                 .body(gson.toJson(user))
@@ -16,10 +17,10 @@ public class UsersAdapter extends BaseAPI {
                 .then()
                 .log().all()
                 .extract()
-                .as(User.class);
+                .as(UserResponse.class);
     }
 
-    public User getUserById(String id) {
+    public UserResponse getUserById(String id) {
         return spec
                 .header("Authorization", authAPI.getToken())
                 .log().all()
@@ -28,6 +29,6 @@ public class UsersAdapter extends BaseAPI {
                 .then()
                 .log().all()
                 .extract()
-                .as(User.class);
+                .as(UserResponse.class);
     }
 }
