@@ -8,6 +8,9 @@ import io.qameta.allure.Owner;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 import static dto.ui.UserFactory.getUser;
 import static org.testng.AssertJUnit.assertEquals;
 
@@ -146,6 +149,7 @@ public class CreateUserTest extends BaseTest {
                 .arrowClick(fild, value);
         value = value * 0.01;
         double sum = user.getMoney() + value;
-        assertEquals(sum, createUserPage.getMoney());
+        double res = Math.round(sum*100.0)/100.0;
+        assertEquals(res, createUserPage.getMoney());
     }
 }
