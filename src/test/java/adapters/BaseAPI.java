@@ -10,6 +10,7 @@ import static io.restassured.RestAssured.given;
 public class BaseAPI {
 
     protected static final String BASE_URI = "http://82.142.167.37:4879";
+
     static Gson gson = new GsonBuilder()
             .excludeFieldsWithoutExposeAnnotation()
             .create();

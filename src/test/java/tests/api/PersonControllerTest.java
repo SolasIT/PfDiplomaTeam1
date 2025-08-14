@@ -112,4 +112,9 @@ public class PersonControllerTest {
         softAssert.assertAll();
 
     }
+
+    @Test(dependsOnMethods = "createUser")
+    public void deleteUserById() {
+        usersAdapter.deleteUserById(createdUserId);
+    }
 }

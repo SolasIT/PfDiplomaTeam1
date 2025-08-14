@@ -49,4 +49,20 @@ public class UsersAdapter extends BaseAPI {
                 .extract()
                 .as(UserResponse.class);
     }
+
+    public UserResponse deleteUserById(Integer id) {
+        spec.body("");
+        return spec
+                .removeHeader("Authorization")
+                .header("Authorization", authAPI.getToken())
+                .request()
+                .log().all()
+                .when()
+                .delete(BASE_URI + "/user/" + id)
+                .then()
+                .log().all()
+                .extract()
+                .as(UserResponse.class);
+
+    }
 }
