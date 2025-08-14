@@ -66,4 +66,18 @@ public class UsersAdapter extends BaseAPI {
                 .log().all()
                 .statusCode(204);
     }
+
+    public void deleteUserByNonExistentId(Integer id) {
+        spec.body("");
+        spec
+                .removeHeader("Authorization")
+                .header("Authorization", authAPI.getToken())
+                .request()
+                .log().all()
+                .when()
+                .delete(BASE_URI + "/user/" + id)
+                .then()
+                .log().all()
+                .statusCode(404);
+    }
 }

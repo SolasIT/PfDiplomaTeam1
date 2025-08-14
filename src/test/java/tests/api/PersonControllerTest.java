@@ -5,6 +5,10 @@ import adapters.UsersAdapter;
 import com.github.javafaker.Faker;
 import dto.api.users.rq.UserRequest;
 import dto.api.users.rs.UserResponse;
+import io.qameta.allure.Description;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Link;
+import io.qameta.allure.Owner;
 import lombok.extern.slf4j.Slf4j;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
@@ -21,7 +25,12 @@ public class PersonControllerTest extends BaseAPI {
             createdUserSex;
     Double createdUserMoney;
 
-    @Test
+    @Test(description = "Проверка создания пользователя",
+            testName = "API: POST /user")
+    @Owner("Zheltikov Vasiliy")
+    @Link("http://82.142.167.37:4879/swagger-ui/index.html#/")
+    @Feature("person-controller")
+    @Description("Проверка API метода POST")
     public void createUser() {
         Faker faker = new Faker();
         UserRequest userRequest = UserRequest.builder()
@@ -56,7 +65,13 @@ public class PersonControllerTest extends BaseAPI {
         createdUserMoney = userResponse.getMoney();
     }
 
-    @Test (dependsOnMethods = "createUser")
+    @Test(dependsOnMethods = "createUser",
+            description = "Проверка получения информации по ранее созданному пользователю",
+            testName = "API: GET /user/{userId}")
+    @Owner("Zheltikov Vasiliy")
+    @Link("http://82.142.167.37:4879/swagger-ui/index.html#/")
+    @Feature("person-controller")
+    @Description("Проверка API метода GET")
     public void getUserById() {
         UserResponse userResponse = usersAdapter.getUserById(createdUserId);
         softAssert.assertEquals(userResponse.getId(),
@@ -80,7 +95,13 @@ public class PersonControllerTest extends BaseAPI {
         softAssert.assertAll();
     }
 
-    @Test(dependsOnMethods = "createUser")
+    @Test(dependsOnMethods = "createUser",
+            description = "Проверка изменения данных по ранее созданному пользователю",
+            testName = "API: PUT /user/{userId}")
+    @Owner("Zheltikov Vasiliy")
+    @Link("http://82.142.167.37:4879/swagger-ui/index.html#/")
+    @Feature("person-controller")
+    @Description("Проверка API метода PUT")
     public void changeUserData() {
         Faker faker = new Faker();
         UserRequest userRequest = UserRequest.builder()
@@ -114,8 +135,26 @@ public class PersonControllerTest extends BaseAPI {
 
     }
 
-    @Test(dependsOnMethods = "createUser")
+    @Test(dependsOnMethods = "createUser",
+    description = "Проверка удаления ранее созданного пользователя",
+    testName = "API: DELETE /user/{userId}")
+    @Owner("Zheltikov Vasiliy")
+    @Link("http://82.142.167.37:4879/swagger-ui/index.html#/")
+    @Feature("person-controller")
+    @Description("Проверка API метода DELETE")
     public void deleteUserById() {
         usersAdapter.deleteUserById(createdUserId);
+    }
+
+    @Test(dependsOnMethods = "createUser",
+            description = "Проверка удаления несуществующего пользователя",
+            testName = "API: DELETE /user/{userId}: userId не существует")
+    @Owner("Zheltikov Vasiliy")
+    @Link("http://82.142.167.37:4879/swagger-ui/index.html#/")
+    @Feature("person-controller")
+    @Description("Проверка API метода DELETE")
+    public void deleteUserByNonexistentId() {
+        usersAdapter.deleteUserById(createdUserId);
+        usersAdapter.deleteUserByNonExistentId(createdUserId);
     }
 }
