@@ -237,6 +237,26 @@ public class PersonControllerTest extends BaseAPI {
         // баг: обновляются данные по user'у, если не передать параметр sex (обновляется на FEMALE), тест падает
     }
 
+    @Test(dependsOnMethods = {"createUser", "deleteUserById"},
+            description = "Попытка изменения информации по несуществующему пользователю",
+            testName = "API: PUT /user: userId не существует")
+    @Owner("Zheltikov Vasiliy")
+    @Link("http://82.142.167.37:4879/swagger-ui/index.html#/")
+    @Feature("person-controller")
+    @Description("Проверка API метода PUT")
+    public void changeUserWithNonExistentId() {
+        Faker faker = new Faker();
+        UserRequest userRequest = UserRequest.builder()
+                .id(createdUserId)
+                .firstName(faker.name().firstName())
+                .secondName(faker.name().lastName())
+                .age(faker.number().numberBetween(18, 65))
+                .sex(faker.demographic().sex().toUpperCase())
+                .money(faker.number().randomDouble(2, 0, 99999))
+                .build();
+        usersAdapter.changeUserWithNonExistentId(userRequest, createdUserId);
+    }
+
     @Test(dependsOnMethods = "createUser",
     description = "Проверка удаления ранее созданного пользователя",
     testName = "API: DELETE /user/{userId}")

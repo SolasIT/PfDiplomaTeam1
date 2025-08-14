@@ -127,6 +127,20 @@ public class UsersAdapter extends BaseAPI {
                 .body(blankOrNullString());
     }
 
+    public void changeUserWithNonExistentId(UserRequest user, Integer id) {
+        spec
+                .removeHeader("Authorization") // для избежания дублирующегося header'а Authorization
+                .header("Authorization", authAPI.getToken())
+                .body(gson.toJson(user))
+                .log().all()
+                .when()
+                .put(BASE_URI + "/user/" + id)
+                .then()
+                .log().all()
+                .statusCode(404)
+                .body(blankOrNullString());
+    }
+
     public void deleteUserById(Integer id) {
         spec.body("");
         spec
