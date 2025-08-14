@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="PfDiplomaTeam1 All Tests">
+    <listeners>
+        <listener class-name="utils.TestListener"/>
+        <listener class-name="utils.AnnotationTransformer"/>
+    </listeners>
+    <test name="All Tests">
+        <classes>
+            <class name="tests.ui.BuyOrSellCarInputsTest"/>
+            <class name="tests.ui.BuyOrSellCarTest"/>
+            <class name="tests.ui.AddMoneyTest"/>
+            <class name="tests.ui.CreateUserTest"/>
+            <class name="tests.ui.AllDeleteTest"/>
+            <class name="tests.api.CarAPITest"/>
+        </classes>
+    </test> <!-- Test -->
+</suite>
