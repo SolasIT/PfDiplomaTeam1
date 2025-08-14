@@ -3,6 +3,8 @@ package adapters;
 import dto.api.users.rq.UserRequest;
 import dto.api.users.rs.UserResponse;
 
+import static org.hamcrest.Matchers.blankOrNullString;
+
 public class UsersAdapter extends BaseAPI {
 
     AuthAPI authAPI = new AuthAPI();
@@ -62,6 +64,21 @@ public class UsersAdapter extends BaseAPI {
                 .statusCode(200)
                 .extract()
                 .as(UserResponse.class);
+    }
+
+    public void getUserByNonExistentId(Integer id) {
+        spec.body(""); // в GET не передаётся тело запроса
+        spec
+                .removeHeader("Authorization")
+                .header("Authorization", authAPI.getToken())
+                .request()
+                .log().all()
+                .when()
+                .get(BASE_URI + "/user/" + id)
+                .then()
+                .log().all()
+                .statusCode(204)
+                .body(blankOrNullString()); // проверка, что метод действительно ничего не нашёл
     }
 
     public UserResponse changeUserData(UserRequest user, Integer id) {

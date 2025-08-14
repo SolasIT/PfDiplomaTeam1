@@ -149,6 +149,17 @@ public class PersonControllerTest extends BaseAPI {
         softAssert.assertAll();
     }
 
+    @Test(dependsOnMethods = {"createUser","deleteUserByNonExistentId"},
+            description = "Попытка получения информации по несуществующему пользователю",
+            testName = "API: GET /user/{userId}: userId не существует")
+    @Owner("Zheltikov Vasiliy")
+    @Link("http://82.142.167.37:4879/swagger-ui/index.html#/")
+    @Feature("person-controller")
+    @Description("Проверка API метода GET")
+    public void getUserByNonExistentId(){
+        usersAdapter.getUserByNonExistentId(createdUserId);
+    }
+
     @Test(dependsOnMethods = "createUser",
             description = "Проверка изменения данных по ранее созданному пользователю",
             testName = "API: PUT /user/{userId}")
@@ -200,24 +211,14 @@ public class PersonControllerTest extends BaseAPI {
         usersAdapter.deleteUserById(createdUserId);
     }
 
-    @Test(description = "Нарушение контракта при создании пользователя: не переданы обязательные поля",
-            testName = "API: POST /user: не переданы обязательные поля")
-    @Owner("Zheltikov Vasiliy")
-    @Link("http://82.142.167.37:4879/swagger-ui/index.html#/")
-    @Feature("person-controller")
-    @Description("Проверка контракта API метода POST")
-    public void validateApiPostUser() {
-
-    }
-
     @Test(dependsOnMethods = "createUser",
-            description = "Проверка удаления несуществующего пользователя",
+            description = "Попытка удаления несуществующего пользователя",
             testName = "API: DELETE /user/{userId}: userId не существует")
     @Owner("Zheltikov Vasiliy")
     @Link("http://82.142.167.37:4879/swagger-ui/index.html#/")
     @Feature("person-controller")
     @Description("Проверка API метода DELETE")
-    public void deleteUserByNonexistentId() {
+    public void deleteUserByNonExistentId() {
         usersAdapter.deleteUserById(createdUserId);
         usersAdapter.deleteUserByNonExistentId(createdUserId);
     }
