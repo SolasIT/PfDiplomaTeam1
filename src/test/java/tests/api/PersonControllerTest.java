@@ -26,7 +26,7 @@ public class PersonControllerTest extends BaseAPI {
             createdUserSex;
     Double createdUserMoney;
 
-    @DataProvider(name = "Negative POST user data")
+    @DataProvider(name = "Negative user data")
     public Object[][] negativeUserData() {
         return new Object[][]{
                 {null,"Surname", 21, "MALE", 1000.00}, // не передан обязательный параметр firstName
@@ -78,13 +78,13 @@ public class PersonControllerTest extends BaseAPI {
         createdUserMoney = userResponse.getMoney();
     }
 
-    @Test(dataProvider = "Negative POST user data",
+    @Test(dataProvider = "Negative user data",
             description = "Нарушение контракта метода POST /user",
             testName = "API: POST /user: нарушение контракта")
     @Owner("Zheltikov Vasiliy")
     @Link("http://82.142.167.37:4879/swagger-ui/index.html#/")
     @Feature("person-controller")
-    @Description("Проверка API метода POST: не переданы обязательные параметры, добавлен лишний параметр")
+    @Description("Проверка API метода POST: не переданы обязательные параметры, неверное значение параметра sex")
     public void createUserNegativeParams(
             String firstName,
             String secondName,
@@ -167,7 +167,7 @@ public class PersonControllerTest extends BaseAPI {
     @Link("http://82.142.167.37:4879/swagger-ui/index.html#/")
     @Feature("person-controller")
     @Description("Проверка API метода GET: выполнение запроса с неверным методом")
-    public void getUserWithoutId(){
+    public void getUserWithIncorrectMethod(){
         usersAdapter.getUserWithIncorrectMethod(createdUserId);
     }
 
@@ -209,6 +209,32 @@ public class PersonControllerTest extends BaseAPI {
                 "Значение параметра money не соответствует ожидаемому");
         softAssert.assertAll();
 
+    }
+
+    @Test(dataProvider = "Negative user data",
+            dependsOnMethods = "createUser",
+            description = "Нарушение контракта метода PUT /user",
+            testName = "API: PUT /user: нарушение контракта")
+    @Owner("Zheltikov Vasiliy")
+    @Link("http://82.142.167.37:4879/swagger-ui/index.html#/")
+    @Feature("person-controller")
+    @Description("Проверка API метода PUT: не переданы обязательные параметры, неверное значение параметра sex")
+    public void changeUserNegativeParams(
+            String firstName,
+            String secondName,
+            Integer age,
+            String sex,
+            Double money) {
+        UserRequest userRequest = UserRequest.builder()
+                .id(createdUserId)
+                .firstName(firstName)
+                .secondName(secondName)
+                .age(age)
+                .sex(sex)
+                .money(money)
+                .build();
+        usersAdapter.changeUserWithIncorrectData(userRequest, createdUserId);
+        // баг: обновляются данные по user'у, если не передать параметр sex (обновляется на FEMALE), тест падает
     }
 
     @Test(dependsOnMethods = "createUser",

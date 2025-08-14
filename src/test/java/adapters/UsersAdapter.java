@@ -34,7 +34,8 @@ public class UsersAdapter extends BaseAPI {
                 .post(BASE_URI + "/user")
                 .then()
                 .log().all()
-                .statusCode(400);
+                .statusCode(400)
+                .body(blankOrNullString());
     }
 
     public void createUserWithIncorrectMethod(UserRequest user) {
@@ -47,7 +48,8 @@ public class UsersAdapter extends BaseAPI {
                 .patch(BASE_URI + "/user")
                 .then()
                 .log().all()
-                .statusCode(405);
+                .statusCode(405)
+                .body(blankOrNullString());
     }
 
     public UserResponse getUserById(Integer id) {
@@ -78,7 +80,7 @@ public class UsersAdapter extends BaseAPI {
                 .then()
                 .log().all()
                 .statusCode(204)
-                .body(blankOrNullString()); // проверка, что метод действительно ничего не нашёл
+                .body(blankOrNullString());
     }
 
     public void getUserWithIncorrectMethod(Integer id) {
@@ -92,7 +94,8 @@ public class UsersAdapter extends BaseAPI {
                 .patch(BASE_URI + "/user/" + id)
                 .then()
                 .log().all()
-                .statusCode(405);
+                .statusCode(405)
+                .body(blankOrNullString());
     }
 
     public UserResponse changeUserData(UserRequest user, Integer id) {
@@ -108,6 +111,20 @@ public class UsersAdapter extends BaseAPI {
                 .statusCode(200)
                 .extract()
                 .as(UserResponse.class);
+    }
+
+    public void changeUserWithIncorrectData(UserRequest user, Integer id) {
+        spec
+                .removeHeader("Authorization") // для избежания дублирующегося header'а Authorization
+                .header("Authorization", authAPI.getToken())
+                .body(gson.toJson(user))
+                .log().all()
+                .when()
+                .put(BASE_URI + "/user/" + id)
+                .then()
+                .log().all()
+                .statusCode(400)
+                .body(blankOrNullString());
     }
 
     public void deleteUserById(Integer id) {
@@ -135,6 +152,7 @@ public class UsersAdapter extends BaseAPI {
                 .delete(BASE_URI + "/user/" + id)
                 .then()
                 .log().all()
-                .statusCode(404);
+                .statusCode(404)
+                .body(blankOrNullString());
     }
 }
