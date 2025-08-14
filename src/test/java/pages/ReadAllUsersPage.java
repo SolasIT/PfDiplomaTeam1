@@ -31,10 +31,10 @@ public class ReadAllUsersPage extends BasePage {
     @Override
     @Step("Открытие страницы Read All")
     public ReadAllUsersPage open() {
-        log.info("Открытие страницы User Read All");
-        Selenide.open(BASE_URL + "#/read/users");
-        return this;
-    }
+            log.info("Открытие страницы User Read All");
+            Selenide.open(BASE_URL + "#/read/users");
+            return this;
+        }
 
     @Override
     public BasePage isPageOpened() {
