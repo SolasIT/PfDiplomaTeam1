@@ -10,6 +10,7 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.Link;
 import io.qameta.allure.Owner;
 import lombok.extern.slf4j.Slf4j;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
@@ -24,6 +25,18 @@ public class PersonControllerTest extends BaseAPI {
             createdUserSecondName,
             createdUserSex;
     Double createdUserMoney;
+
+    @DataProvider(name = "Negative POST user data")
+    public Object[][] negativeUserData() {
+        return new Object[][]{
+                {null,"Surname", 21, "MALE", 1000.00}, // не передан обязательный параметр firstName
+                {"Name", null, 22, "FEMALE", 2000.00}, // не передан обязательный параметр secondName
+                {"Name", "Surname", null, "MALE", 3000.00}, // не передан обязательный параметр age
+                {"Name", "Surname", 24, null, 4000.00}, // не передан обязательный параметр sex
+                {"Name", "Surname", 25, "MALE", null}, // не передан обязательный параметр money
+                {"Name", "Surname", 26, "TEAPOTE", 6000.00}, // неверное значение параметра sex
+        };
+    }
 
     @Test(description = "Проверка создания пользователя",
             testName = "API: POST /user")
@@ -63,6 +76,46 @@ public class PersonControllerTest extends BaseAPI {
         createdUserAge = userResponse.getAge();
         createdUserSex = userResponse.getSex();
         createdUserMoney = userResponse.getMoney();
+    }
+
+    @Test(dataProvider = "Negative POST user data",
+            description = "Нарушение контракта метода POST /user",
+            testName = "API: POST /user: нарушение контракта")
+    @Owner("Zheltikov Vasiliy")
+    @Link("http://82.142.167.37:4879/swagger-ui/index.html#/")
+    @Feature("person-controller")
+    @Description("Проверка API метода POST: не переданы обязательные параметры, добавлен лишний параметр")
+    public void createUserNegativeParams( // баг: создаётся user, если не передать параметр sex (отправляется FEMALE)
+            String firstName,
+            String secondName,
+            Integer age,
+            String sex,
+            Double money) {
+        UserRequest userRequest = UserRequest.builder()
+                .firstName(firstName)
+                .secondName(secondName)
+                .age(age)
+                .sex(sex)
+                .money(money)
+                .build();
+        usersAdapter.createUserWithIncorrectData(userRequest);
+    }
+
+    @Test(description = "Нарушение контракта метода POST /user",
+            testName = "API: POST /user: нарушение контракта")
+    @Owner("Zheltikov Vasiliy")
+    @Link("http://82.142.167.37:4879/swagger-ui/index.html#/")
+    @Feature("person-controller")
+    @Description("Проверка API метода POST: выполнение запроса с неверным методом")
+    public void createUserWrongMethod() {
+        UserRequest userRequest = UserRequest.builder()
+                .firstName("Method")
+                .secondName("Wrong")
+                .age(40)
+                .sex("MALE")
+                .money(405405405.00)
+                .build();
+        usersAdapter.createUserWithIncorrectMethod(userRequest);
     }
 
     @Test(dependsOnMethods = "createUser",
@@ -144,6 +197,16 @@ public class PersonControllerTest extends BaseAPI {
     @Description("Проверка API метода DELETE")
     public void deleteUserById() {
         usersAdapter.deleteUserById(createdUserId);
+    }
+
+    @Test(description = "Нарушение контракта при создании пользователя: не переданы обязательные поля",
+            testName = "API: POST /user: не переданы обязательные поля")
+    @Owner("Zheltikov Vasiliy")
+    @Link("http://82.142.167.37:4879/swagger-ui/index.html#/")
+    @Feature("person-controller")
+    @Description("Проверка контракта API метода POST")
+    public void validateApiPostUser() {
+
     }
 
     @Test(dependsOnMethods = "createUser",

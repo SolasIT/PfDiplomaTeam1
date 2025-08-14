@@ -22,6 +22,32 @@ public class UsersAdapter extends BaseAPI {
                 .as(UserResponse.class);
     }
 
+    public void createUserWithIncorrectData(UserRequest user) {
+        spec
+                .removeHeader("Authorization") // для избежания дублирующегося header'а Authorization
+                .header("Authorization", authAPI.getToken())
+                .body(gson.toJson(user))
+                .log().all()
+                .when()
+                .post(BASE_URI + "/user")
+                .then()
+                .log().all()
+                .statusCode(400);
+    }
+
+    public void createUserWithIncorrectMethod(UserRequest user) {
+        spec
+                .removeHeader("Authorization") // для избежания дублирующегося header'а Authorization
+                .header("Authorization", authAPI.getToken())
+                .log().all()
+                .body(gson.toJson(user))
+                .when()
+                .patch(BASE_URI + "/user")
+                .then()
+                .log().all()
+                .statusCode(405);
+    }
+
     public UserResponse getUserById(Integer id) {
         spec.body(""); // в GET не передаётся тело запроса
         return spec
