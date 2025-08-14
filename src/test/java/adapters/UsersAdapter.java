@@ -81,6 +81,20 @@ public class UsersAdapter extends BaseAPI {
                 .body(blankOrNullString()); // проверка, что метод действительно ничего не нашёл
     }
 
+    public void getUserWithIncorrectMethod(Integer id) {
+        spec.body(""); // в GET не передаётся тело запроса
+        spec
+                .removeHeader("Authorization")
+                .header("Authorization", authAPI.getToken())
+                .request()
+                .log().all()
+                .when()
+                .patch(BASE_URI + "/user/" + id)
+                .then()
+                .log().all()
+                .statusCode(405);
+    }
+
     public UserResponse changeUserData(UserRequest user, Integer id) {
         return spec
                 .removeHeader("Authorization") // для избежания дублирующегося header'а Authorization

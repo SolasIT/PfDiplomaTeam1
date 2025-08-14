@@ -161,6 +161,17 @@ public class PersonControllerTest extends BaseAPI {
     }
 
     @Test(dependsOnMethods = "createUser",
+            description = "Нарушение контракта GET /user/{userId}",
+            testName = "API: GET /user/{userId}: нарушение контракта")
+    @Owner("Zheltikov Vasiliy")
+    @Link("http://82.142.167.37:4879/swagger-ui/index.html#/")
+    @Feature("person-controller")
+    @Description("Проверка API метода GET: выполнение запроса с неверным методом")
+    public void getUserWithoutId(){
+        usersAdapter.getUserWithIncorrectMethod(createdUserId);
+    }
+
+    @Test(dependsOnMethods = "createUser",
             description = "Проверка изменения данных по ранее созданному пользователю",
             testName = "API: PUT /user/{userId}")
     @Owner("Zheltikov Vasiliy")
