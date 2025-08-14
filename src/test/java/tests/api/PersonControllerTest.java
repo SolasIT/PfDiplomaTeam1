@@ -1,5 +1,6 @@
 package tests.api;
 
+import adapters.BaseAPI;
 import adapters.UsersAdapter;
 import com.github.javafaker.Faker;
 import dto.api.users.rq.UserRequest;
@@ -9,7 +10,7 @@ import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
 @Slf4j
-public class PersonControllerTest {
+public class PersonControllerTest extends BaseAPI {
 
     SoftAssert softAssert = new SoftAssert();
     UsersAdapter usersAdapter = new UsersAdapter();

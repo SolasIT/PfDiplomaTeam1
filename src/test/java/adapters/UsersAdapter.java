@@ -17,6 +17,7 @@ public class UsersAdapter extends BaseAPI {
                 .post(BASE_URI + "/user")
                 .then()
                 .log().all()
+                .statusCode(201)
                 .extract()
                 .as(UserResponse.class);
     }
@@ -32,6 +33,7 @@ public class UsersAdapter extends BaseAPI {
                 .get(BASE_URI + "/user/" + id)
                 .then()
                 .log().all()
+                .statusCode(200)
                 .extract()
                 .as(UserResponse.class);
     }
@@ -46,6 +48,7 @@ public class UsersAdapter extends BaseAPI {
                 .put(BASE_URI + "/user/" + id)
                 .then()
                 .log().all()
+                .statusCode(200)
                 .extract()
                 .as(UserResponse.class);
     }
@@ -60,6 +63,7 @@ public class UsersAdapter extends BaseAPI {
                 .when()
                 .delete(BASE_URI + "/user/" + id)
                 .then()
-                .log().all();
+                .log().all()
+                .statusCode(204);
     }
 }
