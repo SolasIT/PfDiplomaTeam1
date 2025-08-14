@@ -50,9 +50,9 @@ public class UsersAdapter extends BaseAPI {
                 .as(UserResponse.class);
     }
 
-    public UserResponse deleteUserById(Integer id) {
+    public void deleteUserById(Integer id) {
         spec.body("");
-        return spec
+        spec
                 .removeHeader("Authorization")
                 .header("Authorization", authAPI.getToken())
                 .request()
@@ -60,9 +60,6 @@ public class UsersAdapter extends BaseAPI {
                 .when()
                 .delete(BASE_URI + "/user/" + id)
                 .then()
-                .log().all()
-                .extract()
-                .as(UserResponse.class);
-
+                .log().all();
     }
 }
