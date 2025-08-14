@@ -85,7 +85,7 @@ public class PersonControllerTest extends BaseAPI {
     @Link("http://82.142.167.37:4879/swagger-ui/index.html#/")
     @Feature("person-controller")
     @Description("Проверка API метода POST: не переданы обязательные параметры, добавлен лишний параметр")
-    public void createUserNegativeParams( // баг: создаётся user, если не передать параметр sex (отправляется FEMALE)
+    public void createUserNegativeParams(
             String firstName,
             String secondName,
             Integer age,
@@ -99,6 +99,7 @@ public class PersonControllerTest extends BaseAPI {
                 .money(money)
                 .build();
         usersAdapter.createUserWithIncorrectData(userRequest);
+        // баг: создаётся user, если не передать параметр sex (отправляется FEMALE), тест падает
     }
 
     @Test(description = "Нарушение контракта метода POST /user",
