@@ -1,4 +1,4 @@
-package dto;
+package dto.ui;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
