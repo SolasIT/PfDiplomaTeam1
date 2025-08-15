@@ -1,10 +1,11 @@
-package tests;
+package tests.ui;
 
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Link;
 import io.qameta.allure.Owner;
 import org.testng.annotations.Test;
+import tests.ui.BaseTest;
 
 import static org.testng.AssertJUnit.assertEquals;
 

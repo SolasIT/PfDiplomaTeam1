@@ -3,9 +3,11 @@ package pages;
 import com.codeborne.selenide.Selectors;
 import com.codeborne.selenide.Selenide;
 import org.openqa.selenium.By;
+import lombok.extern.log4j.Log4j2;
 
 import static com.codeborne.selenide.Selenide.$;
 
+@Log4j2
 public class ReadAllPage extends BasePage {
 
     private final By BUTTON_RELOAD = Selectors.byText("Reload");

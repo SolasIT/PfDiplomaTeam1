@@ -5,15 +5,17 @@ import com.codeborne.selenide.Selectors;
 import com.codeborne.selenide.Selenide;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import lombok.extern.log4j.Log4j2;
 
 import static com.codeborne.selenide.Selenide.$;
 
+@Log4j2
 public class ReadOneByIdPage extends BasePage {
 
     private final By BUTTON_READ = Selectors.byText("Read");
     private final By ID_INPUT = Selectors.byId("house_input");
     private final By STATUS_TEXT = Selectors.withText("Status");
-    public String getStatus;
+    //public String getStatus;
 
     public ReadOneByIdPage openPage(){
         Selenide.open(BASE_URL + "/#/read/house");
@@ -47,15 +49,15 @@ public class ReadOneByIdPage extends BasePage {
         return $(STATUS_TEXT).getText();
     }
 
-
-
     @Override
     public BasePage open() {
+
         return null;
     }
 
     @Override
     public BasePage isPageOpened() {
+
         return null;
     }
 }

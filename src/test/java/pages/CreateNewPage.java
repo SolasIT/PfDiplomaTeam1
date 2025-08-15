@@ -5,9 +5,11 @@ import com.codeborne.selenide.Selectors;
 import com.codeborne.selenide.Selenide;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import lombok.extern.log4j.Log4j2;
 
 import static com.codeborne.selenide.Selenide.$;
 
+@Log4j2
 public class CreateNewPage extends BasePage {
 
     private final By FLOOR_INPUT = Selectors.byId("floor_send");
@@ -16,7 +18,7 @@ public class CreateNewPage extends BasePage {
     private final By WARM_AND_NOT_COVERED_PLACES_INPUT = Selectors.byId("parking_second_send");
     private final By NOT_WARM_AND_COVERED_PLACES_INPUT = Selectors.byId("parking_third_send");
     private final By NOT_WARM_AND_NOT_COVERED_PLACES_INPUT = Selectors.byId("parking_fourth_send");
-    private final By BUTTON_PUSH = Selectors.byXpath("//button[contains(normalize-space(text()), 'PUSH TO API')]");
+    private final By BUTTON_PUSH = Selectors.byClassName("btn-primary");
     private final By STATUS_TEXT = Selectors.withText("Status");
     private final By NEW_HOUSE_ID = Selectors.withText("New house ID");
 

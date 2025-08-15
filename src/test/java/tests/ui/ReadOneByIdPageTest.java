@@ -1,10 +1,12 @@
-package tests;
+package tests.ui;
 
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Link;
 import io.qameta.allure.Owner;
 import org.testng.annotations.Test;
+import pages.ReadOneByIdPage;
+import tests.ui.BaseTest;
 
 import static org.testng.AssertJUnit.assertEquals;
 
@@ -35,10 +37,9 @@ public class ReadOneByIdPageTest extends BaseTest {
                 .isPageOpened()
                 .auth(email, password);
         readOneByIdPage.openPage()
-                .increaseInputNumber()
-                .clickReadButton()
-                .getStatus();
-        assertEquals("Status:  Invalid input", readOneByIdPage.getStatus);
+                .decreaseInputNumber()
+                .clickReadButton();
+        assertEquals("Status: Invalid input", readOneByIdPage.getStatus());
     }
 
     @Test(description = "Проверка поиска по ID = 0 через нажатие стрелок",
@@ -54,9 +55,8 @@ public class ReadOneByIdPageTest extends BaseTest {
         readOneByIdPage.openPage()
                 .increaseInputNumber()
                 .decreaseInputNumber()
-                .clickReadButton()
-                .getStatus();
-        assertEquals("Status:  Invalid input", readOneByIdPage.getStatus);
+                .clickReadButton();
+        assertEquals("Status: Invalid input", readOneByIdPage.getStatus());
     }
 
     @Test(description = "Проверка поиска по несуществующему ID через ввод числа",
@@ -71,9 +71,8 @@ public class ReadOneByIdPageTest extends BaseTest {
                 .auth(email, password);
         readOneByIdPage.openPage()
                 .sentInputNumber("999999999999999999")
-                .clickReadButton()
-                .getStatus();
-        assertEquals("Status: 204 house not found", readOneByIdPage.getStatus);
+                .clickReadButton();
+        assertEquals("Status: 204 house not found", readOneByIdPage.getStatus());
     }
 
 
@@ -88,9 +87,8 @@ public class ReadOneByIdPageTest extends BaseTest {
                 .isPageOpened()
                 .auth(email, password);
         readOneByIdPage.openPage()
-                .decreaseInputNumber()
-                .clickReadButton()
-                .getStatus();
-        assertEquals("Status: 200 ok", readOneByIdPage.getStatus);
+                .increaseInputNumber()
+                .clickReadButton();
+        assertEquals("Status: 200 ok", readOneByIdPage.getStatus());
     }
 }
