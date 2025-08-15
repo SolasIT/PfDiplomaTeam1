@@ -211,4 +211,20 @@ public class UsersAdapter extends BaseAPI {
                 .extract()
                 .as(UserResponse.class);
     }
+
+    public UserResponse buyCarNotEnoughMoney(Integer userId, Integer carId, String option) {
+        spec.body("");
+        return spec
+                .removeHeader("Authorization")
+                .header("Authorization", authAPI.getToken())
+                .request()
+                .log().all()
+                .when()
+                .post(String.format("%s/user/%s/%sCar/%s", BASE_URI, userId, option.toLowerCase(), carId))
+                .then()
+                .log().all()
+                .statusCode(406)
+                .extract()
+                .as(UserResponse.class);
+    }
 }

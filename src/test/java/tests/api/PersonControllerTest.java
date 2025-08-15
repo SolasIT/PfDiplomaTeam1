@@ -57,7 +57,7 @@ public class PersonControllerTest extends BaseAPI {
     @DataProvider(name = "Negative user data")
     public Object[][] negativeUserData() {
         return new Object[][]{
-                {null,"Surname", 21, "MALE", 1000.00}, // не передан обязательный параметр firstName
+                {null, "Surname", 21, "MALE", 1000.00}, // не передан обязательный параметр firstName
                 {"Name", null, 22, "FEMALE", 2000.00}, // не передан обязательный параметр secondName
                 {"Name", "Surname", null, "MALE", 3000.00}, // не передан обязательный параметр age
                 {"Name", "Surname", 24, null, 4000.00}, // не передан обязательный параметр sex
@@ -175,14 +175,14 @@ public class PersonControllerTest extends BaseAPI {
     }
 
     // GET User/{userId}
-    @Test(dependsOnMethods = {"createUser","deleteUserByNonExistentId"},
+    @Test(dependsOnMethods = {"createUser", "deleteUserByNonExistentId"},
             description = "Попытка получения информации по несуществующему пользователю",
             testName = "API: GET /user/{userId}: userId не существует")
     @Owner("Zheltikov Vasiliy")
     @Link("http://82.142.167.37:4879/swagger-ui/index.html#/")
     @Feature("person-controller")
     @Description("Проверка API метода GET")
-    public void getUserByNonExistentId(){
+    public void getUserByNonExistentId() {
         usersAdapter.getUserByNonExistentId(createdUserId);
     }
 
@@ -194,7 +194,7 @@ public class PersonControllerTest extends BaseAPI {
     @Link("http://82.142.167.37:4879/swagger-ui/index.html#/")
     @Feature("person-controller")
     @Description("Проверка API метода GET: выполнение запроса с неверным методом")
-    public void getUserWithIncorrectMethod(){
+    public void getUserWithIncorrectMethod() {
         usersAdapter.getUserWithIncorrectMethod(createdUserId);
     }
 
@@ -289,8 +289,8 @@ public class PersonControllerTest extends BaseAPI {
 
     // DELETE User/{userId}
     @Test(dependsOnMethods = "createUser",
-    description = "Проверка удаления ранее созданного пользователя",
-    testName = "API: DELETE /user/{userId}")
+            description = "Проверка удаления ранее созданного пользователя",
+            testName = "API: DELETE /user/{userId}")
     @Owner("Zheltikov Vasiliy")
     @Link("http://82.142.167.37:4879/swagger-ui/index.html#/")
     @Feature("person-controller")
@@ -320,8 +320,8 @@ public class PersonControllerTest extends BaseAPI {
     @Link("http://82.142.167.37:4879/swagger-ui/index.html#/")
     @Feature("person-controller")
     @Description("Проверка покупки автомобиля (user.amount = car.price")
-    public void userBuyCar(){
-        car.setPrice(createdUserMoney);
+    public void userBuyCarAmountEqualPrice() {
+        car.setPrice(createdUserMoney); // car.price = user.amount
         Car carResponse = carAdapter.createCar(car); // создаём автомобиль (car.price = user.amount)
         Integer carId = carResponse.getId();
         usersAdapter.buyOrSellCarByUserIdCarId(createdUserId, carId, "buy");
@@ -329,4 +329,23 @@ public class PersonControllerTest extends BaseAPI {
                 0,
                 "На счету пользователя сумма, отличная от 0");
     }
+
+    // POST /user/{userId}/buy/{carId}
+    @Test(dependsOnMethods = "createUser",
+            description = "Попытка покупки автомобиля пользователем при недостаточном кол-ве средств",
+            testName = "API: POST /user/{userId}/car/{carId}")
+    @Owner("Zheltikov Vasiliy")
+    @Link("http://82.142.167.37:4879/swagger-ui/index.html#/")
+    @Feature("person-controller")
+    @Description("Проверка покупки автомобиля (user.amount < car.price")
+    public void userBuyCarAmountLessPrice() {
+        car.setPrice((createdUserMoney * 100 + 1) / 100); // car.price больше user.amount на 0.01
+        Car carResponse = carAdapter.createCar(car); // создаём автомобиль (car.price = user.amount)
+        Integer carId = carResponse.getId();
+        UserResponse userResponse = usersAdapter.buyCarNotEnoughMoney(createdUserId, carId, "buy");
+        softAssert.assertEquals(userResponse.getMoney(),
+                createdUserMoney,
+                "Значение user.amount изменилось");
+    }
 }
+
