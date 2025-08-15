@@ -341,7 +341,7 @@ public class PersonControllerTest extends BaseAPI {
     @Feature("person-controller")
     @Description("Проверка продажи автомобиля")
     public void userSellsCar() {
-        car.setPrice(faker.number().randomDouble(2,2,createdUserMoney.intValue()) - 1);
+        car.setPrice(faker.number().randomDouble(2, 2, createdUserMoney.intValue()) - 1);
         Car carResponse = carAdapter.createCar(car); // создаём автомобиль
         Integer carId = carResponse.getId();
         usersAdapter.buyOrSellCarByUserIdCarId(createdUserId, carId, "buy"); // чтобы продать что-то ненужное
@@ -359,9 +359,9 @@ public class PersonControllerTest extends BaseAPI {
     @Owner("Zheltikov Vasiliy")
     @Link("http://82.142.167.37:4879/swagger-ui/index.html#/")
     @Feature("person-controller")
-    @Description("Попытка продать автомобиль не в собстенности пользователя")
+    @Description("Попытка продать автомобиль не в собственности пользователя")
     public void userSellsCarNotInOwn() {
-        car.setPrice(faker.number().randomDouble(2,2,createdUserMoney.intValue()) - 1);
+        car.setPrice(faker.number().randomDouble(2, 2, createdUserMoney.intValue()) - 1);
         Car carResponse = carAdapter.createCar(car); // создаём автомобиль
         Integer carId = carResponse.getId();
         UserResponse userResponse = usersAdapter.buyOrSellCarByUserIdCarId(createdUserId, carId, "sell");
