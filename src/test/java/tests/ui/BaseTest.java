@@ -26,6 +26,9 @@ public class BaseTest {
     BuyOrSellCarPage buyOrSellCarPage;
     AllDeletePage allDeletePage;
     SettleToHousePage settleToHousePage;
+    ReadAllPage readAllPage;
+    ReadOneByIdPage readOneByIdPage;
+    CreateNewPage createNewPage;
 
     String email = System.getProperty("email", PropertyReader.getProperty("email"));
     String password = System.getProperty("password", PropertyReader.getProperty("password"));
@@ -46,7 +49,7 @@ public class BaseTest {
         if (System.getProperty("email") != null) {
             options.addArguments("--headless");
         }
-        
+
         Configuration.browser = "chrome";
         Configuration.browserCapabilities = options;
         Configuration.baseUrl = "http://82.142.167.37:4881/";
@@ -61,7 +64,7 @@ public class BaseTest {
                 .savePageSource(true));
 
         softAssert = new SoftAssert();
-      
+
         mainPage = new MainPage();
         carsCreateNewPage = new CarsCreateNewPage();
         carsReadAllPage = new CarsReadAllPage();
@@ -70,6 +73,9 @@ public class BaseTest {
         buyOrSellCarPage = new BuyOrSellCarPage();
         allDeletePage = new AllDeletePage();
         settleToHousePage = new SettleToHousePage();
+        readAllPage = new ReadAllPage();
+        readOneByIdPage = new ReadOneByIdPage();
+        createNewPage = new CreateNewPage();
     }
 
     @AfterMethod(alwaysRun = true)
