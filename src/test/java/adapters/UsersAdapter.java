@@ -183,19 +183,6 @@ public class UsersAdapter extends BaseAPI {
 
     // POST /user/{userId}/sellCar/{carId}
     // POST /user/{userId}/buyCar/{carId}
-    /*
-
-    1. Создать пользователя с user.amount = x
-    2. Создать автомобиль с car.price = x
-    3. Передать userId, carId в теле запроса
-    4. Передать опцию (buy или sell) в URL запроса (сначала купить!)
-    5. Проверить статус-код:
-    6. Проверить, что user.amount при покупке/продаже стал меньше/больше на car.price
-    406 - не хватает денег на покупку
-    404 - не найден пользователь или машина или машина
-    200 - куплена / продана
-     */
-
     public UserResponse buyOrSellCarByUserIdCarId(Integer userId, Integer carId, String option) {
         spec.body("");
         return spec
@@ -212,6 +199,7 @@ public class UsersAdapter extends BaseAPI {
                 .as(UserResponse.class);
     }
 
+    // POST /user/{userId}/buyCar/{carId}
     public UserResponse buyCarNotEnoughMoney(Integer userId, Integer carId, String option) {
         spec.body("");
         return spec
@@ -226,5 +214,22 @@ public class UsersAdapter extends BaseAPI {
                 .statusCode(406)
                 .extract()
                 .as(UserResponse.class);
+    }
+
+    // POST /user/{userId}/buyCar/{carId}
+    // POST /user/{userId}/sellCar/{carId}
+    public void buyOrSellCarMissRequiredFields(Integer userId, Integer carId, String option) {
+        spec.body("");
+        spec
+                .removeHeader("Authorization")
+                .header("Authorization", authAPI.getToken())
+                .request()
+                .log().all()
+                .when()
+                .post(String.format("%s/user/%s/%sCar/%s", BASE_URI, userId, option.toLowerCase(), carId))
+                .then()
+                .log().all()
+                .statusCode(400)
+                .body(blankOrNullString());
     }
 }

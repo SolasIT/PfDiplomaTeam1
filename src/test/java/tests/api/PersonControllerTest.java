@@ -68,6 +68,14 @@ public class PersonControllerTest extends BaseAPI {
         };
     }
 
+    @DataProvider(name = "Negative user buy or sell car data")
+    public Object[][] negativeUserBuyOrSellCarData() {
+        return new Object[][]{
+                {null, carAdapter.createCar(car).getId(), "buy"}, // не передан обязательный параметр userId
+                {usersAdapter.createUser(userRequest).getId(), null, "sell"} // не передан обязательный параметр carId
+        };
+    }
+
     // Tests
     // POST /user
     @Test(description = "Проверка создания пользователя",
@@ -386,6 +394,20 @@ public class PersonControllerTest extends BaseAPI {
         assertEquals(userResponse.getMoney(),
                 createdUserMoney,
                 "Значение user.amount изменилось");
+    }
+
+    // POST /user/{userId}/sell/{carId}
+    // POST /user/{userId}/sell/{carId}
+    @Test(dataProvider = "Negative user buy or sell car data",
+            dependsOnMethods = "createUser",
+            description = "Нарушение контракта методов POST /user/{userId}/{buy/sell}Car/{carId}",
+            testName = "API: POST /user/{userId}/{buy/sell}Car/{carId}: нарушение контракта")
+    @Owner("Zheltikov Vasiliy")
+    @Link("http://82.142.167.37:4879/swagger-ui/index.html#/")
+    @Feature("person-controller")
+    @Description("Проверка API метода POST: не переданы обязательные параметры userId, carId")
+    public void userSellsMissRequiredValues(Integer userId, Integer carId, String option) {
+        usersAdapter.buyOrSellCarMissRequiredFields(userId, carId, option);
     }
 }
 
