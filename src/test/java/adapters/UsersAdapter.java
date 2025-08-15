@@ -197,13 +197,14 @@ public class UsersAdapter extends BaseAPI {
      */
 
     public UserResponse buyOrSellCarByUserIdCarId(Integer userId, Integer carId, String option) {
+        spec.body("");
         return spec
                 .removeHeader("Authorization")
                 .header("Authorization", authAPI.getToken())
                 .request()
                 .log().all()
                 .when()
-                .post(String.format("%s/user/%s/%s/%s", BASE_URI, userId, option, carId))
+                .post(String.format("%s/user/%s/%sCar/%s", BASE_URI, userId, option.toLowerCase(), carId))
                 .then()
                 .log().all()
                 .statusCode(200)

@@ -1,8 +1,10 @@
 package tests.api;
 
 import adapters.BaseAPI;
+import adapters.CarAdapter;
 import adapters.UsersAdapter;
 import com.github.javafaker.Faker;
+import dto.api.cars.Car;
 import dto.api.users.rq.UserRequest;
 import dto.api.users.rs.UserResponse;
 import io.qameta.allure.Description;
@@ -19,19 +21,37 @@ public class PersonControllerTest extends BaseAPI {
 
     SoftAssert softAssert = new SoftAssert();
     UsersAdapter usersAdapter = new UsersAdapter();
-    Integer createdUserId, // User
-            createdUserAge, // User
+    CarAdapter carAdapter = new CarAdapter();
+    // User params
+    Integer createdUserId,
+            createdUserAge;
+    String createdUserFirstName,
+            createdUserSecondName,
+            createdUserSex;
+    Double createdUserMoney;
 
-            createdCarId; // Car
+    Faker faker = new Faker();
+    UserRequest userRequest = UserRequest.builder()
+            .firstName(faker.name().firstName())
+            .secondName(faker.name().lastName())
+            .age(faker.number().numberBetween(18, 65))
+            .sex(faker.demographic().sex().toUpperCase())
+            .money(faker.number().randomDouble(2, 0, 99999))
+            .build();
 
-    String createdUserFirstName, // User
-            createdUserSecondName, // User
-            createdUserSex, // User
+    //Car params
+    String carEngineType = "Gasoline",
+            carMark = "Volvo",
+            carModel = "S60";
+    Double carPrice = createdUserMoney;
 
-            createdCarEngineType, //Car
-            createdCarMark, // Car
+    Car car = Car.builder()
+            .engineType(carEngineType)
+            .mark(carMark)
+            .model(carModel)
+            .price(carPrice)
+            .build();
 
-    Double createdUserMoney; // User
 
     // Data Providers
     @DataProvider(name = "Negative user data")
@@ -55,14 +75,6 @@ public class PersonControllerTest extends BaseAPI {
     @Feature("person-controller")
     @Description("Проверка API метода POST")
     public void createUser() {
-        Faker faker = new Faker();
-        UserRequest userRequest = UserRequest.builder()
-                .firstName(faker.name().firstName())
-                .secondName(faker.name().lastName())
-                .age(faker.number().numberBetween(18, 65))
-                .sex(faker.demographic().sex().toUpperCase())
-                .money(faker.number().randomDouble(2, 0, 99999))
-                .build();
         UserResponse userResponse = usersAdapter.createUser(userRequest); // создание пользователя POST
         softAssert.assertEquals(userResponse.getFirstName(), // блок проверок на совпадение значений параметров в response и в request
                 userRequest.getFirstName(),
@@ -301,14 +313,20 @@ public class PersonControllerTest extends BaseAPI {
     }
 
     // POST /user/{userId}/buy/{carId}
-    @Test(dependsOnMethods = {"createUser", "CarAPITest.createCarAPI"},
-            description = "Попытка удаления несуществующего пользователя",
-            testName = "API: DELETE /user/{userId}: userId не существует")
+    @Test(dependsOnMethods = "createUser",
+            description = "Покупка автомобиля пользователем",
+            testName = "API: POST /user/{userId}/car/{carId}")
     @Owner("Zheltikov Vasiliy")
     @Link("http://82.142.167.37:4879/swagger-ui/index.html#/")
     @Feature("person-controller")
-    @Description("Проверка API метода DELETE")
+    @Description("Проверка покупки автомобиля (user.amount = car.price")
     public void userBuyCar(){
-
+        car.setPrice(createdUserMoney);
+        Car carResponse = carAdapter.createCar(car); // создаём автомобиль (car.price = user.amount)
+        Integer carId = carResponse.getId();
+        usersAdapter.buyOrSellCarByUserIdCarId(createdUserId, carId, "buy");
+        softAssert.assertEquals(createdUserMoney,
+                0,
+                "На счету пользователя сумма, отличная от 0");
     }
 }
