@@ -229,7 +229,7 @@ public class UsersAdapter extends BaseAPI {
                 .post(BASE_URI + "/" + userId + "/" + option.toLowerCase() + "Car/" + carId)
                 .then()
                 .log().all()
-                .statusCode(anyOf(is(400),is(404)));
+                .statusCode(anyOf(is(400), is(404)));
     }
 
     // POST /user/{userId}/buyCar/{carId}
@@ -245,7 +245,7 @@ public class UsersAdapter extends BaseAPI {
                 .post(String.format("%s/user/%s/%sCar/%s", BASE_URI, userId, option.toLowerCase(), carId))
                 .then()
                 .log().all()
-                .statusCode(anyOf(is(404),is(500)))
+                .statusCode(anyOf(is(404), is(500)))
                 .body(blankOrNullString());
     }
 }
