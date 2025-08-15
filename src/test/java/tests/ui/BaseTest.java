@@ -34,6 +34,12 @@ public class BaseTest {
     @Parameters({"browser"}) // для кроссбраузерного тестирования
     @BeforeMethod(alwaysRun = true)
     public void setup(@Optional("chrome") String browser) {
+        Configuration.baseUrl = "http://82.142.167.37:4881/";
+        Configuration.clickViaJs = true;
+        Configuration.timeout = 10000;
+        Configuration.pageLoadTimeout = 30000;
+        Configuration.screenshots = true;
+        Configuration.savePageSource = true;
         if (browser.equalsIgnoreCase("chrome")) {
             // Настройки Chrome
             ChromeOptions options = new ChromeOptions();
@@ -51,12 +57,6 @@ public class BaseTest {
             }
             Configuration.browser = "chrome";
             Configuration.browserCapabilities = options;
-            Configuration.baseUrl = "http://82.142.167.37:4881/";
-            Configuration.clickViaJs = true;
-            Configuration.timeout = 10000;
-            Configuration.pageLoadTimeout = 30000;
-            Configuration.screenshots = true;
-            Configuration.savePageSource = true;
         } else if (browser.equalsIgnoreCase("firefox")) {
             // Настройки Firefox
             FirefoxOptions options = new FirefoxOptions();
@@ -66,12 +66,6 @@ public class BaseTest {
             }
             Configuration.browser = "firefox";
             Configuration.browserCapabilities = options;
-            Configuration.baseUrl = "http://82.142.167.37:4881/";
-            Configuration.clickViaJs = true;
-            Configuration.timeout = 10000;
-            Configuration.pageLoadTimeout = 30000;
-            Configuration.screenshots = true;
-            Configuration.savePageSource = true;
         }
         SelenideLogger.addListener("AllureSelenide", new AllureSelenide()
                 .screenshots(true)
