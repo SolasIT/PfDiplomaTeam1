@@ -19,13 +19,21 @@ public class PersonControllerTest extends BaseAPI {
 
     SoftAssert softAssert = new SoftAssert();
     UsersAdapter usersAdapter = new UsersAdapter();
-    Integer createdUserId,
-            createdUserAge;
-    String createdUserFirstName,
-            createdUserSecondName,
-            createdUserSex;
-    Double createdUserMoney;
+    Integer createdUserId, // User
+            createdUserAge, // User
 
+            createdCarId; // Car
+
+    String createdUserFirstName, // User
+            createdUserSecondName, // User
+            createdUserSex, // User
+
+            createdCarEngineType, //Car
+            createdCarMark, // Car
+
+    Double createdUserMoney; // User
+
+    // Data Providers
     @DataProvider(name = "Negative user data")
     public Object[][] negativeUserData() {
         return new Object[][]{
@@ -38,6 +46,8 @@ public class PersonControllerTest extends BaseAPI {
         };
     }
 
+    // Tests
+    // POST /user
     @Test(description = "Проверка создания пользователя",
             testName = "API: POST /user")
     @Owner("Zheltikov Vasiliy")
@@ -78,6 +88,7 @@ public class PersonControllerTest extends BaseAPI {
         createdUserMoney = userResponse.getMoney();
     }
 
+    // POST /user
     @Test(dataProvider = "Negative user data",
             description = "Нарушение контракта метода POST /user",
             testName = "API: POST /user: нарушение контракта")
@@ -102,6 +113,7 @@ public class PersonControllerTest extends BaseAPI {
         // баг: создаётся user, если не передать параметр sex (отправляется FEMALE), тест падает
     }
 
+    // POST /user
     @Test(description = "Нарушение контракта метода POST /user",
             testName = "API: POST /user: нарушение контракта")
     @Owner("Zheltikov Vasiliy")
@@ -119,6 +131,7 @@ public class PersonControllerTest extends BaseAPI {
         usersAdapter.createUserWithIncorrectMethod(userRequest);
     }
 
+    // GET User/{userId}
     @Test(dependsOnMethods = "createUser",
             description = "Проверка получения информации по ранее созданному пользователю",
             testName = "API: GET /user/{userId}")
@@ -149,6 +162,7 @@ public class PersonControllerTest extends BaseAPI {
         softAssert.assertAll();
     }
 
+    // GET User/{userId}
     @Test(dependsOnMethods = {"createUser","deleteUserByNonExistentId"},
             description = "Попытка получения информации по несуществующему пользователю",
             testName = "API: GET /user/{userId}: userId не существует")
@@ -160,6 +174,7 @@ public class PersonControllerTest extends BaseAPI {
         usersAdapter.getUserByNonExistentId(createdUserId);
     }
 
+    // GET User/{userId}
     @Test(dependsOnMethods = "createUser",
             description = "Нарушение контракта GET /user/{userId}",
             testName = "API: GET /user/{userId}: нарушение контракта")
@@ -171,6 +186,7 @@ public class PersonControllerTest extends BaseAPI {
         usersAdapter.getUserWithIncorrectMethod(createdUserId);
     }
 
+    // PUT User/{userId}
     @Test(dependsOnMethods = "createUser",
             description = "Проверка изменения данных по ранее созданному пользователю",
             testName = "API: PUT /user/{userId}")
@@ -211,6 +227,7 @@ public class PersonControllerTest extends BaseAPI {
 
     }
 
+    // PUT User/{userId}
     @Test(dataProvider = "Negative user data",
             dependsOnMethods = "createUser",
             description = "Нарушение контракта метода PUT /user",
@@ -237,6 +254,7 @@ public class PersonControllerTest extends BaseAPI {
         // баг: обновляются данные по user'у, если не передать параметр sex (обновляется на FEMALE), тест падает
     }
 
+    // PUT User/{userId}
     @Test(dependsOnMethods = {"createUser", "deleteUserById"},
             description = "Попытка изменения информации по несуществующему пользователю",
             testName = "API: PUT /user: userId не существует")
@@ -257,6 +275,7 @@ public class PersonControllerTest extends BaseAPI {
         usersAdapter.changeUserWithNonExistentId(userRequest, createdUserId);
     }
 
+    // DELETE User/{userId}
     @Test(dependsOnMethods = "createUser",
     description = "Проверка удаления ранее созданного пользователя",
     testName = "API: DELETE /user/{userId}")
@@ -268,6 +287,7 @@ public class PersonControllerTest extends BaseAPI {
         usersAdapter.deleteUserById(createdUserId);
     }
 
+    // DELETE User/{userId}
     @Test(dependsOnMethods = "createUser",
             description = "Попытка удаления несуществующего пользователя",
             testName = "API: DELETE /user/{userId}: userId не существует")
@@ -278,5 +298,17 @@ public class PersonControllerTest extends BaseAPI {
     public void deleteUserByNonExistentId() {
         usersAdapter.deleteUserById(createdUserId);
         usersAdapter.deleteUserByNonExistentId(createdUserId);
+    }
+
+    // POST /user/{userId}/buy/{carId}
+    @Test(dependsOnMethods = {"createUser", "CarAPITest.createCarAPI"},
+            description = "Попытка удаления несуществующего пользователя",
+            testName = "API: DELETE /user/{userId}: userId не существует")
+    @Owner("Zheltikov Vasiliy")
+    @Link("http://82.142.167.37:4879/swagger-ui/index.html#/")
+    @Feature("person-controller")
+    @Description("Проверка API метода DELETE")
+    public void userBuyCar(){
+
     }
 }
