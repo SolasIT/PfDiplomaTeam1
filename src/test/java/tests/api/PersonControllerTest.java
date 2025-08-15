@@ -16,6 +16,8 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
+import static org.testng.Assert.assertEquals;
+
 @Slf4j
 public class PersonControllerTest extends BaseAPI {
 
@@ -315,7 +317,7 @@ public class PersonControllerTest extends BaseAPI {
     // POST /user/{userId}/buy/{carId}
     @Test(dependsOnMethods = "createUser",
             description = "Покупка автомобиля пользователем",
-            testName = "API: POST /user/{userId}/car/{carId}")
+            testName = "API: POST /user/{userId}/buyCar/{carId}")
     @Owner("Zheltikov Vasiliy")
     @Link("http://82.142.167.37:4879/swagger-ui/index.html#/")
     @Feature("person-controller")
@@ -324,16 +326,36 @@ public class PersonControllerTest extends BaseAPI {
         car.setPrice(createdUserMoney); // car.price = user.amount
         Car carResponse = carAdapter.createCar(car); // создаём автомобиль (car.price = user.amount)
         Integer carId = carResponse.getId();
-        usersAdapter.buyOrSellCarByUserIdCarId(createdUserId, carId, "buy");
-        softAssert.assertEquals(createdUserMoney,
+        UserResponse userResponse = usersAdapter.buyOrSellCarByUserIdCarId(createdUserId, carId, "buy");
+        assertEquals(userResponse.getMoney(),
                 0,
                 "На счету пользователя сумма, отличная от 0");
+    }
+
+    // POST /user/{userId}/sell/{carId}
+    @Test(dependsOnMethods = "createUser",
+            description = "Продажа автомобиля пользователем",
+            testName = "API: POST /user/{userId}/sellCar/{carId}")
+    @Owner("Zheltikov Vasiliy")
+    @Link("http://82.142.167.37:4879/swagger-ui/index.html#/")
+    @Feature("person-controller")
+    @Description("Проверка продажи автомобиля")
+    public void userSellsCar() {
+        car.setPrice(faker.number().randomDouble(2,2,createdUserMoney.intValue()) - 1);
+        Car carResponse = carAdapter.createCar(car); // создаём автомобиль
+        Integer carId = carResponse.getId();
+        usersAdapter.buyOrSellCarByUserIdCarId(createdUserId, carId, "buy"); // чтобы продать что-то ненужное
+        // надо сначала купить что-то ненужное!
+        UserResponse userResponse = usersAdapter.buyOrSellCarByUserIdCarId(createdUserId, carId, "sell");
+        assertEquals(userResponse.getMoney(),
+                userRequest.getMoney(), // купил и продал - значение счёта после продажи = значению счёта до покупки
+                "На счету пользователя неверная сумма после продажи авто.");
     }
 
     // POST /user/{userId}/buy/{carId}
     @Test(dependsOnMethods = "createUser",
             description = "Попытка покупки автомобиля пользователем при недостаточном кол-ве средств",
-            testName = "API: POST /user/{userId}/car/{carId}")
+            testName = "API: POST /user/{userId}/buyCar/{carId}")
     @Owner("Zheltikov Vasiliy")
     @Link("http://82.142.167.37:4879/swagger-ui/index.html#/")
     @Feature("person-controller")
@@ -343,7 +365,7 @@ public class PersonControllerTest extends BaseAPI {
         Car carResponse = carAdapter.createCar(car); // создаём автомобиль (car.price = user.amount)
         Integer carId = carResponse.getId();
         UserResponse userResponse = usersAdapter.buyCarNotEnoughMoney(createdUserId, carId, "buy");
-        softAssert.assertEquals(userResponse.getMoney(),
+        assertEquals(userResponse.getMoney(),
                 createdUserMoney,
                 "Значение user.amount изменилось");
     }
