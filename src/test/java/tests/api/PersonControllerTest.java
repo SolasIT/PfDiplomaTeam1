@@ -352,6 +352,24 @@ public class PersonControllerTest extends BaseAPI {
                 "На счету пользователя неверная сумма после продажи авто.");
     }
 
+    // POST /user/{userId}/sell/{carId}
+    @Test(dependsOnMethods = "createUser",
+            description = "Попытка продажи автомобиля пользователем (авто не во владении пользователя)",
+            testName = "API: POST /user/{userId}/sellCar/{carId}")
+    @Owner("Zheltikov Vasiliy")
+    @Link("http://82.142.167.37:4879/swagger-ui/index.html#/")
+    @Feature("person-controller")
+    @Description("Попытка продать автомобиль не в собстенности пользователя")
+    public void userSellsCarNotInOwn() {
+        car.setPrice(faker.number().randomDouble(2,2,createdUserMoney.intValue()) - 1);
+        Car carResponse = carAdapter.createCar(car); // создаём автомобиль
+        Integer carId = carResponse.getId();
+        UserResponse userResponse = usersAdapter.buyOrSellCarByUserIdCarId(createdUserId, carId, "sell");
+        assertEquals(userResponse.getMoney(),
+                userRequest.getMoney(), // значение amount осталось неизменным
+                "На счету пользователя неверная сумма после продажи авто.");
+    }
+
     // POST /user/{userId}/buy/{carId}
     @Test(dependsOnMethods = "createUser",
             description = "Попытка покупки автомобиля пользователем при недостаточном кол-ве средств",
