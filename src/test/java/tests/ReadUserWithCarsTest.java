@@ -9,6 +9,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 public class ReadUserWithCarsTest extends BaseTest {
 
@@ -31,10 +32,10 @@ public class ReadUserWithCarsTest extends BaseTest {
     @DataProvider(name = "Не валидные данные")
     public Object[][] fieldsInputsNegative() {
         return new Object[][]{
-                {"user_input", "888888888888888888888888888888888888888"},
+                {"user_input", "AAAAAAjkjkkЫВАОЫАвлыаывжа"},
                 {"user_input", "ABCDEFGHIJKL"},
                 {"user_input", "!@#$%^&*("},
-                {"user_input", "ывъщавъппыъв ЩЩЩЩъфылаъ"},
+                {"user_input", "ывъщавъппыъвЩЩЩЩъфылаъ"},
                 {"user_input", " "}
         };
     }
@@ -53,5 +54,36 @@ public class ReadUserWithCarsTest extends BaseTest {
         assertEquals(readUserWithCarsPage.getFieldValue(fieldId),
                 text,
                 "Отображаемый текст не соответствует введённому");
+    }
+
+    @Test(dataProvider = "Не валидные данные",
+            description = "Ввод цифр в поля ввода")
+    @Owner("Malkov Artem")
+    @Description("Негативная проверка на ввод цифр,букв, символов в поля ввода")
+    public void negativeInputInFields(String fieldId, String text) {
+        mainPage.open()
+                .isPageOpened()
+                .auth(email, password);
+        readUserWithCarsPage.open()
+                .isPageOpened();
+        readUserWithCarsPage.inputTextInField(fieldId, text);
+        assertTrue(readUserWithCarsPage.getFieldValue(fieldId).isEmpty(),
+                String.format("В поле ввода отображается значение \"%s\"", text));
+    }
+
+    @Test(dataProvider = "Значения для поля ввода",
+            description = "Проверяет увеличение/уменьшение значений в поле ввода READ  при нажатии на стрелки"            )
+    @Owner("Malkov Artem")
+    @Description("Проверка изменения значения в поле ввода по нажатию на стрелочки")
+    public void changeFieldsValue(String fieldId, boolean isIncrease, String newValue) {
+        mainPage.open()
+                .isPageOpened()
+                .auth(email, password);
+        readUserWithCarsPage.open()
+                .isPageOpened();
+        readUserWithCarsPage.changeValueByRead(fieldId, isIncrease, newValue);
+        assertEquals(readUserWithCarsPage.getFieldValue(fieldId),
+                newValue,
+                "Новое значение поля не соответствует ожидаемому");
     }
 }
