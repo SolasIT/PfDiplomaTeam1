@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="CrossBrowserTesting" thread-count="2" parallel="tests"> <!-- Сьют кроссбраузерного тестирования-->
+<!--    <test name="Users and Cars (Chrome)"> &lt;!&ndash; прогон "Users and Cars (Chrome)" &ndash;&gt;-->
+<!--        <classes> &lt;!&ndash; будет состоять из тестов: &ndash;&gt;-->
+<!--            <class name="tests.ui.AddMoneyTest"/>-->
+<!--            <class name="tests.ui.BuyOrSellCarInputsTest"/>-->
+<!--            <class name="tests.ui.BuyOrSellCarTest"/>-->
+<!--            <class name="tests.ui.CreateCarTest"/>-->
+<!--            <class name="tests.ui.CreateUserTest"/>-->
+<!--            <class name="tests.ui.TestCarsReadAll"/>-->
+<!--&lt;!&ndash;            <class name="tests.ui."/>        сюда можете дописывать ещё тесты, если они будут&ndash;&gt;-->
+<!--&lt;!&ndash;            <class name="tests.ui."/>        сюда можете дописывать ещё тесты, если они будут&ndash;&gt;-->
+<!--&lt;!&ndash;            <class name="tests.ui."/>        сюда можете дописывать ещё тесты, если они будут&ndash;&gt;-->
+<!--            <parameter name="browser" value="chrome"> </parameter> &lt;!&ndash; будет выполняться в Chrome &ndash;&gt;-->
+<!--        </classes>-->
+<!--    </test>-->
+    <test name="Houses, All POST, All DELETE (Firefox)"> <!-- прогон "Houses, All POST, All DELETE (Firefox)" -->
+        <classes>
+<!--            <class name="tests.ui.AllDeleteTest"/>-->
+            <class name="tests.ui.SettleToHouseInputsTest"/>
+            <class name="tests.ui.SettleToHouseTest"/>
+<!--        <class name="tests.ui."/>        сюда можете дописывать ещё тесты, если они будут-->
+<!--        <class name="tests.ui."/>        сюда можете дописывать ещё тесты, если они будут-->
+<!--        <class name="tests.ui."/>        сюда можете дописывать ещё тесты, если они будут-->
+            <parameter name="browser" value="firefox"> </parameter> <!-- будет выполняться в Firefox -->
+<!-- Firefox выбран как браузер, который есть и на Linux (MacOs, Ubuntu) и на Windows -->
+        </classes>
+    </test> <!-- Test -->
+</suite>
