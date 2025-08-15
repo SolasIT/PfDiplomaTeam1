@@ -68,11 +68,23 @@ public class PersonControllerTest extends BaseAPI {
         };
     }
 
-    @DataProvider(name = "Negative user buy or sell car data")
-    public Object[][] negativeUserBuyOrSellCarData() {
+    @DataProvider(name = "Missing values user buy or sell car data")
+    public Object[][] MissingUserBuyOrSellCarData() {
+        Integer userId = usersAdapter.createUser(userRequest).getId();
+        Integer carId = carAdapter.createCar(car).getId();
         return new Object[][]{
-                {null, carAdapter.createCar(car).getId(), "buy"}, // не передан обязательный параметр userId
-                {usersAdapter.createUser(userRequest).getId(), null, "sell"} // не передан обязательный параметр carId
+                {"", Integer.toString(carId), "buy"}, // не передан обязательный параметр userId
+                {Integer.toString(userId), "", "sell"} // не передан обязательный параметр carId
+        };
+    }
+
+    @DataProvider(name = "Non existent values user buy or sell car data")
+    public Object[][] NonExistentUserBuyOrSellCarData() {
+        Integer userId = usersAdapter.createUser(userRequest).getId();
+        Integer carId = carAdapter.createCar(car).getId();
+        return new Object[][]{
+                {userId + 1, carId, "buy"}, // несуществующий параметр userId
+                {userId, carId, "sell"} // не передан обязательный параметр carId
         };
     }
 
@@ -398,7 +410,7 @@ public class PersonControllerTest extends BaseAPI {
 
     // POST /user/{userId}/sell/{carId}
     // POST /user/{userId}/sell/{carId}
-    @Test(dataProvider = "Negative user buy or sell car data",
+    @Test(dataProvider = "Missing values user buy or sell car data",
             dependsOnMethods = "createUser",
             description = "Нарушение контракта методов POST /user/{userId}/{buy/sell}Car/{carId}",
             testName = "API: POST /user/{userId}/{buy/sell}Car/{carId}: нарушение контракта")
@@ -406,8 +418,22 @@ public class PersonControllerTest extends BaseAPI {
     @Link("http://82.142.167.37:4879/swagger-ui/index.html#/")
     @Feature("person-controller")
     @Description("Проверка API метода POST: не переданы обязательные параметры userId, carId")
-    public void userSellsMissRequiredValues(Integer userId, Integer carId, String option) {
+    public void userBuyOrSellCarMissRequiredValues(String userId, String carId, String option) {
         usersAdapter.buyOrSellCarMissRequiredFields(userId, carId, option);
+    }
+
+    // POST /user/{userId}/sell/{carId}
+    // POST /user/{userId}/sell/{carId}
+    @Test(dataProvider = "Non existent values user buy or sell car data",
+            dependsOnMethods = "createUser",
+            description = "Невалидные данные в запросе",
+            testName = "Выполнение запроса POST с несуществующими значениями")
+    @Owner("Zheltikov Vasiliy")
+    @Link("http://82.142.167.37:4879/swagger-ui/index.html#/")
+    @Feature("person-controller")
+    @Description("Проверка API метода POST: переданы несуществующий параметры userId, carId")
+    public void userBuyOrSellCarWithNonExistentValues(Integer userId, Integer carId, String option) {
+        usersAdapter.buyOrSellCarNonExistentValues(userId, carId, option);
     }
 }
 

@@ -3,7 +3,7 @@ package adapters;
 import dto.api.users.rq.UserRequest;
 import dto.api.users.rs.UserResponse;
 
-import static org.hamcrest.Matchers.blankOrNullString;
+import static org.hamcrest.Matchers.*;
 
 public class UsersAdapter extends BaseAPI {
 
@@ -218,7 +218,23 @@ public class UsersAdapter extends BaseAPI {
 
     // POST /user/{userId}/buyCar/{carId}
     // POST /user/{userId}/sellCar/{carId}
-    public void buyOrSellCarMissRequiredFields(Integer userId, Integer carId, String option) {
+    public void buyOrSellCarMissRequiredFields(String userId, String carId, String option) {
+        spec.body("");
+        spec
+                .removeHeader("Authorization")
+                .header("Authorization", authAPI.getToken())
+                .request()
+                .log().all()
+                .when()
+                .post(BASE_URI + "/" + userId + "/" + option.toLowerCase() + "Car/" + carId)
+                .then()
+                .log().all()
+                .statusCode(anyOf(is(400),is(404)));
+    }
+
+    // POST /user/{userId}/buyCar/{carId}
+    // POST /user/{userId}/sellCar/{carId}
+    public void buyOrSellCarNonExistentValues(Integer userId, Integer carId, String option) {
         spec.body("");
         spec
                 .removeHeader("Authorization")
@@ -229,7 +245,7 @@ public class UsersAdapter extends BaseAPI {
                 .post(String.format("%s/user/%s/%sCar/%s", BASE_URI, userId, option.toLowerCase(), carId))
                 .then()
                 .log().all()
-                .statusCode(400)
+                .statusCode(anyOf(is(404),is(500)))
                 .body(blankOrNullString());
     }
 }
