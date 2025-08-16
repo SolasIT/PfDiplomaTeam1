@@ -109,8 +109,10 @@ public class PersonControllerTest extends DBRequests {
     @Feature("person-controller")
     @Description("Проверка API метода POST")
     public void createUser() {
-        UserResponse userResponse = usersAdapter.createUser(userRequest, SUCCESS_CREATED_STATUS_CODE); // создание пользователя POST
-        softAssert.assertEquals(userResponse.getFirstName(), // блок проверок на совпадение значений параметров в response и в request
+        // создание пользователя POST
+        UserResponse userResponse = usersAdapter.createUser(userRequest, SUCCESS_CREATED_STATUS_CODE);
+        // блок проверок на совпадение значений параметров в response и в request
+        softAssert.assertEquals(userResponse.getFirstName(),
                 userRequest.getFirstName(),
                 "Значение параметра firstName не соответствует ожидаемому");
         softAssert.assertEquals(userResponse.getSecondName(),
@@ -347,15 +349,28 @@ public class PersonControllerTest extends DBRequests {
     @Link("http://82.142.167.37:4879/swagger-ui/index.html#/")
     @Feature("person-controller")
     @Description("Проверка покупки автомобиля (user.amount = car.price")
-    public void userBuyCarAmountEqualPrice() {
+    public void userBuyCarAmountEqualPrice() throws SQLException {
         createUser();
         car.setPrice(createdUserMoney); // car.price = user.amount
         Car carResponse = carAdapter.createCar(car); // создаём автомобиль (car.price = user.amount)
         Integer carId = carResponse.getId();
-        UserResponse userResponse = usersAdapter.buyOrSellCarByUserIdCarId(createdUserId, carId, "buy", OK_STATUS_CODE);
-        assertEquals(userResponse.getMoney(),
-                0,
+        UserResponse userResponse = usersAdapter.buyOrSellCarByUserIdCarId(
+                createdUserId,
+                carId,
+                "buy",
+                OK_STATUS_CODE);
+        connect(); // подключение к БД
+        // ищем запись в БД со связкой userId и carId
+        Integer databaseEntry = checkUserOwnsCarByCarId(createdUserId, carId);
+        softAssert.assertEquals(userResponse.getMoney(),
+                0.0,
                 "На счету пользователя сумма, отличная от 0");
+        // проверяем значение carId из запроса к БД
+        softAssert.assertEquals((int) databaseEntry, // найденный в БД параметр carId для userId
+                (int) carId, // соответствует carId из API-запроса
+                String.format("Для пользователя с id = %s отсутствует запись с carId = %s", createdUserId, carId));
+        close(); // закрытие подключения к БД
+        softAssert.assertAll();
     }
 
     // POST /user/{userId}/sell/{carId}
@@ -370,18 +385,25 @@ public class PersonControllerTest extends DBRequests {
         car.setPrice(faker.number().randomDouble(2, 2, createdUserMoney.intValue()) - 1);
         Car carResponse = carAdapter.createCar(car); // создаём автомобиль
         Integer carId = carResponse.getId();
-        usersAdapter.buyOrSellCarByUserIdCarId(createdUserId, carId, "buy", OK_STATUS_CODE); // чтобы продать что-то ненужное
-        // надо сначала купить что-то ненужное!
-        UserResponse userResponse = usersAdapter.buyOrSellCarByUserIdCarId(createdUserId, carId, "sell", OK_STATUS_CODE);
-        connect(); // подключаемся к БД
-        Integer databaseEntry = checkUserOwnsCarByCarId(createdUserId, carId); // проверяем отсутствие записи в БД
+        usersAdapter.buyOrSellCarByUserIdCarId(createdUserId, carId, "buy", OK_STATUS_CODE);
+        // чтобы продать что-то ненужное, надо сначала купить что-то ненужное!
+        UserResponse userResponse = usersAdapter.buyOrSellCarByUserIdCarId(
+                createdUserId,
+                carId,
+                "sell",
+                OK_STATUS_CODE);
+        connect(); // подключение к БД
+        // ищем запись в БД со связкой userId и carId
+        Integer databaseEntry = checkUserOwnsCarByCarId(createdUserId, carId);
         softAssert.assertEquals(userResponse.getMoney(),
                 userRequest.getMoney(), // купил и продал - значение счёта после продажи = значению счёта до покупки
                 "На счету пользователя неверная сумма после продажи авто.");
+        // проверяем значение carId из запроса к БД
         softAssert.assertEquals((int) databaseEntry,
-                0,
-                String.format("Для пользователя с id = %s найдена запись с carId = %s", createdUserId, carId)); // проверяем, что запись со связкой car.id + user.id не была найдена
-        close(); // отключаемся от БД
+                0, // 0 возвращается, если нет записи
+                String.format("Для пользователя с id = %s найдена запись с carId = %s", createdUserId, carId));
+        // проверяем, что запись со связкой car.id + user.id не была найдена
+        close(); // закрытие подключения к БД
         softAssert.assertAll();
     }
 
@@ -397,7 +419,11 @@ public class PersonControllerTest extends DBRequests {
         car.setPrice(faker.number().randomDouble(2, 2, createdUserMoney.intValue()) - 1);
         Car carResponse = carAdapter.createCar(car); // создаём автомобиль
         Integer carId = carResponse.getId();
-        UserResponse userResponse = usersAdapter.buyOrSellCarByUserIdCarId(createdUserId, carId, "sell", OK_STATUS_CODE);
+        UserResponse userResponse = usersAdapter.buyOrSellCarByUserIdCarId(
+                createdUserId,
+                carId,
+                "sell",
+                OK_STATUS_CODE);
         assertEquals(userResponse.getMoney(),
                 userRequest.getMoney(), // значение amount осталось неизменным
                 "На счету пользователя неверная сумма после продажи авто.");
@@ -415,7 +441,11 @@ public class PersonControllerTest extends DBRequests {
         car.setPrice((createdUserMoney * 100 + 1) / 100); // car.price больше user.amount на 0.01
         Car carResponse = carAdapter.createCar(car); // создаём автомобиль (car.price = user.amount)
         Integer carId = carResponse.getId();
-        UserResponse userResponse = usersAdapter.buyOrSellCarByUserIdCarId(createdUserId, carId, "buy", NOT_ACCEPTABLE_STATUS_CODE);
+        UserResponse userResponse = usersAdapter.buyOrSellCarByUserIdCarId(
+                createdUserId,
+                carId,
+                "buy",
+                NOT_ACCEPTABLE_STATUS_CODE);
         assertEquals(userResponse.getMoney(),
                 createdUserMoney,
                 "Значение user.amount изменилось");
@@ -446,7 +476,11 @@ public class PersonControllerTest extends DBRequests {
     @Feature("person-controller")
     @Description("Проверка API метода POST: переданы несуществующий параметры userId, carId")
     public void userBuyOrSellCarWithNonExistentValues(Integer userId, Integer carId, String option) {
-        usersAdapter.buyOrSellCarByUserIdCarIdIncorrect(Integer.toString(userId), Integer.toString(carId), option, NOT_FOUND_STATUS_CODE);
+        usersAdapter.buyOrSellCarByUserIdCarIdIncorrect(
+                Integer.toString(userId),
+                Integer.toString(carId),
+                option,
+                NOT_FOUND_STATUS_CODE);
     }
 
     // POST /user/{userId}/sell/{carId}
@@ -462,8 +496,16 @@ public class PersonControllerTest extends DBRequests {
         car.setPrice(faker.number().randomDouble(2, 2, createdUserMoney.intValue()) - 1);
         Car carResponse = carAdapter.createCar(car); // создаём автомобиль
         Integer carId = carResponse.getId();
-        usersAdapter.buyOrSellCarByUserIdCarIdWrongMethod(createdUserId, carId, "sell", METHOD_NOT_ALLOWED_STATUS_CODE);
-        usersAdapter.buyOrSellCarByUserIdCarIdWrongMethod(createdUserId, carId, "buy", METHOD_NOT_ALLOWED_STATUS_CODE);
+        usersAdapter.buyOrSellCarByUserIdCarIdWrongMethod(
+                createdUserId,
+                carId,
+                "sell",
+                METHOD_NOT_ALLOWED_STATUS_CODE);
+        usersAdapter.buyOrSellCarByUserIdCarIdWrongMethod(
+                createdUserId,
+                carId,
+                "buy",
+                METHOD_NOT_ALLOWED_STATUS_CODE);
     }
     // Тест падает из-за того, что в ответе возвращается 404 ошибка, а не 405
 

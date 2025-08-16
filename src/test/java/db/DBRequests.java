@@ -42,7 +42,11 @@ public class DBRequests extends DBConnection{
                         "AND person_id = %s",
                         carId, userId)
         );
+        if (!result.next()) {
+            return 0;
+        } else {
+            return result.getInt(1);
+        }
         // close прописан в API тесте
-        return result.getRow();
     }
 }
