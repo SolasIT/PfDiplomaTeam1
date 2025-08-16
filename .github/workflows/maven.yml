@@ -20,8 +20,11 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      SD_EMAIL: ${{secrets.SD_EMAIL}}
-      SD_PASSWORD: ${{secrets.SD_PASSWORD}}
+      EMAIL: ${{secrets.DP_EMAIL}}
+      PASSWORD: ${{secrets.DP_PASSWORD}}
+      DBURL: ${{secrets.DB_URL}}
+      DBUSER: ${{secrets.DB_USER}}
+      DBPASSWORD: ${{secrets.DB_PASSWORD}}
 
     steps:
       - name: Checkout
@@ -33,7 +36,7 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Run tests
-        run: mvn clean test -Demail=$EMAIL -Dpassword=$PASSWORD
+        run: mvn clean test -Demail=$EMAIL -Dpassword=$PASSWORD -Ddburl=$DBURL -Ddbuser=$DBUSER -Ddpassword=$DBPASSWORD
 
       - name: Get Allure history
         uses: actions/checkout@v2
