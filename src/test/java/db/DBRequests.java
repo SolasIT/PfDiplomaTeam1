@@ -6,7 +6,7 @@ import org.testng.annotations.Test;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class DBRequests extends DBConnection{
+public class DBRequests extends DBConnection {
 
     @Test
     public void checkConnect() {
@@ -15,13 +15,13 @@ public class DBRequests extends DBConnection{
     }
 
     @Test
-    public Car getCarByIdDB (int id) throws SQLException {
+    public Car getCarByIdDB(int id) throws SQLException {
         connect();
         ResultSet result = select(
-                    "SELECT c.*,et.type_name FROM car c " +
-                          "JOIN engine_type et ON c.engine_type_id = et.id " +
-                          "WHERE c.id ="+ id +
-                          "LIMIT 1");
+                "SELECT c.*,et.type_name FROM car c " +
+                        "JOIN engine_type et ON c.engine_type_id = et.id " +
+                        "WHERE c.id =" + id +
+                        "LIMIT 1");
         result.next();
         Car car = new Car();
         car.setId(result.getInt("id"));
@@ -36,17 +36,12 @@ public class DBRequests extends DBConnection{
     @Test
     public Integer checkUserOwnsPropertyByPropertyId(Integer userId, Integer propertyId) throws SQLException {
         // connect прописан в API тесте
-        ResultSet result = select(
-                String.format("SELECT car.id FROM public.car " +
-                        "WHERE car.id = %s " +
-                        "AND person_id = %s",
+        return select(
+                String.format("SELECT count(*) FROM public.car " +
+                                "WHERE car.id = %s " +
+                                "AND person_id = %s",
                         propertyId, userId)
-        );
-        if (!result.next()) {
-            return 0;
-        } else {
-            return result.getInt(1);
-        }
+        ).getInt("count");
         // close прописан в API тесте
     }
 }

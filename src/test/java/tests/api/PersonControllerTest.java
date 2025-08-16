@@ -348,7 +348,7 @@ public class PersonControllerTest extends DBRequests {
     @Owner("Zheltikov Vasiliy")
     @Link("http://82.142.167.37:4879/swagger-ui/index.html#/")
     @Feature("person-controller")
-    @Description("Проверка покупки автомобиля (user.amount = car.price")
+    @Description("Проверка покупки автомобиля (user.amount = car.price)")
     public void userBuyCarAmountEqualPrice() throws SQLException {
         createUser();
         car.setPrice(createdUserMoney); // car.price = user.amount
@@ -366,9 +366,39 @@ public class PersonControllerTest extends DBRequests {
                 0.0,
                 "На счету пользователя сумма, отличная от 0");
         // проверяем значение carId из запроса к БД
-        softAssert.assertEquals((int) databaseEntry, // найденный в БД параметр carId для userId
-                (int) carId, // соответствует carId из API-запроса
-                String.format("Для пользователя с id = %s отсутствует запись с carId = %s", createdUserId, carId));
+        softAssert.assertEquals((int) databaseEntry, // найденное в БД кол-во записей
+                1, // одна запись
+                String.format("Для пользователя с id = %s отсутствует запись с carId = %s или их больше одной",
+                        createdUserId, carId));
+        close(); // закрытие подключения к БД
+        softAssert.assertAll();
+    }
+
+    @Test(description = "Покупка того же автомобиля пользователем",
+            testName = "API: POST /user/{userId}/buyCar/{carId}")
+    @Owner("Zheltikov Vasiliy")
+    @Link("http://82.142.167.37:4879/swagger-ui/index.html#/")
+    @Feature("person-controller")
+    @Description("Проверка покупки автомобиля (user.amount = car.price)")
+    public void userBuyCarTwice() throws SQLException {
+        UserResponse userResponse = usersAdapter.createUser(userRequest, SUCCESS_CREATED_STATUS_CODE);
+        Integer carId = carAdapter.createCar(car).getId();
+        car.setPrice(createdUserMoney * 100 / 3 / 100);
+        for (int i = 0; i < 2; i++) {
+            usersAdapter.buyOrSellCarByUserIdCarId(
+                    createdUserId,
+                    carId,
+                    "buy",
+                    OK_STATUS_CODE); // пользователь покупает автомобиль дважды
+        }
+        connect(); // подключение к БД
+        // ищем запись в БД со связкой userId и carId
+        Integer databaseEntry = checkUserOwnsPropertyByPropertyId(createdUserId, carId); // проверяем кол-во записей в БД
+        // проверяем значение carId из запроса к БД
+        softAssert.assertEquals((int) databaseEntry,
+                1, // Одна запись = дублей нет
+                String.format("Для пользователя с id = %s отсутствует запись с carId = %s или их больше одной",
+                        createdUserId, carId));
         close(); // закрытие подключения к БД
         softAssert.assertAll();
     }
@@ -399,9 +429,10 @@ public class PersonControllerTest extends DBRequests {
                 userRequest.getMoney(), // купил и продал - значение счёта после продажи = значению счёта до покупки
                 "На счету пользователя неверная сумма после продажи авто.");
         // проверяем значение carId из запроса к БД
-        softAssert.assertEquals((int) databaseEntry,
-                0, // 0 возвращается, если нет записи
-                String.format("Для пользователя с id = %s найдена запись с carId = %s", createdUserId, carId));
+        softAssert.assertEquals((int) databaseEntry, // проверка кол-ва вернувшихся в запросе к БД строк
+                0, // 0 возвращается, если записей нет
+                String.format("Для пользователя с id = %s найдена минимум одна запись с carId = %s",
+                        createdUserId, carId));
         // проверяем, что запись со связкой car.id + user.id не была найдена
         close(); // закрытие подключения к БД
         softAssert.assertAll();
@@ -462,9 +493,9 @@ public class PersonControllerTest extends DBRequests {
                 "Сумма на счету у пользователя изменилась.");
         // проверяем значение carId из запроса к БД
         softAssert.assertEquals((int) databaseEntry, // по userOwnerCar
-                (int) carId, // должна найтись запись с carId (чужое авто не продано)
-                String.format("Для пользователя с id = %s найдена запись с carId = %s", createdUserId, carId));
-        // проверяем, что запись со связкой car.id + user.id не была найдена
+                1, // должна найтись одна запись с carId (чужое авто не продано)
+                String.format("Для пользователя с id = %s не найдена запись с carId = %s",
+                        createdUserId, carId));
         close(); // закрытие подключения к БД
         softAssert.assertAll();
     }
