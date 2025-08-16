@@ -19,5 +19,5 @@ public class BaseAPI {
     static FilterableRequestSpecification spec = (FilterableRequestSpecification)
             given()
                     .contentType(ContentType.JSON)
-                    .filter(new AllureRestAssured());
+                    .filter(new AllureRestAssured());//Отчет в Алюр
 }
