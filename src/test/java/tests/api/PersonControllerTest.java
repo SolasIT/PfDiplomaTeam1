@@ -1,6 +1,5 @@
 package tests.api;
 
-import adapters.BaseAPI;
 import adapters.CarAdapter;
 import adapters.UsersAdapter;
 import com.github.javafaker.Faker;
@@ -19,7 +18,7 @@ import org.testng.asserts.SoftAssert;
 import static org.testng.Assert.assertEquals;
 
 @Slf4j
-public class PersonControllerTest extends BaseAPI {
+public class PersonControllerTest {
 
     // HTTP StatusCodes
     private final Integer OK_STATUS_CODE = 200,
