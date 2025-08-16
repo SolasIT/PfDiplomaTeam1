@@ -3,6 +3,7 @@ package tests.api;
 import adapters.CarAdapter;
 import adapters.UsersAdapter;
 import com.github.javafaker.Faker;
+import db.DBRequests;
 import dto.api.cars.Car;
 import dto.api.users.rq.UserRequest;
 import dto.api.users.rs.UserResponse;
@@ -15,10 +16,13 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import static org.testng.Assert.assertEquals;
 
 @Slf4j
-public class PersonControllerTest {
+public class PersonControllerTest extends DBRequests {
 
     // HTTP StatusCodes
     private final Integer OK_STATUS_CODE = 200,
@@ -362,7 +366,8 @@ public class PersonControllerTest {
     @Link("http://82.142.167.37:4879/swagger-ui/index.html#/")
     @Feature("person-controller")
     @Description("Проверка продажи автомобиля")
-    public void userSellsCar() {
+    public void userSellsCar() throws SQLException {
+        DBRequests dbRequests = new DBRequests();
         createUser();
         car.setPrice(faker.number().randomDouble(2, 2, createdUserMoney.intValue()) - 1);
         Car carResponse = carAdapter.createCar(car); // создаём автомобиль
@@ -370,9 +375,11 @@ public class PersonControllerTest {
         usersAdapter.buyOrSellCarByUserIdCarId(createdUserId, carId, "buy", OK_STATUS_CODE); // чтобы продать что-то ненужное
         // надо сначала купить что-то ненужное!
         UserResponse userResponse = usersAdapter.buyOrSellCarByUserIdCarId(createdUserId, carId, "sell", OK_STATUS_CODE);
-        assertEquals(userResponse.getMoney(),
+        ResultSet databaseEntry = dbRequests.checkUserOwnsCarByCarId(createdUserId, carId); // проверяем отсутствие записи в БД
+        softAssert.assertEquals(userResponse.getMoney(),
                 userRequest.getMoney(), // купил и продал - значение счёта после продажи = значению счёта до покупки
                 "На счету пользователя неверная сумма после продажи авто.");
+        softAssert.assertNull(databaseEntry); // проверяем, что запись со связкой car.id + user.id не была найдена
     }
 
     // POST /user/{userId}/sell/{carId}
@@ -482,7 +489,7 @@ public class PersonControllerTest {
         }
         softAssert.assertAll();
     }
-
+    // GET /users
     @Test(description = "Нарушение контракта GET /users",
             testName = "API: GET /users: нарушение контракта")
     @Owner("Zheltikov Vasiliy")
