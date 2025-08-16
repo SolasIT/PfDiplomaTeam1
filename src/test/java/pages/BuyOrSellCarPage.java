@@ -92,7 +92,7 @@ public class BuyOrSellCarPage extends BasePage {
         }
         log.info("Pushing button to proceeding");
         $(PUSH_TO_API_BUTTON).click();
-        sleep(100); // без него как будто мимо кнопки нажимает
+        sleep(1500); // без него как будто мимо кнопки нажимает
         log.info("Button is pushed");
         return this;
     }
