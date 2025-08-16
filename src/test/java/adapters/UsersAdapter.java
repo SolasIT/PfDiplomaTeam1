@@ -1,11 +1,7 @@
 package adapters;
 
-import com.google.gson.JsonObject;
 import dto.api.users.rq.UserRequest;
 import dto.api.users.rs.UserResponse;
-
-import java.util.Arrays;
-import java.util.List;
 
 import static org.hamcrest.Matchers.*;
 
