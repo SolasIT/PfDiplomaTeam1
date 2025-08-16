@@ -20,11 +20,11 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      EMAIL: ${{secrets.SD_EMAIL}}
-      PASSWORD: ${{secrets.SD_PASSWORD}}
-      DBURL: ${{secrets.SD_DBURL}}
-      DBUSER: ${{secrets.SD_DBUSER}}
-      DBPASSWORD: ${{secrets.SD_DBPASSWORD}}
+      EMAIL: ${{secrets.DP_EMAIL}}
+      PASSWORD: ${{secrets.DP_PASSWORD}}
+      DBURL: ${{secrets.DB_URL}}
+      DBUSER: ${{secrets.DB_USER}}
+      DBPASSWORD: ${{secrets.DB_PASSWORD}}
 
     steps:
       - name: Checkout
