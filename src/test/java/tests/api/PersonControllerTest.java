@@ -21,6 +21,16 @@ import static org.testng.Assert.assertEquals;
 @Slf4j
 public class PersonControllerTest extends BaseAPI {
 
+    // HTTP StatusCodes
+    private final Integer OK_STATUS_CODE = 200,
+                          SUCCESS_CREATED_STATUS_CODE = 201,
+                          ACCEPTED_STATUS_CODE = 202,
+                          NO_CONTENT_STATUS_CODE = 204,
+                          BAD_REQUEST_STATUS_CODE = 400,
+                          NOT_FOUND_STATUS_CODE = 404,
+                          METHOD_NOT_ALLOWED_STATUS_CODE = 405,
+                          NOT_ACCEPTABLE_STATUS_CODE = 406;
+
     SoftAssert softAssert = new SoftAssert();
     UsersAdapter usersAdapter = new UsersAdapter();
     CarAdapter carAdapter = new CarAdapter();
@@ -70,7 +80,7 @@ public class PersonControllerTest extends BaseAPI {
 
     @DataProvider(name = "Missing values user buy or sell car data")
     public Object[][] MissingUserBuyOrSellCarData() {
-        Integer userId = usersAdapter.createUser(userRequest).getId();
+        Integer userId = usersAdapter.createUser(userRequest, SUCCESS_CREATED_STATUS_CODE).getId();
         Integer carId = carAdapter.createCar(car).getId();
         return new Object[][]{
                 {"", Integer.toString(carId), "buy"}, // не передан обязательный параметр userId
@@ -80,7 +90,7 @@ public class PersonControllerTest extends BaseAPI {
 
     @DataProvider(name = "Non existent values user buy or sell car data")
     public Object[][] NonExistentUserBuyOrSellCarData() {
-        Integer userId = usersAdapter.createUser(userRequest).getId();
+        Integer userId = usersAdapter.createUser(userRequest, SUCCESS_CREATED_STATUS_CODE).getId();
         Integer carId = carAdapter.createCar(car).getId();
         return new Object[][]{
                 {userId + 1234, carId, "buy"}, // несуществующий параметр userId (response status 500)
@@ -97,7 +107,7 @@ public class PersonControllerTest extends BaseAPI {
     @Feature("person-controller")
     @Description("Проверка API метода POST")
     public void createUser() {
-        UserResponse userResponse = usersAdapter.createUser(userRequest); // создание пользователя POST
+        UserResponse userResponse = usersAdapter.createUser(userRequest, SUCCESS_CREATED_STATUS_CODE); // создание пользователя POST
         softAssert.assertEquals(userResponse.getFirstName(), // блок проверок на совпадение значений параметров в response и в request
                 userRequest.getFirstName(),
                 "Значение параметра firstName не соответствует ожидаемому");
@@ -143,7 +153,7 @@ public class PersonControllerTest extends BaseAPI {
                 .sex(sex)
                 .money(money)
                 .build();
-        usersAdapter.createUserWithIncorrectData(userRequest);
+        usersAdapter.createUserIncorrectData(userRequest, BAD_REQUEST_STATUS_CODE);
         // баг: создаётся user, если не передать параметр sex (отправляется FEMALE), тест падает
     }
 
@@ -155,14 +165,7 @@ public class PersonControllerTest extends BaseAPI {
     @Feature("person-controller")
     @Description("Проверка API метода POST: выполнение запроса с неверным методом")
     public void createUserWrongMethod() {
-        UserRequest userRequest = UserRequest.builder()
-                .firstName("Method")
-                .secondName("Wrong")
-                .age(40)
-                .sex("MALE")
-                .money(405405405.00)
-                .build();
-        usersAdapter.createUserWithIncorrectMethod(userRequest);
+        usersAdapter.createUserWrongMethod(userRequest, METHOD_NOT_ALLOWED_STATUS_CODE);
     }
 
     // GET User/{userId}
@@ -174,7 +177,7 @@ public class PersonControllerTest extends BaseAPI {
     @Description("Проверка API метода GET")
     public void getUserById() {
         createUser();
-        UserResponse userResponse = usersAdapter.getUserById(createdUserId);
+        UserResponse userResponse = usersAdapter.getUserById(createdUserId, OK_STATUS_CODE);
         softAssert.assertEquals(userResponse.getId(),
                 createdUserId,
                 "Значение параметра id не соответствует ожидаемому");
@@ -205,7 +208,7 @@ public class PersonControllerTest extends BaseAPI {
     @Feature("person-controller")
     @Description("Проверка API метода GET")
     public void getUserByNonExistentId() {
-        usersAdapter.getUserByNonExistentId(createdUserId);
+        usersAdapter.getUserByIdIncorrectData(createdUserId, NO_CONTENT_STATUS_CODE);
     }
 
     // GET User/{userId}
@@ -217,7 +220,7 @@ public class PersonControllerTest extends BaseAPI {
     @Feature("person-controller")
     @Description("Проверка API метода GET: выполнение запроса с неверным методом")
     public void getUserWithIncorrectMethod() {
-        usersAdapter.getUserWithIncorrectMethod(createdUserId);
+        usersAdapter.getUserByIdWrongMethod(createdUserId, METHOD_NOT_ALLOWED_STATUS_CODE);
     }
 
     // PUT User/{userId}
@@ -238,7 +241,7 @@ public class PersonControllerTest extends BaseAPI {
                 .sex(faker.demographic().sex().toUpperCase())
                 .money(faker.number().randomDouble(2, 0, 99999))
                 .build();
-        UserResponse userResponse = usersAdapter.changeUserData(userRequest, userRequest.getId());
+        UserResponse userResponse = usersAdapter.changeUserData(userRequest, userRequest.getId(), ACCEPTED_STATUS_CODE);
         softAssert.assertEquals(userResponse.getId(),
                 userRequest.getId(),
                 "Значение параметра id не соответствует ожидаемому");
@@ -284,7 +287,7 @@ public class PersonControllerTest extends BaseAPI {
                 .sex(sex)
                 .money(money)
                 .build();
-        usersAdapter.changeUserWithIncorrectData(userRequest, createdUserId);
+        usersAdapter.changeUserDataIncorrect(userRequest, createdUserId, BAD_REQUEST_STATUS_CODE);
         // баг: обновляются данные по user'у, если не передать параметр sex (обновляется на FEMALE), тест падает
     }
 
@@ -306,7 +309,7 @@ public class PersonControllerTest extends BaseAPI {
                 .sex(faker.demographic().sex().toUpperCase())
                 .money(faker.number().randomDouble(2, 0, 99999))
                 .build();
-        usersAdapter.changeUserWithNonExistentId(userRequest, createdUserId);
+        usersAdapter.changeUserDataIncorrect(userRequest, createdUserId, NOT_FOUND_STATUS_CODE);
     }
 
     // DELETE User/{userId}
@@ -318,7 +321,7 @@ public class PersonControllerTest extends BaseAPI {
     @Feature("person-controller")
     @Description("Проверка API метода DELETE")
     public void deleteUserById() {
-        usersAdapter.deleteUserById(createdUserId);
+        usersAdapter.deleteUserById(createdUserId, NO_CONTENT_STATUS_CODE);
     }
 
     // DELETE User/{userId}
@@ -331,8 +334,8 @@ public class PersonControllerTest extends BaseAPI {
     @Description("Проверка API метода DELETE")
     public void deleteUserByNonExistentId() {
         createUser();
-        usersAdapter.deleteUserById(createdUserId);
-        usersAdapter.deleteUserByNonExistentId(createdUserId);
+        usersAdapter.deleteUserById(createdUserId, NO_CONTENT_STATUS_CODE);
+        usersAdapter.deleteUserById(createdUserId, NOT_FOUND_STATUS_CODE);
     }
 
     // POST /user/{userId}/buy/{carId}
@@ -347,7 +350,7 @@ public class PersonControllerTest extends BaseAPI {
         car.setPrice(createdUserMoney); // car.price = user.amount
         Car carResponse = carAdapter.createCar(car); // создаём автомобиль (car.price = user.amount)
         Integer carId = carResponse.getId();
-        UserResponse userResponse = usersAdapter.buyOrSellCarByUserIdCarId(createdUserId, carId, "buy");
+        UserResponse userResponse = usersAdapter.buyOrSellCarByUserIdCarId(createdUserId, carId, "buy", OK_STATUS_CODE);
         assertEquals(userResponse.getMoney(),
                 0,
                 "На счету пользователя сумма, отличная от 0");
@@ -365,9 +368,9 @@ public class PersonControllerTest extends BaseAPI {
         car.setPrice(faker.number().randomDouble(2, 2, createdUserMoney.intValue()) - 1);
         Car carResponse = carAdapter.createCar(car); // создаём автомобиль
         Integer carId = carResponse.getId();
-        usersAdapter.buyOrSellCarByUserIdCarId(createdUserId, carId, "buy"); // чтобы продать что-то ненужное
+        usersAdapter.buyOrSellCarByUserIdCarId(createdUserId, carId, "buy", OK_STATUS_CODE); // чтобы продать что-то ненужное
         // надо сначала купить что-то ненужное!
-        UserResponse userResponse = usersAdapter.buyOrSellCarByUserIdCarId(createdUserId, carId, "sell");
+        UserResponse userResponse = usersAdapter.buyOrSellCarByUserIdCarId(createdUserId, carId, "sell", OK_STATUS_CODE);
         assertEquals(userResponse.getMoney(),
                 userRequest.getMoney(), // купил и продал - значение счёта после продажи = значению счёта до покупки
                 "На счету пользователя неверная сумма после продажи авто.");
@@ -385,7 +388,7 @@ public class PersonControllerTest extends BaseAPI {
         car.setPrice(faker.number().randomDouble(2, 2, createdUserMoney.intValue()) - 1);
         Car carResponse = carAdapter.createCar(car); // создаём автомобиль
         Integer carId = carResponse.getId();
-        UserResponse userResponse = usersAdapter.buyOrSellCarByUserIdCarId(createdUserId, carId, "sell");
+        UserResponse userResponse = usersAdapter.buyOrSellCarByUserIdCarId(createdUserId, carId, "sell", OK_STATUS_CODE);
         assertEquals(userResponse.getMoney(),
                 userRequest.getMoney(), // значение amount осталось неизменным
                 "На счету пользователя неверная сумма после продажи авто.");
@@ -403,7 +406,7 @@ public class PersonControllerTest extends BaseAPI {
         car.setPrice((createdUserMoney * 100 + 1) / 100); // car.price больше user.amount на 0.01
         Car carResponse = carAdapter.createCar(car); // создаём автомобиль (car.price = user.amount)
         Integer carId = carResponse.getId();
-        UserResponse userResponse = usersAdapter.buyCarNotEnoughMoney(createdUserId, carId, "buy");
+        UserResponse userResponse = usersAdapter.buyOrSellCarByUserIdCarId(createdUserId, carId, "buy", NOT_ACCEPTABLE_STATUS_CODE);
         assertEquals(userResponse.getMoney(),
                 createdUserMoney,
                 "Значение user.amount изменилось");
@@ -420,7 +423,7 @@ public class PersonControllerTest extends BaseAPI {
     @Feature("person-controller")
     @Description("Проверка API метода POST: не переданы обязательные параметры userId, carId")
     public void userBuyOrSellCarMissRequiredValues(String userId, String carId, String option) {
-        usersAdapter.buyOrSellCarMissRequiredFields(userId, carId, option);
+        usersAdapter.buyOrSellCarByUserIdCarIdIncorrect(userId, carId, option, NOT_FOUND_STATUS_CODE);
     }
 
     // POST /user/{userId}/sell/{carId}
@@ -434,7 +437,7 @@ public class PersonControllerTest extends BaseAPI {
     @Feature("person-controller")
     @Description("Проверка API метода POST: переданы несуществующий параметры userId, carId")
     public void userBuyOrSellCarWithNonExistentValues(Integer userId, Integer carId, String option) {
-        usersAdapter.buyOrSellCarNonExistentValues(userId, carId, option);
+        usersAdapter.buyOrSellCarByUserIdCarIdIncorrect(Integer.toString(userId), Integer.toString(carId), option, NOT_FOUND_STATUS_CODE);
     }
 
     // GET /users
@@ -445,7 +448,7 @@ public class PersonControllerTest extends BaseAPI {
     @Feature("person-controller")
     @Description("Проверка API метода GET")
     public void getAllUsers() {
-        UserResponse[] users = usersAdapter.getUsers();
+        UserResponse[] users = usersAdapter.getUsers(OK_STATUS_CODE);
         for (UserResponse user : users) {
             softAssert.assertNotNull(user.getId(),
                     "У пользователя отсутствует параметр id");
