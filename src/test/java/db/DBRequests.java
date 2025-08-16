@@ -36,12 +36,14 @@ public class DBRequests extends DBConnection {
     @Test
     public Integer checkUserOwnsPropertyByPropertyId(Integer userId, Integer propertyId) throws SQLException {
         // connect прописан в API тесте
-        return select(
+        ResultSet result = select(
                 String.format("SELECT count(*) FROM public.car " +
                                 "WHERE car.id = %s " +
                                 "AND person_id = %s",
                         propertyId, userId)
-        ).getInt("count");
+        );
+        result.next();
+        return result.getInt("count");
         // close прописан в API тесте
     }
 }

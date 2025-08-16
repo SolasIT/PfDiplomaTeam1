@@ -382,8 +382,8 @@ public class PersonControllerTest extends DBRequests {
     @Description("Проверка покупки автомобиля (user.amount = car.price)")
     public void userBuyCarTwice() throws SQLException {
         UserResponse userResponse = usersAdapter.createUser(userRequest, SUCCESS_CREATED_STATUS_CODE);
-        Integer carId = carAdapter.createCar(car).getId();
         car.setPrice(createdUserMoney * 100 / 3 / 100);
+        Integer carId = carAdapter.createCar(car).getId();
         for (int i = 0; i < 2; i++) {
             usersAdapter.buyOrSellCarByUserIdCarId(
                     createdUserId,
