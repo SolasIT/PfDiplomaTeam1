@@ -6,7 +6,7 @@ import io.qameta.allure.Step;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class DBRequests extends DBConnection {
+public class DBRequests extends DBConnection{
 
     @Step("Проверка подключения к БД")
     public void checkConnect() {
