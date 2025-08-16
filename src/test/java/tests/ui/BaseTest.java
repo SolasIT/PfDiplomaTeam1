@@ -18,6 +18,7 @@ import static com.codeborne.selenide.Selenide.closeWebDriver;
 
 @Listeners(TestListener.class)
 public class BaseTest {
+
     SoftAssert softAssert;
     MainPage mainPage;
     CarsCreateNewPage carsCreateNewPage;
@@ -81,6 +82,7 @@ public class BaseTest {
         buyOrSellCarPage = new BuyOrSellCarPage();
         allDeletePage = new AllDeletePage();
         settleToHousePage = new SettleToHousePage();
+
     }
 
     @AfterMethod(alwaysRun = true)

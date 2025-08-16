@@ -1,7 +1,7 @@
 package tests.api;
 
 import adapters.CarAdapter;
-import dto.api.Car;
+import dto.api.cars.Car;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Link;
@@ -9,8 +9,7 @@ import io.qameta.allure.Owner;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
-import static dto.api.CarFactory.getCar;
-
+import static dto.api.cars.CarFactory.getCar;
 
 public class CarAPITest {
     SoftAssert softAssert = new SoftAssert();
