@@ -16,7 +16,6 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import static org.testng.Assert.assertEquals;
@@ -367,7 +366,6 @@ public class PersonControllerTest extends DBRequests {
     @Feature("person-controller")
     @Description("Проверка продажи автомобиля")
     public void userSellsCar() throws SQLException {
-        DBRequests dbRequests = new DBRequests();
         createUser();
         car.setPrice(faker.number().randomDouble(2, 2, createdUserMoney.intValue()) - 1);
         Car carResponse = carAdapter.createCar(car); // создаём автомобиль
@@ -375,11 +373,16 @@ public class PersonControllerTest extends DBRequests {
         usersAdapter.buyOrSellCarByUserIdCarId(createdUserId, carId, "buy", OK_STATUS_CODE); // чтобы продать что-то ненужное
         // надо сначала купить что-то ненужное!
         UserResponse userResponse = usersAdapter.buyOrSellCarByUserIdCarId(createdUserId, carId, "sell", OK_STATUS_CODE);
-        ResultSet databaseEntry = dbRequests.checkUserOwnsCarByCarId(createdUserId, carId); // проверяем отсутствие записи в БД
+        connect(); // подключаемся к БД
+        Integer databaseEntry = checkUserOwnsCarByCarId(createdUserId, carId); // проверяем отсутствие записи в БД
         softAssert.assertEquals(userResponse.getMoney(),
                 userRequest.getMoney(), // купил и продал - значение счёта после продажи = значению счёта до покупки
                 "На счету пользователя неверная сумма после продажи авто.");
-        softAssert.assertNull(databaseEntry); // проверяем, что запись со связкой car.id + user.id не была найдена
+        softAssert.assertEquals((int) databaseEntry,
+                0,
+                String.format("Для пользователя с id = %s найдена запись с carId = %s", createdUserId, carId)); // проверяем, что запись со связкой car.id + user.id не была найдена
+        close(); // отключаемся от БД
+        softAssert.assertAll();
     }
 
     // POST /user/{userId}/sell/{carId}
