@@ -426,7 +426,47 @@ public class PersonControllerTest extends DBRequests {
                 OK_STATUS_CODE);
         assertEquals(userResponse.getMoney(),
                 userRequest.getMoney(), // значение amount осталось неизменным
-                "На счету пользователя неверная сумма после продажи авто.");
+                "Сумма на счету у пользователя изменилась.");
+    }
+
+    // POST /user/{userId}/sell/{carId}
+    @Test(description = "Попытка продажи автомобиля пользователем (авто во владении другого пользователя)",
+            testName = "API: POST /user/{userId}/sellCar/{carId}")
+    @Owner("Zheltikov Vasiliy")
+    @Link("http://82.142.167.37:4879/swagger-ui/index.html#/")
+    @Feature("person-controller")
+    @Description("Попытка продать автомобиль другого пользователя")
+    public void userSellsCarAnotherUserOwns() throws SQLException {
+        createUser(); // создание пользователя
+        Integer userOwnerCarId = createdUserId; // сохраняем userId будущего автовладельца
+        car.setPrice(faker.number().randomDouble(2, 2, createdUserMoney.intValue()) - 1);
+        Car carResponse = carAdapter.createCar(car); // создаём автомобиль
+        Integer carId = carResponse.getId(); // сохраняем carId
+        usersAdapter.buyOrSellCarByUserIdCarId( // записали carId на userOwnerCar
+                userOwnerCarId,
+                carId,
+                "buy",
+                OK_STATUS_CODE
+        );
+        createUser(); // создаём 2-го пользователя
+        UserResponse userResponse = usersAdapter.buyOrSellCarByUserIdCarId( // 2-ой пользователь продаёт машину 1-го
+                createdUserId,
+                carId,
+                "sell",
+                OK_STATUS_CODE);
+        connect(); // подключение к БД
+        // ищем запись в БД со связкой userOwnerId и carId
+        Integer databaseEntry = checkUserOwnsPropertyByPropertyId(userOwnerCarId, carId);
+        softAssert.assertEquals(userResponse.getMoney(),
+                userRequest.getMoney(), // значение amount осталось неизменным
+                "Сумма на счету у пользователя изменилась.");
+        // проверяем значение carId из запроса к БД
+        softAssert.assertEquals((int) databaseEntry, // по userOwnerCar
+                (int) carId, // должна найтись запись с carId (чужое авто не продано)
+                String.format("Для пользователя с id = %s найдена запись с carId = %s", createdUserId, carId));
+        // проверяем, что запись со связкой car.id + user.id не была найдена
+        close(); // закрытие подключения к БД
+        softAssert.assertAll();
     }
 
     // POST /user/{userId}/buy/{carId}
@@ -448,7 +488,7 @@ public class PersonControllerTest extends DBRequests {
                 NOT_ACCEPTABLE_STATUS_CODE);
         assertEquals(userResponse.getMoney(),
                 createdUserMoney,
-                "Значение user.amount изменилось");
+                "Сумма на счету у пользователя изменилась.");
     }
 
     // POST /user/{userId}/sell/{carId}
