@@ -1,6 +1,6 @@
 package db;
 
-import dto.api.Car;
+import dto.api.cars.Car;
 import org.testng.annotations.Test;
 
 import java.sql.ResultSet;
@@ -14,8 +14,8 @@ public class DBRequests extends DBConnection{
         ResultSet result = select(
                     "SELECT c.*,et.type_name FROM car c " +
                           "JOIN engine_type et ON c.engine_type_id = et.id " +
-                          "WHERE c.id ="+ String.valueOf(id) +
-                          "LIMIT 1");
+                          "WHERE c.id ="+id+
+                          " LIMIT 1");
         result.next();
         Car car = new Car();
         car.setId(result.getInt("id"));
