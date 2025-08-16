@@ -211,10 +211,11 @@ public class UsersAdapter extends BaseAPI {
     // POST /user/{userId}/sellCar/{carId}
     @Step("Покупка/продажа авто {carId} пользователем {userId} с неверным методом запроса")
     public void buyOrSellCarByUserIdCarIdWrongMethod(Integer userId, Integer carId, String option, Integer statusCode) {
+        FilterableRequestSpecification  spec = getSpec();
         spec.body("");
         spec
                 .removeHeader("Authorization")
-                .header("Authorization", authAPI.getToken())
+                .header("Authorization", getToken())
                 .request()
                 .log().all()
                 .when()
@@ -248,10 +249,11 @@ public class UsersAdapter extends BaseAPI {
     // GET /users
     @Step("Получение данных по всем пользователям с неверным методом запроса")
     public void getUsersWrongMethod(Integer statusCode) {
+        FilterableRequestSpecification  spec = getSpec();
         spec.body("");
         spec
                 .removeHeader("Authorization")
-                .header("Authorization", authAPI.getToken())
+                .header("Authorization", getToken())
                 .request()
                 .log().all()
                 .when()
