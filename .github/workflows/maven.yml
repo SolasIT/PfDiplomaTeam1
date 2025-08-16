@@ -20,8 +20,8 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      EMAIL: ${{secrets.SD_EMAIL}}
-      PASSWORD: ${{secrets.SD_PASSWORD}}
+      SD_EMAIL: ${{secrets.SD_EMAIL}}
+      SD_PASSWORD: ${{secrets.SD_PASSWORD}}
 
     steps:
       - name: Checkout
