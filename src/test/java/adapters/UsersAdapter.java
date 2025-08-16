@@ -189,6 +189,23 @@ public class UsersAdapter extends BaseAPI {
                 .body(blankOrNullString()); // проверка, что в теле ответа нет данных
     }
 
+    // POST /user/{userId}/buyCar/{carId}
+    // POST /user/{userId}/sellCar/{carId}
+    public void buyOrSellCarByUserIdCarIdWrongMethod(Integer userId, Integer carId, String option, Integer statusCode) {
+        spec.body("");
+        spec
+                .removeHeader("Authorization")
+                .header("Authorization", authAPI.getToken())
+                .request()
+                .log().all()
+                .when()
+                .put(BASE_URI + "/" + userId + "/" + option.toLowerCase() + "Car/" + carId)
+                .then()
+                .log().all()
+                .statusCode(statusCode)
+                .body(blankOrNullString()); // проверка, что в теле ответа нет данных
+    }
+
     // GET /users
     public UserResponse[] getUsers(Integer statusCode) {
         spec.body("");

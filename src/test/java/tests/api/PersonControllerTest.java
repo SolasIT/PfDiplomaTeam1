@@ -412,7 +412,7 @@ public class PersonControllerTest {
     }
 
     // POST /user/{userId}/sell/{carId}
-    // POST /user/{userId}/sell/{carId}
+    // POST /user/{userId}/buy/{carId}
     @Test(dataProvider = "Missing values user buy or sell car data",
             dependsOnMethods = "createUser",
             description = "Нарушение контракта методов POST /user/{userId}/{buy/sell}Car/{carId}",
@@ -426,7 +426,7 @@ public class PersonControllerTest {
     }
 
     // POST /user/{userId}/sell/{carId}
-    // POST /user/{userId}/sell/{carId}
+    // POST /user/{userId}/buy/{carId}
     @Test(dataProvider = "Non existent values user buy or sell car data",
             dependsOnMethods = "createUser",
             description = "Невалидные данные в запросе",
@@ -438,6 +438,24 @@ public class PersonControllerTest {
     public void userBuyOrSellCarWithNonExistentValues(Integer userId, Integer carId, String option) {
         usersAdapter.buyOrSellCarByUserIdCarIdIncorrect(Integer.toString(userId), Integer.toString(carId), option, NOT_FOUND_STATUS_CODE);
     }
+
+    // POST /user/{userId}/sell/{carId}
+    // POST /user/{userId}/buy/{carId}
+    @Test(description = "Нарушение контракта POST /user/{userId}",
+            testName = "API: POST /user/{userId}/sellCar/{carId}: нарушение контракта")
+    @Owner("Zheltikov Vasiliy")
+    @Link("http://82.142.167.37:4879/swagger-ui/index.html#/")
+    @Feature("person-controller")
+    @Description("Проверка API метода POST: выполнение запроса с неверным методом")
+    public void buyOrSellCarByUserIdCarIdWrongMethod() {
+        createUser();
+        car.setPrice(faker.number().randomDouble(2, 2, createdUserMoney.intValue()) - 1);
+        Car carResponse = carAdapter.createCar(car); // создаём автомобиль
+        Integer carId = carResponse.getId();
+        usersAdapter.buyOrSellCarByUserIdCarIdWrongMethod(createdUserId, carId, "sell", METHOD_NOT_ALLOWED_STATUS_CODE);
+        usersAdapter.buyOrSellCarByUserIdCarIdWrongMethod(createdUserId, carId, "buy", METHOD_NOT_ALLOWED_STATUS_CODE);
+    }
+    // Тест падает из-за того, что в ответе возвращается 404 ошибка, а не 405
 
     // GET /users
     @Test(description = "Запрос на получение всех пользователей",

@@ -1,6 +1,6 @@
 package db;
 
-import dto.api.Car;
+import dto.api.cars.Car;
 import org.testng.annotations.Test;
 
 import java.sql.ResultSet;
