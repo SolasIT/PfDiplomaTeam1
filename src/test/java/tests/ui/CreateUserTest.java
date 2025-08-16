@@ -41,7 +41,7 @@ public class CreateUserTest extends BaseTest {
             testName = "Проверка ошибок при создании пользователя")
     @Owner("Laptev Denis")
     @Link("http://82.142.167.37:4881/#/create/user")
-    @Feature("Create New")
+    @Feature("Create New User")
     @Description("Проверка ошибок при неккоректном заполнении карточки клиента")
     public void createUserWithNegativeValue(String firstname, String lastname, int age, String sex, double money, String status) {
         User user = new User();
@@ -73,7 +73,7 @@ public class CreateUserTest extends BaseTest {
             testName = "Проверка создания клиента")
     @Owner("Laptev Denis")
     @Link("http://82.142.167.37:4881/#/create/user")
-    @Feature("Create New")
+    @Feature("Create New User")
     @Description("Проверка создания клиента")
     public void createUser(String lang) {
         User user = getUser(lang);
@@ -102,7 +102,7 @@ public class CreateUserTest extends BaseTest {
             testName = "Проверка изменения значения возраста нажатием стрелочек")
     @Owner("Laptev Denis")
     @Link("http://82.142.167.37:4881/#/create/user")
-    @Feature("Create New")
+    @Feature("Create New User")
     @Description("Проверка изменения значения возраста нажатием стрелочек")
     public void arrowClickAge(String fild, double value) {
         User user = getUser("us");
@@ -132,7 +132,7 @@ public class CreateUserTest extends BaseTest {
             testName = "Проверка изменения значения денег нажатием стрелочек")
     @Owner("Laptev Denis")
     @Link("http://82.142.167.37:4881/#/create/user")
-    @Feature("Create New")
+    @Feature("Create New User")
     @Description("Проверка изменения значения денег нажатием стрелочек")
     public void arrowClickMoney(String fild, double value) {
         User user = getUser("us");
@@ -146,6 +146,7 @@ public class CreateUserTest extends BaseTest {
                 .arrowClick(fild, value);
         value = value * 0.01;
         double sum = user.getMoney() + value;
-        assertEquals(sum, createUserPage.getMoney());
+        double res = Math.round(sum*100.0)/100.0;
+        assertEquals(res, createUserPage.getMoney());
     }
 }
