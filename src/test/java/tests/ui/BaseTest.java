@@ -6,6 +6,7 @@ import com.codeborne.selenide.WebDriverRunner;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.testng.annotations.*;
 import org.testng.asserts.SoftAssert;
 import pages.*;
@@ -19,6 +20,7 @@ import static com.codeborne.selenide.Selenide.closeWebDriver;
 
 @Listeners(TestListener.class)
 public class BaseTest {
+
     SoftAssert softAssert;
     MainPage mainPage;
     CarsCreateNewPage carsCreateNewPage;
@@ -32,38 +34,48 @@ public class BaseTest {
     String email = System.getProperty("email", PropertyReader.getProperty("email"));
     String password = System.getProperty("password", PropertyReader.getProperty("password"));
 
+    @Parameters({"browser"}) // для кроссбраузерного тестирования
     @BeforeMethod(alwaysRun = true)
-    public void setup() {
-        // Настройки Chrome
-        ChromeOptions options = new ChromeOptions();
-        Map<String, Object> chromePrefs = new HashMap<>();
-        chromePrefs.put("credentials_enable_service", false);
-        chromePrefs.put("profile.password_manager_enabled", false);
-        chromePrefs.put("profile.default_content_setting_values.notifications", 2);
-        options.setExperimentalOption("prefs", chromePrefs);
-        // options.addArguments("--incognito"); // в этом режиме ругается на незащищённое подключение
-        options.addArguments("--disable-notifications");
-        options.addArguments("--disable-popup-blocking");
-        options.addArguments("--disable-infobars");
-        if (System.getProperty("email") != null) {
-            options.addArguments("--headless");
-        }
-        
-        Configuration.browser = "chrome";
-        Configuration.browserCapabilities = options;
+    public void setup(@Optional("chrome") String browser) {
         Configuration.baseUrl = "http://82.142.167.37:4881/";
         Configuration.clickViaJs = true;
         Configuration.timeout = 10000;
         Configuration.pageLoadTimeout = 30000;
         Configuration.screenshots = true;
         Configuration.savePageSource = true;
-
+        if (browser.equalsIgnoreCase("chrome")) {
+            // Настройки Chrome
+            ChromeOptions options = new ChromeOptions();
+            Map<String, Object> chromePrefs = new HashMap<>();
+            chromePrefs.put("credentials_enable_service", false);
+            chromePrefs.put("profile.password_manager_enabled", false);
+            chromePrefs.put("profile.default_content_setting_values.notifications", 2);
+            options.setExperimentalOption("prefs", chromePrefs);
+            // options.addArguments("--incognito"); // в этом режиме ругается на незащищённое подключение
+            options.addArguments("--disable-notifications");
+            options.addArguments("--disable-popup-blocking");
+            options.addArguments("--disable-infobars");
+            if (System.getProperty("email") != null) {
+                options.addArguments("--headless");
+            }
+            Configuration.browser = "chrome";
+            Configuration.browserCapabilities = options;
+        } else if (browser.equalsIgnoreCase("firefox")) {
+            // Настройки Firefox
+            FirefoxOptions options = new FirefoxOptions();
+            // options.addArguments("--incognito");
+            if (System.getProperty("email") != null) {
+                options.addArguments("--headless");
+            }
+            Configuration.browser = "firefox";
+            Configuration.browserCapabilities = options;
+        }
         SelenideLogger.addListener("AllureSelenide", new AllureSelenide()
                 .screenshots(true)
                 .savePageSource(true));
 
         softAssert = new SoftAssert();
-      
+
         mainPage = new MainPage();
         carsCreateNewPage = new CarsCreateNewPage();
         carsReadAllPage = new CarsReadAllPage();
@@ -72,6 +84,7 @@ public class BaseTest {
         buyOrSellCarPage = new BuyOrSellCarPage();
         allDeletePage = new AllDeletePage();
         settleToHousePage = new SettleToHousePage();
+
     }
 
     @AfterMethod(alwaysRun = true)

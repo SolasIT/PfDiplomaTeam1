@@ -1,7 +1,6 @@
 package adapters;
 
-
-import dto.api.Car;
+import dto.api.cars.Car;
 
 import static org.hamcrest.Matchers.equalTo;
 
