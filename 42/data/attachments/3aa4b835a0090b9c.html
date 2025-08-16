@@ -1,0 +1,35 @@
+<div>PUT to http://82.142.167.37:4879/user/8949</div>
+
+<h4>Body</h4>
+<div>
+    <pre class="preformated-text">
+{
+    &quot;id&quot;: 8949,
+    &quot;firstName&quot;: &quot;Kevin&quot;,
+    &quot;secondName&quot;: &quot;Bayer&quot;,
+    &quot;age&quot;: 37,
+    &quot;sex&quot;: &quot;MALE&quot;,
+    &quot;money&quot;: 37764.57
+}    </pre>
+</div>
+
+<h4>Headers</h4>
+<div>
+        <div>Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQHBmbGIucnUiLCJyb2xlcyI6WyJ1c2VyIl0sImlzcyI6Imh0dHA6Ly84Mi4xNDIuMTY3LjM3OjQ4NzkvbG9naW4iLCJleHAiOjE3NTU0MDM3Nzd9.5Z7NRYM2WvzjnO0FupGvh1JIJ5B1g7jtYE0nq5bk-w4</div>
+        <div>Accept: */*</div>
+        <div>Content-Type: application/json</div>
+</div>
+
+
+
+<h4>Curl</h4>
+<div>
+curl -v -X PUT &#39;http://82.142.167.37:4879/user/8949&#39; -H &#39;Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQHBmbGIucnUiLCJyb2xlcyI6WyJ1c2VyIl0sImlzcyI6Imh0dHA6Ly84Mi4xNDIuMTY3LjM3OjQ4NzkvbG9naW4iLCJleHAiOjE3NTU0MDM3Nzd9.5Z7NRYM2WvzjnO0FupGvh1JIJ5B1g7jtYE0nq5bk-w4&#39; -H &#39;Accept: */*&#39; -H &#39;Content-Type: application/json&#39; -d &#39;{
+    &quot;id&quot;: 8949,
+    &quot;firstName&quot;: &quot;Kevin&quot;,
+    &quot;secondName&quot;: &quot;Bayer&quot;,
+    &quot;age&quot;: 37,
+    &quot;sex&quot;: &quot;MALE&quot;,
+    &quot;money&quot;: 37764.57
+}&#39;
+</div>
