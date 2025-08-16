@@ -89,8 +89,17 @@ public class BaseTest {
 
     @AfterMethod(alwaysRun = true)
     public void tearDown() {
+         if(ITestResult.FAILURE == result.getStatus()){
+            byte[] screen = Selenide.screenshot(OutputType.BYTES);
+            saveScreen("Screen",screen);
+        }
         if(WebDriverRunner.getWebDriver()!=null) {
             closeWebDriver();
         }
+    }
+    
+        @Attachment (value = "{name}", type = "image/png")
+    private static byte[] saveScreen(String name,byte[] image){
+        return image;
     }
 }
