@@ -42,7 +42,7 @@ public class DBConnection {
         try {
             if (connect != null) {
                 connect.close();
-                System.out.println("Close DB");
+                log.info("Close DB");
             }
             if (statement != null) {
                 statement.close();
