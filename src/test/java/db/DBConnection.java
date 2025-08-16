@@ -20,7 +20,7 @@ public class DBConnection {
         try {
             connect = DriverManager.getConnection(URL,USER,PASSWORD);
             statement = connect.createStatement();
-            log.info("Connect DB");
+            log.info("Connect DB URL:{},USER: {},PASSWORD: {}",URL,USER,PASSWORD);
         } catch (SQLException e) {
            log.error(e.getMessage());
         }
