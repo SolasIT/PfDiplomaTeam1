@@ -11,7 +11,6 @@ import org.testng.asserts.SoftAssert;
 
 import static dto.api.cars.CarFactory.getCar;
 
-
 public class CarAPITest {
     SoftAssert softAssert = new SoftAssert();
 
