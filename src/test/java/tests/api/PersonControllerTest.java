@@ -359,6 +359,7 @@ public class PersonControllerTest extends DBRequests {
                 carId,
                 "buy",
                 OK_STATUS_CODE);
+        checkConnect(); // проверка подключения к БД
         connect(); // подключение к БД
         // ищем запись в БД со связкой userId и carId
         Integer databaseEntry = checkUserOwnsPropertyByPropertyId(createdUserId, carId);
@@ -381,7 +382,7 @@ public class PersonControllerTest extends DBRequests {
     @Feature("person-controller")
     @Description("Проверка покупки автомобиля (user.amount = car.price)")
     public void userBuyCarTwice() throws SQLException {
-        UserResponse userResponse = usersAdapter.createUser(userRequest, SUCCESS_CREATED_STATUS_CODE);
+        usersAdapter.createUser(userRequest, SUCCESS_CREATED_STATUS_CODE);
         car.setPrice(createdUserMoney * 100 / 3 / 100);
         Integer carId = carAdapter.createCar(car).getId();
         for (int i = 0; i < 2; i++) {
@@ -391,6 +392,7 @@ public class PersonControllerTest extends DBRequests {
                     "buy",
                     OK_STATUS_CODE); // пользователь покупает автомобиль дважды
         }
+        checkConnect(); // проверка подключения к БД
         connect(); // подключение к БД
         // ищем запись в БД со связкой userId и carId
         Integer databaseEntry = checkUserOwnsPropertyByPropertyId(createdUserId, carId); // проверяем кол-во записей в БД
@@ -422,6 +424,7 @@ public class PersonControllerTest extends DBRequests {
                 carId,
                 "sell",
                 OK_STATUS_CODE);
+        checkConnect(); // проверка подключения к БД
         connect(); // подключение к БД
         // ищем запись в БД со связкой userId и carId
         Integer databaseEntry = checkUserOwnsPropertyByPropertyId(createdUserId, carId);
@@ -485,6 +488,7 @@ public class PersonControllerTest extends DBRequests {
                 carId,
                 "sell",
                 OK_STATUS_CODE);
+        checkConnect(); // проверка подключения к БД
         connect(); // подключение к БД
         // ищем запись в БД со связкой userOwnerId и carId
         Integer databaseEntry = checkUserOwnsPropertyByPropertyId(userOwnerCarId, carId);
