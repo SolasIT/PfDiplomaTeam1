@@ -83,8 +83,8 @@ public class PersonControllerTest extends BaseAPI {
         Integer userId = usersAdapter.createUser(userRequest).getId();
         Integer carId = carAdapter.createCar(car).getId();
         return new Object[][]{
-                {userId + 1, carId, "buy"}, // несуществующий параметр userId
-                {userId, carId, "sell"} // не передан обязательный параметр carId
+                {userId + 1234, carId, "buy"}, // несуществующий параметр userId
+                {userId, carId + 1234, "sell"} // несуществующий параметр carId
         };
     }
 
@@ -166,14 +166,14 @@ public class PersonControllerTest extends BaseAPI {
     }
 
     // GET User/{userId}
-    @Test(dependsOnMethods = "createUser",
-            description = "Проверка получения информации по ранее созданному пользователю",
+    @Test(description = "Проверка получения информации по ранее созданному пользователю",
             testName = "API: GET /user/{userId}")
     @Owner("Zheltikov Vasiliy")
     @Link("http://82.142.167.37:4879/swagger-ui/index.html#/")
     @Feature("person-controller")
     @Description("Проверка API метода GET")
     public void getUserById() {
+        createUser();
         UserResponse userResponse = usersAdapter.getUserById(createdUserId);
         softAssert.assertEquals(userResponse.getId(),
                 createdUserId,
@@ -197,7 +197,7 @@ public class PersonControllerTest extends BaseAPI {
     }
 
     // GET User/{userId}
-    @Test(dependsOnMethods = {"createUser", "deleteUserByNonExistentId"},
+    @Test(dependsOnMethods = {"createUser", "deleteUserById"},
             description = "Попытка получения информации по несуществующему пользователю",
             testName = "API: GET /user/{userId}: userId не существует")
     @Owner("Zheltikov Vasiliy")
@@ -330,19 +330,20 @@ public class PersonControllerTest extends BaseAPI {
     @Feature("person-controller")
     @Description("Проверка API метода DELETE")
     public void deleteUserByNonExistentId() {
+        createUser();
         usersAdapter.deleteUserById(createdUserId);
         usersAdapter.deleteUserByNonExistentId(createdUserId);
     }
 
     // POST /user/{userId}/buy/{carId}
-    @Test(dependsOnMethods = "createUser",
-            description = "Покупка автомобиля пользователем",
+    @Test(description = "Покупка автомобиля пользователем",
             testName = "API: POST /user/{userId}/buyCar/{carId}")
     @Owner("Zheltikov Vasiliy")
     @Link("http://82.142.167.37:4879/swagger-ui/index.html#/")
     @Feature("person-controller")
     @Description("Проверка покупки автомобиля (user.amount = car.price")
     public void userBuyCarAmountEqualPrice() {
+        createUser();
         car.setPrice(createdUserMoney); // car.price = user.amount
         Car carResponse = carAdapter.createCar(car); // создаём автомобиль (car.price = user.amount)
         Integer carId = carResponse.getId();
@@ -353,14 +354,14 @@ public class PersonControllerTest extends BaseAPI {
     }
 
     // POST /user/{userId}/sell/{carId}
-    @Test(dependsOnMethods = "createUser",
-            description = "Продажа автомобиля пользователем",
+    @Test(description = "Продажа автомобиля пользователем",
             testName = "API: POST /user/{userId}/sellCar/{carId}")
     @Owner("Zheltikov Vasiliy")
     @Link("http://82.142.167.37:4879/swagger-ui/index.html#/")
     @Feature("person-controller")
     @Description("Проверка продажи автомобиля")
     public void userSellsCar() {
+        createUser();
         car.setPrice(faker.number().randomDouble(2, 2, createdUserMoney.intValue()) - 1);
         Car carResponse = carAdapter.createCar(car); // создаём автомобиль
         Integer carId = carResponse.getId();
@@ -391,14 +392,14 @@ public class PersonControllerTest extends BaseAPI {
     }
 
     // POST /user/{userId}/buy/{carId}
-    @Test(dependsOnMethods = "createUser",
-            description = "Попытка покупки автомобиля пользователем при недостаточном кол-ве средств",
+    @Test(description = "Попытка покупки автомобиля пользователем при недостаточном кол-ве средств",
             testName = "API: POST /user/{userId}/buyCar/{carId}")
     @Owner("Zheltikov Vasiliy")
     @Link("http://82.142.167.37:4879/swagger-ui/index.html#/")
     @Feature("person-controller")
     @Description("Проверка покупки автомобиля (user.amount < car.price")
     public void userBuyCarAmountLessPrice() {
+        createUser();
         car.setPrice((createdUserMoney * 100 + 1) / 100); // car.price больше user.amount на 0.01
         Car carResponse = carAdapter.createCar(car); // создаём автомобиль (car.price = user.amount)
         Integer carId = carResponse.getId();

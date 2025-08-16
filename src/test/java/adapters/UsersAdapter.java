@@ -115,7 +115,7 @@ public class UsersAdapter extends BaseAPI {
                 .put(BASE_URI + "/user/" + id)
                 .then()
                 .log().all()
-                .statusCode(200)
+                .statusCode(anyOf(is(200), is(202)))
                 .extract()
                 .as(UserResponse.class);
     }

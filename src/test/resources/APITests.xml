@@ -5,15 +5,10 @@
         <listener class-name="utils.TestListener"/>
         <listener class-name="utils.AnnotationTransformer"/>
     </listeners>
-    <test name="All Tests">
+    <test name="API Tests">
         <classes>
-            <class name="tests.ui.BuyOrSellCarInputsTest"/>
-            <class name="tests.ui.BuyOrSellCarTest"/>
-            <class name="tests.ui.AddMoneyTest"/>
-            <class name="tests.ui.CreateUserTest"/>
-            <class name="tests.ui.AllDeleteTest"/>
-            <class name="tests.api.PersonControllerTest"/>
             <class name="tests.api.CarAPITest"/>
+            <class name="tests.api.PersonControllerTest"/>
         </classes>
     </test> <!-- Test -->
 </suite>
