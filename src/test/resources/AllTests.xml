@@ -9,6 +9,8 @@
         <classes>
             <class name="tests.ui.BuyOrSellCarInputsTest"/>
             <class name="tests.ui.BuyOrSellCarTest"/>
+            <class name="tests.ui.SettleToHouseInputsTest"/>
+            <class name="tests.ui.SettleToHouseTest"/>
             <class name="tests.ui.AddMoneyTest"/>
             <class name="tests.ui.CreateUserTest"/>
             <class name="tests.ui.AllDeleteTest"/>

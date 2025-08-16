@@ -25,6 +25,7 @@
         <allure-selenide.version>2.29.1</allure-selenide.version>
         <javafaker.version>1.0.2</javafaker.version>
         <gson.version>2.13.1</gson.version>
+        <suiteXmlFile>AllTests.xml</suiteXmlFile>
     </properties>
 
     <dependencyManagement>
@@ -102,11 +103,6 @@
             <artifactId>allure-selenide</artifactId>
             <version>${allure-selenide.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.github.javafaker</groupId>
-            <artifactId>javafaker</artifactId>
-            <version>1.0.2</version>
-        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -123,6 +119,9 @@
                     <argLine>
                         -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
                     </argLine>
+                    <suiteXmlFiles>
+                        <suiteXmlFile>${suiteXmlFile}</suiteXmlFile>
+                    </suiteXmlFiles>
                 </configuration>
             </plugin>
         </plugins>
