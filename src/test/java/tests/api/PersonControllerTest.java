@@ -3,6 +3,7 @@ package tests.api;
 import adapters.CarAdapter;
 import adapters.UsersAdapter;
 import com.github.javafaker.Faker;
+import db.DBRequests;
 import dto.api.cars.Car;
 import dto.api.users.rq.UserRequest;
 import dto.api.users.rs.UserResponse;
@@ -15,20 +16,22 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
+import java.sql.SQLException;
+
 import static org.testng.Assert.assertEquals;
 
 @Slf4j
-public class PersonControllerTest {
+public class PersonControllerTest extends DBRequests {
 
     // HTTP StatusCodes
     private final Integer OK_STATUS_CODE = 200,
-                          SUCCESS_CREATED_STATUS_CODE = 201,
-                          ACCEPTED_STATUS_CODE = 202,
-                          NO_CONTENT_STATUS_CODE = 204,
-                          BAD_REQUEST_STATUS_CODE = 400,
-                          NOT_FOUND_STATUS_CODE = 404,
-                          METHOD_NOT_ALLOWED_STATUS_CODE = 405,
-                          NOT_ACCEPTABLE_STATUS_CODE = 406;
+            SUCCESS_CREATED_STATUS_CODE = 201,
+            ACCEPTED_STATUS_CODE = 202,
+            NO_CONTENT_STATUS_CODE = 204,
+            BAD_REQUEST_STATUS_CODE = 400,
+            NOT_FOUND_STATUS_CODE = 404,
+            METHOD_NOT_ALLOWED_STATUS_CODE = 405,
+            NOT_ACCEPTABLE_STATUS_CODE = 406;
 
     SoftAssert softAssert = new SoftAssert();
     UsersAdapter usersAdapter = new UsersAdapter();
@@ -106,8 +109,10 @@ public class PersonControllerTest {
     @Feature("person-controller")
     @Description("Проверка API метода POST")
     public void createUser() {
-        UserResponse userResponse = usersAdapter.createUser(userRequest, SUCCESS_CREATED_STATUS_CODE); // создание пользователя POST
-        softAssert.assertEquals(userResponse.getFirstName(), // блок проверок на совпадение значений параметров в response и в request
+        // создание пользователя POST
+        UserResponse userResponse = usersAdapter.createUser(userRequest, SUCCESS_CREATED_STATUS_CODE);
+        // блок проверок на совпадение значений параметров в response и в request
+        softAssert.assertEquals(userResponse.getFirstName(),
                 userRequest.getFirstName(),
                 "Значение параметра firstName не соответствует ожидаемому");
         softAssert.assertEquals(userResponse.getSecondName(),
@@ -343,16 +348,61 @@ public class PersonControllerTest {
     @Owner("Zheltikov Vasiliy")
     @Link("http://82.142.167.37:4879/swagger-ui/index.html#/")
     @Feature("person-controller")
-    @Description("Проверка покупки автомобиля (user.amount = car.price")
-    public void userBuyCarAmountEqualPrice() {
+    @Description("Проверка покупки автомобиля (user.amount = car.price)")
+    public void userBuyCarAmountEqualPrice() throws SQLException {
         createUser();
         car.setPrice(createdUserMoney); // car.price = user.amount
         Car carResponse = carAdapter.createCar(car); // создаём автомобиль (car.price = user.amount)
         Integer carId = carResponse.getId();
-        UserResponse userResponse = usersAdapter.buyOrSellCarByUserIdCarId(createdUserId, carId, "buy", OK_STATUS_CODE);
-        assertEquals(userResponse.getMoney(),
-                0,
+        UserResponse userResponse = usersAdapter.buyOrSellCarByUserIdCarId(
+                createdUserId,
+                carId,
+                "buy",
+                OK_STATUS_CODE);
+        checkConnect(); // проверка подключения к БД
+        connect(); // подключение к БД
+        // ищем запись в БД со связкой userId и carId
+        Integer databaseEntry = checkUserOwnsPropertyByPropertyId(createdUserId, carId);
+        softAssert.assertEquals(userResponse.getMoney(),
+                0.0,
                 "На счету пользователя сумма, отличная от 0");
+        // проверяем значение carId из запроса к БД
+        softAssert.assertEquals((int) databaseEntry, // найденное в БД кол-во записей
+                1, // одна запись
+                String.format("Для пользователя с id = %s отсутствует запись с carId = %s или их больше одной",
+                        createdUserId, carId));
+        close(); // закрытие подключения к БД
+        softAssert.assertAll();
+    }
+
+    @Test(description = "Покупка того же автомобиля пользователем",
+            testName = "API: POST /user/{userId}/buyCar/{carId}")
+    @Owner("Zheltikov Vasiliy")
+    @Link("http://82.142.167.37:4879/swagger-ui/index.html#/")
+    @Feature("person-controller")
+    @Description("Проверка покупки автомобиля (user.amount = car.price)")
+    public void userBuyCarTwice() throws SQLException {
+        usersAdapter.createUser(userRequest, SUCCESS_CREATED_STATUS_CODE);
+        car.setPrice(createdUserMoney * 100 / 3 / 100);
+        Integer carId = carAdapter.createCar(car).getId();
+        for (int i = 0; i < 2; i++) {
+            usersAdapter.buyOrSellCarByUserIdCarId(
+                    createdUserId,
+                    carId,
+                    "buy",
+                    OK_STATUS_CODE); // пользователь покупает автомобиль дважды
+        }
+        checkConnect(); // проверка подключения к БД
+        connect(); // подключение к БД
+        // ищем запись в БД со связкой userId и carId
+        Integer databaseEntry = checkUserOwnsPropertyByPropertyId(createdUserId, carId); // проверяем кол-во записей в БД
+        // проверяем значение carId из запроса к БД
+        softAssert.assertEquals((int) databaseEntry,
+                1, // Одна запись = дублей нет
+                String.format("Для пользователя с id = %s отсутствует запись с carId = %s или их больше одной",
+                        createdUserId, carId));
+        close(); // закрытие подключения к БД
+        softAssert.assertAll();
     }
 
     // POST /user/{userId}/sell/{carId}
@@ -362,17 +412,33 @@ public class PersonControllerTest {
     @Link("http://82.142.167.37:4879/swagger-ui/index.html#/")
     @Feature("person-controller")
     @Description("Проверка продажи автомобиля")
-    public void userSellsCar() {
+    public void userSellsCar() throws SQLException {
         createUser();
         car.setPrice(faker.number().randomDouble(2, 2, createdUserMoney.intValue()) - 1);
         Car carResponse = carAdapter.createCar(car); // создаём автомобиль
         Integer carId = carResponse.getId();
-        usersAdapter.buyOrSellCarByUserIdCarId(createdUserId, carId, "buy", OK_STATUS_CODE); // чтобы продать что-то ненужное
-        // надо сначала купить что-то ненужное!
-        UserResponse userResponse = usersAdapter.buyOrSellCarByUserIdCarId(createdUserId, carId, "sell", OK_STATUS_CODE);
-        assertEquals(userResponse.getMoney(),
+        usersAdapter.buyOrSellCarByUserIdCarId(createdUserId, carId, "buy", OK_STATUS_CODE);
+        // чтобы продать что-то ненужное, надо сначала купить что-то ненужное!
+        UserResponse userResponse = usersAdapter.buyOrSellCarByUserIdCarId(
+                createdUserId,
+                carId,
+                "sell",
+                OK_STATUS_CODE);
+        checkConnect(); // проверка подключения к БД
+        connect(); // подключение к БД
+        // ищем запись в БД со связкой userId и carId
+        Integer databaseEntry = checkUserOwnsPropertyByPropertyId(createdUserId, carId);
+        softAssert.assertEquals(userResponse.getMoney(),
                 userRequest.getMoney(), // купил и продал - значение счёта после продажи = значению счёта до покупки
                 "На счету пользователя неверная сумма после продажи авто.");
+        // проверяем значение carId из запроса к БД
+        softAssert.assertEquals((int) databaseEntry, // проверка кол-ва вернувшихся в запросе к БД строк
+                0, // 0 возвращается, если записей нет
+                String.format("Для пользователя с id = %s найдена минимум одна запись с carId = %s",
+                        createdUserId, carId));
+        // проверяем, что запись со связкой car.id + user.id не была найдена
+        close(); // закрытие подключения к БД
+        softAssert.assertAll();
     }
 
     // POST /user/{userId}/sell/{carId}
@@ -387,10 +453,55 @@ public class PersonControllerTest {
         car.setPrice(faker.number().randomDouble(2, 2, createdUserMoney.intValue()) - 1);
         Car carResponse = carAdapter.createCar(car); // создаём автомобиль
         Integer carId = carResponse.getId();
-        UserResponse userResponse = usersAdapter.buyOrSellCarByUserIdCarId(createdUserId, carId, "sell", OK_STATUS_CODE);
+        UserResponse userResponse = usersAdapter.buyOrSellCarByUserIdCarId(
+                createdUserId,
+                carId,
+                "sell",
+                OK_STATUS_CODE);
         assertEquals(userResponse.getMoney(),
                 userRequest.getMoney(), // значение amount осталось неизменным
-                "На счету пользователя неверная сумма после продажи авто.");
+                "Сумма на счету у пользователя изменилась.");
+    }
+
+    // POST /user/{userId}/sell/{carId}
+    @Test(description = "Попытка продажи автомобиля пользователем (авто во владении другого пользователя)",
+            testName = "API: POST /user/{userId}/sellCar/{carId}")
+    @Owner("Zheltikov Vasiliy")
+    @Link("http://82.142.167.37:4879/swagger-ui/index.html#/")
+    @Feature("person-controller")
+    @Description("Попытка продать автомобиль другого пользователя")
+    public void userSellsCarAnotherUserOwns() throws SQLException {
+        createUser(); // создание пользователя
+        Integer userOwnerCarId = createdUserId; // сохраняем userId будущего автовладельца
+        car.setPrice(faker.number().randomDouble(2, 2, createdUserMoney.intValue()) - 1);
+        Car carResponse = carAdapter.createCar(car); // создаём автомобиль
+        Integer carId = carResponse.getId(); // сохраняем carId
+        usersAdapter.buyOrSellCarByUserIdCarId( // записали carId на userOwnerCar
+                userOwnerCarId,
+                carId,
+                "buy",
+                OK_STATUS_CODE
+        );
+        createUser(); // создаём 2-го пользователя
+        UserResponse userResponse = usersAdapter.buyOrSellCarByUserIdCarId( // 2-ой пользователь продаёт машину 1-го
+                createdUserId,
+                carId,
+                "sell",
+                OK_STATUS_CODE);
+        checkConnect(); // проверка подключения к БД
+        connect(); // подключение к БД
+        // ищем запись в БД со связкой userOwnerId и carId
+        Integer databaseEntry = checkUserOwnsPropertyByPropertyId(userOwnerCarId, carId);
+        softAssert.assertEquals(userResponse.getMoney(),
+                userRequest.getMoney(), // значение amount осталось неизменным
+                "Сумма на счету у пользователя изменилась.");
+        // проверяем значение carId из запроса к БД
+        softAssert.assertEquals((int) databaseEntry, // по userOwnerCar
+                1, // должна найтись одна запись с carId (чужое авто не продано)
+                String.format("Для пользователя с id = %s не найдена запись с carId = %s",
+                        createdUserId, carId));
+        close(); // закрытие подключения к БД
+        softAssert.assertAll();
     }
 
     // POST /user/{userId}/buy/{carId}
@@ -405,14 +516,18 @@ public class PersonControllerTest {
         car.setPrice((createdUserMoney * 100 + 1) / 100); // car.price больше user.amount на 0.01
         Car carResponse = carAdapter.createCar(car); // создаём автомобиль (car.price = user.amount)
         Integer carId = carResponse.getId();
-        UserResponse userResponse = usersAdapter.buyOrSellCarByUserIdCarId(createdUserId, carId, "buy", NOT_ACCEPTABLE_STATUS_CODE);
+        UserResponse userResponse = usersAdapter.buyOrSellCarByUserIdCarId(
+                createdUserId,
+                carId,
+                "buy",
+                NOT_ACCEPTABLE_STATUS_CODE);
         assertEquals(userResponse.getMoney(),
                 createdUserMoney,
-                "Значение user.amount изменилось");
+                "Сумма на счету у пользователя изменилась.");
     }
 
     // POST /user/{userId}/sell/{carId}
-    // POST /user/{userId}/sell/{carId}
+    // POST /user/{userId}/buy/{carId}
     @Test(dataProvider = "Missing values user buy or sell car data",
             dependsOnMethods = "createUser",
             description = "Нарушение контракта методов POST /user/{userId}/{buy/sell}Car/{carId}",
@@ -426,7 +541,7 @@ public class PersonControllerTest {
     }
 
     // POST /user/{userId}/sell/{carId}
-    // POST /user/{userId}/sell/{carId}
+    // POST /user/{userId}/buy/{carId}
     @Test(dataProvider = "Non existent values user buy or sell car data",
             dependsOnMethods = "createUser",
             description = "Невалидные данные в запросе",
@@ -436,8 +551,38 @@ public class PersonControllerTest {
     @Feature("person-controller")
     @Description("Проверка API метода POST: переданы несуществующий параметры userId, carId")
     public void userBuyOrSellCarWithNonExistentValues(Integer userId, Integer carId, String option) {
-        usersAdapter.buyOrSellCarByUserIdCarIdIncorrect(Integer.toString(userId), Integer.toString(carId), option, NOT_FOUND_STATUS_CODE);
+        usersAdapter.buyOrSellCarByUserIdCarIdIncorrect(
+                Integer.toString(userId),
+                Integer.toString(carId),
+                option,
+                NOT_FOUND_STATUS_CODE);
     }
+
+    // POST /user/{userId}/sell/{carId}
+    // POST /user/{userId}/buy/{carId}
+    @Test(description = "Нарушение контракта POST /user/{userId}",
+            testName = "API: POST /user/{userId}/sellCar/{carId}: нарушение контракта")
+    @Owner("Zheltikov Vasiliy")
+    @Link("http://82.142.167.37:4879/swagger-ui/index.html#/")
+    @Feature("person-controller")
+    @Description("Проверка API метода POST: выполнение запроса с неверным методом")
+    public void buyOrSellCarByUserIdCarIdWrongMethod() {
+        createUser();
+        car.setPrice(faker.number().randomDouble(2, 2, createdUserMoney.intValue()) - 1);
+        Car carResponse = carAdapter.createCar(car); // создаём автомобиль
+        Integer carId = carResponse.getId();
+        usersAdapter.buyOrSellCarByUserIdCarIdWrongMethod(
+                createdUserId,
+                carId,
+                "sell",
+                METHOD_NOT_ALLOWED_STATUS_CODE);
+        usersAdapter.buyOrSellCarByUserIdCarIdWrongMethod(
+                createdUserId,
+                carId,
+                "buy",
+                METHOD_NOT_ALLOWED_STATUS_CODE);
+    }
+    // Тест падает из-за того, что в ответе возвращается 404 ошибка, а не 405
 
     // GET /users
     @Test(description = "Запрос на получение всех пользователей",
@@ -463,6 +608,16 @@ public class PersonControllerTest {
                     "У пользователя отсутствует параметр money");
         }
         softAssert.assertAll();
+    }
+    // GET /users
+    @Test(description = "Нарушение контракта GET /users",
+            testName = "API: GET /users: нарушение контракта")
+    @Owner("Zheltikov Vasiliy")
+    @Link("http://82.142.167.37:4879/swagger-ui/index.html#/")
+    @Feature("person-controller")
+    @Description("Проверка API метода GET: выполнение запроса с неверным методом")
+    public void getAllUsersWrongMethod() {
+        usersAdapter.getUsersWrongMethod(METHOD_NOT_ALLOWED_STATUS_CODE);
     }
 }
 
