@@ -2,6 +2,7 @@ package adapters;
 
 import dto.api.users.rq.UserRequest;
 import dto.api.users.rs.UserResponse;
+import io.qameta.allure.Step;
 
 import static org.hamcrest.Matchers.*;
 
@@ -10,6 +11,7 @@ public class UsersAdapter extends BaseAPI {
     AuthAPI authAPI = new AuthAPI();
 
     // POST /user
+    @Step("Создание пользователя")
     public UserResponse createUser(UserRequest user, Integer statusCode) {
         return spec
                 .removeHeader("Authorization") // для избежания дублирующегося header'а Authorization
@@ -26,6 +28,7 @@ public class UsersAdapter extends BaseAPI {
     }
 
     // POST /user
+    @Step("Создание пользователя с некорректными данными")
     public void createUserIncorrectData(UserRequest user, Integer statusCode) {
         spec
                 .removeHeader("Authorization") // для избежания дублирующегося header'а Authorization
@@ -41,6 +44,7 @@ public class UsersAdapter extends BaseAPI {
     }
 
     // POST /user
+    @Step("Создание пользователя с неверным методом запроса")
     public void createUserWrongMethod(UserRequest user, Integer statusCode) {
         spec
                 .removeHeader("Authorization") // для избежания дублирующегося header'а Authorization
@@ -56,6 +60,7 @@ public class UsersAdapter extends BaseAPI {
     }
 
     // GET /user/{userId}
+    @Step("Получение пользователя по {userId}")
     public UserResponse getUserById(Integer id, Integer statusCode) {
         spec.body(""); // в GET не передаётся тело запроса
         return spec
@@ -73,6 +78,7 @@ public class UsersAdapter extends BaseAPI {
     }
 
     // GET /user/{userId}
+    @Step("Получение пользователя по {userId} с некорректными данными")
     public void getUserByIdIncorrectData(Integer id, Integer statusCode) {
         spec.body(""); // в GET не передаётся тело запроса
         spec
@@ -89,6 +95,7 @@ public class UsersAdapter extends BaseAPI {
     }
 
     // GET /user/{userId}
+    @Step("Получение пользователя по {userId} с неверным методом запроса")
     public void getUserByIdWrongMethod(Integer id, Integer statusCode) {
         spec.body(""); // в GET не передаётся тело запроса
         spec
@@ -105,6 +112,7 @@ public class UsersAdapter extends BaseAPI {
     }
 
     // PUT /user/{userId}
+    @Step("Изменение данных пользователя по {userId}")
     public UserResponse changeUserData(UserRequest user, Integer id, Integer statusCode) {
         return spec
                 .removeHeader("Authorization") // для избежания дублирующегося header'а Authorization
@@ -121,6 +129,7 @@ public class UsersAdapter extends BaseAPI {
     }
 
     // PUT /user/{userId}
+    @Step("Изменение данных пользователя по {userId} на некорректные")
     public void changeUserDataIncorrect(UserRequest user, Integer id, Integer statusCode) {
         spec
                 .removeHeader("Authorization") // для избежания дублирующегося header'а Authorization
@@ -136,6 +145,7 @@ public class UsersAdapter extends BaseAPI {
     }
 
     // DELETE /user/{userId}
+    @Step("Удаление пользователя по {userId}")
     public void deleteUserById(Integer id, Integer statusCode) {
         spec.body("");
         spec
@@ -153,6 +163,7 @@ public class UsersAdapter extends BaseAPI {
 
     // POST /user/{userId}/sellCar/{carId}
     // POST /user/{userId}/buyCar/{carId}
+    @Step("Покупка/продажа авто {carId} пользователем {userId}")
     public UserResponse buyOrSellCarByUserIdCarId(Integer userId, Integer carId, String option, Integer statusCode) {
         spec.body("");
         return spec
@@ -171,6 +182,7 @@ public class UsersAdapter extends BaseAPI {
 
     // POST /user/{userId}/buyCar/{carId}
     // POST /user/{userId}/sellCar/{carId}
+    @Step("Покупка/продажа авто пользователем с некорректными данными {userId}, {carId}")
     public void buyOrSellCarByUserIdCarIdIncorrect(String userId, String carId, String option, Integer statusCode) {
         if (!userId.isEmpty()) { // если userId не пустая строка
             userId += "/";
@@ -191,6 +203,7 @@ public class UsersAdapter extends BaseAPI {
 
     // POST /user/{userId}/buyCar/{carId}
     // POST /user/{userId}/sellCar/{carId}
+    @Step("Покупка/продажа авто {carId} пользователем {userId} с неверным методом запроса")
     public void buyOrSellCarByUserIdCarIdWrongMethod(Integer userId, Integer carId, String option, Integer statusCode) {
         spec.body("");
         spec
@@ -207,6 +220,7 @@ public class UsersAdapter extends BaseAPI {
     }
 
     // GET /users
+    @Step("Получение данных по всем пользователям")
     public UserResponse[] getUsers(Integer statusCode) {
         spec.body("");
         return
@@ -225,6 +239,7 @@ public class UsersAdapter extends BaseAPI {
     }
 
     // GET /users
+    @Step("Получение данных по всем пользователям с неверным методом запроса")
     public void getUsersWrongMethod(Integer statusCode) {
         spec.body("");
         spec
