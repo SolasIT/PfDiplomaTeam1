@@ -83,8 +83,8 @@ public class PersonControllerTest extends BaseAPI {
         Integer userId = usersAdapter.createUser(userRequest).getId();
         Integer carId = carAdapter.createCar(car).getId();
         return new Object[][]{
-                {userId + 1234, carId, "buy"}, // несуществующий параметр userId
-                {userId, carId + 1234, "sell"} // несуществующий параметр carId
+                {userId + 1234, carId, "buy"}, // несуществующий параметр userId (response status 500)
+                {userId, carId + 1234, "sell"} // несуществующий параметр carId (response status 404)
         };
     }
 
@@ -435,6 +435,32 @@ public class PersonControllerTest extends BaseAPI {
     @Description("Проверка API метода POST: переданы несуществующий параметры userId, carId")
     public void userBuyOrSellCarWithNonExistentValues(Integer userId, Integer carId, String option) {
         usersAdapter.buyOrSellCarNonExistentValues(userId, carId, option);
+    }
+
+    // GET /users
+    @Test(description = "Запрос на получение всех пользователей",
+            testName = "Получение всех пользователей")
+    @Owner("Zheltikov Vasiliy")
+    @Link("http://82.142.167.37:4879/swagger-ui/index.html#/")
+    @Feature("person-controller")
+    @Description("Проверка API метода GET")
+    public void getAllUsers() {
+        UserResponse[] users = usersAdapter.getUsers();
+        for (UserResponse user : users) {
+            softAssert.assertNotNull(user.getId(),
+                    "У пользователя отсутствует параметр id");
+            softAssert.assertNotNull(user.getFirstName(),
+                    "У пользователя отсутствует параметр firstName");
+            softAssert.assertNotNull(user.getSecondName(),
+                    "У пользователя отсутствует параметр secondName");
+            softAssert.assertNotNull(user.getAge(),
+                    "У пользователя отсутствует параметр age");
+            softAssert.assertNotNull(user.getSex(),
+                    "У пользователя отсутствует параметр sex");
+            softAssert.assertNotNull(user.getMoney(),
+                    "У пользователя отсутствует параметр money");
+        }
+        softAssert.assertAll();
     }
 }
 

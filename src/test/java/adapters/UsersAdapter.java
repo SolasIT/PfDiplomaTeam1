@@ -1,7 +1,11 @@
 package adapters;
 
+import com.google.gson.JsonObject;
 import dto.api.users.rq.UserRequest;
 import dto.api.users.rs.UserResponse;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static org.hamcrest.Matchers.*;
 
@@ -247,5 +251,23 @@ public class UsersAdapter extends BaseAPI {
                 .log().all()
                 .statusCode(anyOf(is(404), is(500)))
                 .body(blankOrNullString());
+    }
+
+    // GET /users
+    public UserResponse[] getUsers() {
+        spec.body("");
+        return
+                spec
+                .removeHeader("Authorization")
+                .header("Authorization", authAPI.getToken())
+                .request()
+                .log().all()
+                .when()
+                .get(BASE_URI + "/users")
+                .then()
+                .log().all()
+                .statusCode(200)
+                .extract()
+                .body().as(UserResponse[].class);
     }
 }
