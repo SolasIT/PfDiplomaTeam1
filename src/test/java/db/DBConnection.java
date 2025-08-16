@@ -1,8 +1,6 @@
 package db;
 
 import lombok.extern.log4j.Log4j2;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 import utils.PropertyReader;
 
 import java.sql.*;

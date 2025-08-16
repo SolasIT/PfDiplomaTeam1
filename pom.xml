@@ -26,8 +26,8 @@
         <javafaker.version>1.0.2</javafaker.version>
         <gson.version>2.13.1</gson.version>
         <postgresql.version>42.7.7</postgresql.version>
+        <suiteXmlFile>src/test/resources/AllTests.xml</suiteXmlFile>
         <allure-rest-assured.version>2.24.0</allure-rest-assured.version>
-        <suiteXmlFile>AllTests.xml</suiteXmlFile>
     </properties>
 
     <dependencyManagement>
@@ -105,7 +105,7 @@
             <artifactId>allure-selenide</artifactId>
             <version>${allure-selenide.version}</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
+        <!-- https://mvnrepository.com/artifact/io.rest-assured/rest-assured -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
