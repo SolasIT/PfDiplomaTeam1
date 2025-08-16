@@ -34,13 +34,13 @@ public class DBRequests extends DBConnection{
     }
 
     @Test
-    public Integer checkUserOwnsCarByCarId(Integer userId, Integer carId) throws SQLException {
+    public Integer checkUserOwnsPropertyByPropertyId(Integer userId, Integer propertyId) throws SQLException {
         // connect прописан в API тесте
         ResultSet result = select(
                 String.format("SELECT car.id FROM public.car " +
                         "WHERE car.id = %s " +
                         "AND person_id = %s",
-                        carId, userId)
+                        propertyId, userId)
         );
         if (!result.next()) {
             return 0;

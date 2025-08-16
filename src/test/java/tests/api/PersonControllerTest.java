@@ -361,7 +361,7 @@ public class PersonControllerTest extends DBRequests {
                 OK_STATUS_CODE);
         connect(); // подключение к БД
         // ищем запись в БД со связкой userId и carId
-        Integer databaseEntry = checkUserOwnsCarByCarId(createdUserId, carId);
+        Integer databaseEntry = checkUserOwnsPropertyByPropertyId(createdUserId, carId);
         softAssert.assertEquals(userResponse.getMoney(),
                 0.0,
                 "На счету пользователя сумма, отличная от 0");
@@ -394,7 +394,7 @@ public class PersonControllerTest extends DBRequests {
                 OK_STATUS_CODE);
         connect(); // подключение к БД
         // ищем запись в БД со связкой userId и carId
-        Integer databaseEntry = checkUserOwnsCarByCarId(createdUserId, carId);
+        Integer databaseEntry = checkUserOwnsPropertyByPropertyId(createdUserId, carId);
         softAssert.assertEquals(userResponse.getMoney(),
                 userRequest.getMoney(), // купил и продал - значение счёта после продажи = значению счёта до покупки
                 "На счету пользователя неверная сумма после продажи авто.");
