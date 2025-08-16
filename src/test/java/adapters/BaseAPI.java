@@ -2,6 +2,7 @@ package adapters;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.specification.FilterableRequestSpecification;
 
@@ -17,5 +18,6 @@ public class BaseAPI {
 
     static FilterableRequestSpecification spec = (FilterableRequestSpecification)
             given()
-                    .contentType(ContentType.JSON);
+                    .contentType(ContentType.JSON)
+                    .filter(new AllureRestAssured());//Отчет в Алюр
 }
