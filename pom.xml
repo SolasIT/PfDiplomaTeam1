@@ -27,6 +27,7 @@
         <gson.version>2.13.1</gson.version>
         <postgresql.version>42.7.7</postgresql.version>
         <allure-rest-assured.version>2.24.0</allure-rest-assured.version>
+        <suiteXmlFile>AllTests.xml</suiteXmlFile>
     </properties>
 
     <dependencyManagement>

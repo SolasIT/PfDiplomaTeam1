@@ -2,18 +2,16 @@ package adapters;
 
 import dto.api.users.rq.UserRequest;
 import dto.api.users.rs.UserResponse;
-
+import io.restassured.specification.FilterableRequestSpecification;
 import static org.hamcrest.Matchers.*;
 
 public class UsersAdapter extends BaseAPI {
 
-    AuthAPI authAPI = new AuthAPI();
-
     // POST /user
     public UserResponse createUser(UserRequest user, Integer statusCode) {
-        return spec
+        return getSpec()
                 .removeHeader("Authorization") // для избежания дублирующегося header'а Authorization
-                .header("Authorization", authAPI.getToken())
+                .header("Authorization", getToken())
                 .body(gson.toJson(user))
                 .log().all()
                 .when()
@@ -27,9 +25,9 @@ public class UsersAdapter extends BaseAPI {
 
     // POST /user
     public void createUserIncorrectData(UserRequest user, Integer statusCode) {
-        spec
+        getSpec()
                 .removeHeader("Authorization") // для избежания дублирующегося header'а Authorization
-                .header("Authorization", authAPI.getToken())
+                .header("Authorization", getToken())
                 .body(gson.toJson(user))
                 .log().all()
                 .when()
@@ -42,9 +40,9 @@ public class UsersAdapter extends BaseAPI {
 
     // POST /user
     public void createUserWrongMethod(UserRequest user, Integer statusCode) {
-        spec
+        getSpec()
                 .removeHeader("Authorization") // для избежания дублирующегося header'а Authorization
-                .header("Authorization", authAPI.getToken())
+                .header("Authorization", getToken())
                 .body(gson.toJson(user))
                 .log().all()
                 .when()
@@ -57,10 +55,11 @@ public class UsersAdapter extends BaseAPI {
 
     // GET /user/{userId}
     public UserResponse getUserById(Integer id, Integer statusCode) {
+        FilterableRequestSpecification  spec = getSpec();
         spec.body(""); // в GET не передаётся тело запроса
         return spec
                 .removeHeader("Authorization")
-                .header("Authorization", authAPI.getToken())
+                .header("Authorization", getToken())
                 .request()
                 .log().all()
                 .when()
@@ -74,10 +73,11 @@ public class UsersAdapter extends BaseAPI {
 
     // GET /user/{userId}
     public void getUserByIdIncorrectData(Integer id, Integer statusCode) {
+        FilterableRequestSpecification  spec = getSpec();
         spec.body(""); // в GET не передаётся тело запроса
         spec
                 .removeHeader("Authorization")
-                .header("Authorization", authAPI.getToken())
+                .header("Authorization", getToken())
                 .request()
                 .log().all()
                 .when()
@@ -90,10 +90,11 @@ public class UsersAdapter extends BaseAPI {
 
     // GET /user/{userId}
     public void getUserByIdWrongMethod(Integer id, Integer statusCode) {
+        FilterableRequestSpecification  spec = getSpec();
         spec.body(""); // в GET не передаётся тело запроса
         spec
                 .removeHeader("Authorization")
-                .header("Authorization", authAPI.getToken())
+                .header("Authorization", getToken())
                 .request()
                 .log().all()
                 .when()
@@ -106,9 +107,10 @@ public class UsersAdapter extends BaseAPI {
 
     // PUT /user/{userId}
     public UserResponse changeUserData(UserRequest user, Integer id, Integer statusCode) {
-        return spec
+
+        return getSpec()
                 .removeHeader("Authorization") // для избежания дублирующегося header'а Authorization
-                .header("Authorization", authAPI.getToken())
+                .header("Authorization", getToken())
                 .body(gson.toJson(user))
                 .log().all()
                 .when()
@@ -122,9 +124,9 @@ public class UsersAdapter extends BaseAPI {
 
     // PUT /user/{userId}
     public void changeUserDataIncorrect(UserRequest user, Integer id, Integer statusCode) {
-        spec
+        getSpec()
                 .removeHeader("Authorization") // для избежания дублирующегося header'а Authorization
-                .header("Authorization", authAPI.getToken())
+                .header("Authorization", getToken())
                 .body(gson.toJson(user))
                 .log().all()
                 .when()
@@ -137,10 +139,11 @@ public class UsersAdapter extends BaseAPI {
 
     // DELETE /user/{userId}
     public void deleteUserById(Integer id, Integer statusCode) {
+        FilterableRequestSpecification  spec = getSpec();
         spec.body("");
         spec
                 .removeHeader("Authorization")
-                .header("Authorization", authAPI.getToken())
+                .header("Authorization", getToken())
                 .request()
                 .log().all()
                 .when()
@@ -154,10 +157,11 @@ public class UsersAdapter extends BaseAPI {
     // POST /user/{userId}/sellCar/{carId}
     // POST /user/{userId}/buyCar/{carId}
     public UserResponse buyOrSellCarByUserIdCarId(Integer userId, Integer carId, String option, Integer statusCode) {
+        FilterableRequestSpecification  spec = getSpec();
         spec.body("");
         return spec
                 .removeHeader("Authorization")
-                .header("Authorization", authAPI.getToken())
+                .header("Authorization", getToken())
                 .request()
                 .log().all()
                 .when()
@@ -172,13 +176,14 @@ public class UsersAdapter extends BaseAPI {
     // POST /user/{userId}/buyCar/{carId}
     // POST /user/{userId}/sellCar/{carId}
     public void buyOrSellCarByUserIdCarIdIncorrect(String userId, String carId, String option, Integer statusCode) {
+        FilterableRequestSpecification  spec = getSpec();
         if (!userId.isEmpty()) { // если userId не пустая строка
             userId += "/";
         }
         spec.body("");
         spec
                 .removeHeader("Authorization")
-                .header("Authorization", authAPI.getToken())
+                .header("Authorization", getToken())
                 .request()
                 .log().all()
                 .when()
@@ -191,11 +196,12 @@ public class UsersAdapter extends BaseAPI {
 
     // GET /users
     public UserResponse[] getUsers(Integer statusCode) {
+        FilterableRequestSpecification  spec = getSpec();
         spec.body("");
         return
                 spec
                 .removeHeader("Authorization")
-                .header("Authorization", authAPI.getToken())
+                .header("Authorization", getToken())
                 .request()
                 .log().all()
                 .when()
