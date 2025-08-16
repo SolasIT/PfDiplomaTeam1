@@ -211,16 +211,32 @@ public class UsersAdapter extends BaseAPI {
         spec.body("");
         return
                 spec
+                        .removeHeader("Authorization")
+                        .header("Authorization", authAPI.getToken())
+                        .request()
+                        .log().all()
+                        .when()
+                        .get(BASE_URI + "/users")
+                        .then()
+                        .log().all()
+                        .statusCode(statusCode)
+                        .extract()
+                        .body().as(UserResponse[].class);
+    }
+
+    // GET /users
+    public void getUsersWrongMethod(Integer statusCode) {
+        spec.body("");
+        spec
                 .removeHeader("Authorization")
                 .header("Authorization", authAPI.getToken())
                 .request()
                 .log().all()
                 .when()
-                .get(BASE_URI + "/users")
+                .put(BASE_URI + "/users")
                 .then()
                 .log().all()
                 .statusCode(statusCode)
-                .extract()
-                .body().as(UserResponse[].class);
+                .body(blankOrNullString()); // проверка, что в теле ответа нет данных
     }
 }

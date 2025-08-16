@@ -22,13 +22,13 @@ public class PersonControllerTest {
 
     // HTTP StatusCodes
     private final Integer OK_STATUS_CODE = 200,
-                          SUCCESS_CREATED_STATUS_CODE = 201,
-                          ACCEPTED_STATUS_CODE = 202,
-                          NO_CONTENT_STATUS_CODE = 204,
-                          BAD_REQUEST_STATUS_CODE = 400,
-                          NOT_FOUND_STATUS_CODE = 404,
-                          METHOD_NOT_ALLOWED_STATUS_CODE = 405,
-                          NOT_ACCEPTABLE_STATUS_CODE = 406;
+            SUCCESS_CREATED_STATUS_CODE = 201,
+            ACCEPTED_STATUS_CODE = 202,
+            NO_CONTENT_STATUS_CODE = 204,
+            BAD_REQUEST_STATUS_CODE = 400,
+            NOT_FOUND_STATUS_CODE = 404,
+            METHOD_NOT_ALLOWED_STATUS_CODE = 405,
+            NOT_ACCEPTABLE_STATUS_CODE = 406;
 
     SoftAssert softAssert = new SoftAssert();
     UsersAdapter usersAdapter = new UsersAdapter();
@@ -481,6 +481,16 @@ public class PersonControllerTest {
                     "У пользователя отсутствует параметр money");
         }
         softAssert.assertAll();
+    }
+
+    @Test(description = "Нарушение контракта GET /users",
+            testName = "API: GET /users: нарушение контракта")
+    @Owner("Zheltikov Vasiliy")
+    @Link("http://82.142.167.37:4879/swagger-ui/index.html#/")
+    @Feature("person-controller")
+    @Description("Проверка API метода GET: выполнение запроса с неверным методом")
+    public void getAllUsersWrongMethod() {
+        usersAdapter.getUsersWrongMethod(METHOD_NOT_ALLOWED_STATUS_CODE);
     }
 }
 
