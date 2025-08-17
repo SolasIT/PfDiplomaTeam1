@@ -20,6 +20,7 @@ public class AllPostPage {
     private SelenideElement STATUS_BUTTON_CREATE_CAR = $x("//table[.//input[@id='first_name_send']]/following::button[contains(@class, 'btn')][14]");
     private SelenideElement STATUS_BUTTON_SELL_CAR = $x("//table[.//input[@id='first_name_send']]/following::button[contains(@class, 'btn')][11]");
     private SelenideElement NEW_USER_ID = $x("//table[.//input[@id='first_name_send']]/following::button[contains(@class, 'btn')][3]");
+    private SelenideElement NEW_CAR_ID = $x("//table[.//input[@id='first_name_send']]/following::button[contains(@class, 'btn')][15]");
     private SelenideElement INPUT_FIRST_NAME = $x("//*[@id='first_name_send']");
     private SelenideElement INPUT_LAST_NAME = $x("//*[@id='last_name_send']");
     private SelenideElement INPUT_AGE = $x("//*[@id='age_send']");
@@ -30,7 +31,8 @@ public class AllPostPage {
     private SelenideElement INPUT_MONEY_CREATE_USER = $x("(//*[@id='money_send'])[1]");
     private SelenideElement INPUT_MONEY_ADD_MONEY = $x("(//*[@id='money_send'])[2]");
     private SelenideElement INPUT_ID_ADD_MONEY = $x("(//table[1]//*[@id='id_send'])[1]");
-    private SelenideElement INPUT_ID_SELL_CAR = $x("(//table[1]//*[@id='id_send'])[2]");
+    private SelenideElement INPUT_ID_SELL_CAR = $x("(//table[1]//*[@id='id_send'])[3]");
+    private SelenideElement INPUT_CAR_ID_SELL_CAR = $x("//table[1]//*[@id='car_send']");
     private SelenideElement LOGIN_EMAIL = $x("//input[@placeholder='Enter your email...']");
     private SelenideElement LOGIN_PASSWORD = $x("//input[@placeholder='Enter your password...']");
     private SelenideElement BUTTON_GO = $x("//button[normalize-space()='GO']");
@@ -71,6 +73,32 @@ public class AllPostPage {
         setModel(faker.options().option("Toyota", "Ford", "BMW", "Honda", "Nissan", "Mazda"));
         setMark(faker.options().option("Camry", "Corolla", "Focus", "Civic", "Altima", "CX-5"));
         setCarPrice(String.valueOf(faker.number().numberBetween(1000, 10000)));
+    }
+
+    @Step("Заполнение полей формы 'Продажа/покупка автомобиля' невалидными данными")
+    public void fillFormSellOrBuyCarWithInvalidData(String BuyOrSell) {
+        setUserID(faker.options().option("111000", "2222000", "33003"));
+        setCarID(String.valueOf(faker.number().numberBetween(1000, 10000)));
+        selectBuyOrSell();
+    }
+
+    @Step("Заполнение полей формы 'Продажа/покупка автомобиля' валидными данными")
+    public void fillFormSellOrBuyCarWithValidData(String BuyOrSell) {
+        String userId = saveNewUserId();
+        INPUT_ID_SELL_CAR.shouldBe(visible).shouldBe(enabled).click();
+        INPUT_ID_SELL_CAR.clear();
+        INPUT_ID_SELL_CAR.setValue(userId);
+        Selenide.sleep(1500);
+        INPUT_ID_SELL_CAR.clear();
+        INPUT_ID_SELL_CAR.setValue(userId);
+        String carId = saveNewCarId();
+        INPUT_CAR_ID_SELL_CAR.shouldBe(visible).shouldBe(enabled).click();
+        INPUT_CAR_ID_SELL_CAR.clear();
+        INPUT_CAR_ID_SELL_CAR.setValue(carId);
+        Selenide.sleep(1500);
+        INPUT_CAR_ID_SELL_CAR.clear();
+        INPUT_CAR_ID_SELL_CAR.setValue(carId);
+        selectBuyOrSell();
     }
 
     @Step("Вставить невалидное значение в поле First Name через клик")
@@ -197,6 +225,12 @@ public class AllPostPage {
         $x(String.format("//input[@name='settleOrEvict' and @value='%s']", settleOrEvict)).shouldBe(visible).click();
     }
 
+    @Step("Выбор чекбокса Buy or Sell")
+    public void selectBuyOrSell() {
+        String BuyOrSell = faker.options().option("buyCar", "sellCar");
+        $x(String.format("//input[@name='settleOrEvict' and @value='%s']", BuyOrSell)).shouldBe(visible).click();
+    }
+
     @Step("Заполение поля ввода Money в форме создание пользователя")
     public void setMoney(String money) {
         INPUT_MONEY_CREATE_USER.setValue(money);
@@ -210,6 +244,16 @@ public class AllPostPage {
     @Step("Заполение поля ввода ID в форме начисление денег пользователю")
     public void setID(String userid) {
         INPUT_ID_ADD_MONEY.setValue(userid);
+    }
+
+    @Step("Заполение поля ввода  User ID в форме Продажа / Покупка автомобиля")
+    public void setUserID(String userid) {
+        INPUT_ID_SELL_CAR.setValue(userid);
+    }
+
+    @Step("Заполение поля ввода Car ID в форме Продажа / Покупка автомобиля")
+    public void setCarID(String userid) {
+        INPUT_CAR_ID_SELL_CAR.setValue(userid);
     }
 
     // login
@@ -229,15 +273,26 @@ public class AllPostPage {
         return cleanUserId;
     }
 
+    public  String saveNewCarId() {
+        NEW_CAR_ID.shouldBe(visible); // ждём появления элемента
+        String carID = NEW_CAR_ID.getText();
+        String cleanCarId = carID.replaceAll("\\D+", "");
+        System.out.println("Сохранённый carID: " + cleanCarId);
+        return cleanCarId;
+    }
+
     @Step("Заполнение полей формы 'Начисление денег пользователю' валидными данными")
     public void fillFormAddMoneyWithValidData() {
-        String userId = saveNewUserId();
+        String userIdMoney = saveNewUserId();
         INPUT_ID_ADD_MONEY.shouldBe(visible).shouldBe(enabled).click();
         INPUT_ID_ADD_MONEY.clear();
-        INPUT_ID_ADD_MONEY.setValue(userId);
+        INPUT_ID_ADD_MONEY.setValue(userIdMoney);
         Selenide.sleep(1500);
         INPUT_ID_ADD_MONEY.clear();
-        INPUT_ID_ADD_MONEY.setValue(userId);
+        INPUT_ID_ADD_MONEY.setValue(userIdMoney);
+        Selenide.sleep(1500);
+        INPUT_ID_ADD_MONEY.clear();
+        INPUT_ID_ADD_MONEY.setValue(userIdMoney);
         setMoneyAddMoney(String.valueOf(faker.number().randomDouble(2, 100, 1000)));
     }
     @Step("Заполнение полей формы 'Начисление денег пользователю' невалидными данными")

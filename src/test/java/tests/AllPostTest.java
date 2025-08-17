@@ -89,10 +89,6 @@ public class AllPostTest extends BaseTest {
         allPostPage.checkStatusForAddMoneyForm("Request failed with status code 404");
     }
 
-    // Settle in house / Evict from house Form
-
-    // Create house Form
-
     // Create Car Form
 
     @Test(description = "Отправка пустой формы Создание автомобиля — ошибка валидации")
@@ -126,7 +122,7 @@ public class AllPostTest extends BaseTest {
         allPostPage.openPageAllPost();
         allPostPage.fillFormCreateCarWithValidData();
         allPostPage.clickPushToApiButtonFormCreateCar();
-        allPostPage.checkStatusForCreateUserForm("Successfully pushed");
+        allPostPage.checkStatusForCreateCarForm("Successfully pushed");
     }
 
     // Buy or sell car Form
@@ -142,5 +138,32 @@ public class AllPostTest extends BaseTest {
         allPostPage.clickPushToApiButtonFormSellBuyCar();
         allPostPage.checkStatusForSellCarForm("Incorrect input data");
     }
-    // еще пара тестов на покупку и продажу и тесты про дома
+
+    @Test(description = "Отправка некорректных данных при Продаже /покупке автомобиля  — ошибка 404")
+    public void testInvalidDataSubmissionSellOrBuyCar() {
+        mainPage.open();
+        mainPage.isPageOpened();
+        allPostPage.login("user@pflb.ru", "user");
+        allPostPage.openPageAllPost();
+        allPostPage.fillFormSellOrBuyCarWithInvalidData("buyCar");
+        allPostPage.clickPushToApiButtonFormSellBuyCar();
+        allPostPage.checkStatusForSellCarForm("Request failed with status code 404");
+    }
+
+    @Test(description = "Успешная продажа / покупка автомобиля")
+    public void testValidDataSubmissionSellOrBuyCar() {
+        mainPage.open();
+        mainPage.isPageOpened();
+        allPostPage.login("user@pflb.ru", "user");
+        allPostPage.openPageAllPost();
+        allPostPage.fillFormCreateUserWithValidData("MALE");
+        allPostPage.clickPushToApiButtonFormCreateUser();
+        allPostPage.saveNewUserId();
+        allPostPage.fillFormCreateCarWithValidData();
+        allPostPage.clickPushToApiButtonFormCreateCar();
+        allPostPage.saveNewCarId();
+        allPostPage.fillFormSellOrBuyCarWithValidData("buyCar");
+        allPostPage.clickPushToApiButtonFormSellBuyCar();
+        allPostPage.checkStatusForSellCarForm("Successfully pushed");
+    }
 }
