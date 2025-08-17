@@ -1,6 +1,7 @@
 package dto.api.houses;
 
 import com.github.javafaker.Faker;
+import dto.api.users.rq.UserRequest;
 
 import java.util.Collections;
 import java.util.Locale;
@@ -16,7 +17,7 @@ public class HouseFactory {
                 .placesCount(faker.number().numberBetween(1, 5))
                 .build();
 
-        Lodger lodger = Lodger.builder()
+        UserRequest lodger = UserRequest.builder()
                 .firstName(faker.name().firstName())
                 .secondName(faker.name().lastName())
                 .age(faker.number().numberBetween(18, 99))

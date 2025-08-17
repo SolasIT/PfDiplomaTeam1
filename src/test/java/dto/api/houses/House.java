@@ -2,6 +2,7 @@ package dto.api.houses;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import dto.api.users.rq.UserRequest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -33,5 +34,5 @@ public class House {
 
     @SerializedName("lodgers")
     @Expose
-    private List<Lodger> lodgers;
+    private List<UserRequest> lodgers;
 }

@@ -1,9 +1,7 @@
 package tests.api;
 
 import adapters.HouseAdapter;
-import dto.api.cars.Car;
 import dto.api.houses.House;
-import dto.api.houses.HouseFactory;
 import io.qameta.allure.*;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
@@ -75,13 +73,15 @@ public class HouseAPITest {
         houseAdapter.deleteHouse(createdHouse.getId());
     }
 
-/*    @Test(description = "Получение списка домов (GET /houses)", testName = "Get All Houses API")
+    @Test(description = "Получение списка домов (GET /houses)", testName = "Get All Houses API")
     @Owner("Martyanova Olga")
     @Link("http://82.142.167.37:4879/swagger-ui/index.html#/")
-    @Story("Get")
+    @Feature("Get")
+    @Description("Проверка получения всех домов API")
     public void getAllHousesTest() {
+        HouseAdapter houseAdapter = new HouseAdapter();
         House[] houses = houseAdapter.getHouses(200);
         softAssert.assertNotNull(houses, "Список домов не получен");
         softAssert.assertAll();
-    }*/
+    }
 }

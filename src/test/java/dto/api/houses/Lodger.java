@@ -32,7 +32,6 @@ public class Lodger {
     @SerializedName("sex")
     @Expose
     private String sex;
-
     @SerializedName("money")
     @Expose
     private Double money;
