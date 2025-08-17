@@ -88,6 +88,7 @@ public class CarsCreateNewPage extends BasePage {
     private void submitForm() {
         $(PUSH_TO_API_BUTTON).click();
         log.info("Clicked PUSH button");
+        sleep(1500);
         $(STATUS_MESSAGE).shouldBe(visible, Duration.ofSeconds(5));
     }
 
