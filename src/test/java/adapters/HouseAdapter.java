@@ -3,19 +3,18 @@ package adapters;
 import dto.api.houses.House;
 import io.qameta.allure.Step;
 import static org.hamcrest.Matchers.blankOrNullString;
+import static org.hamcrest.Matchers.equalTo;
 
 public class HouseAdapter extends BaseAPI {
 
-    AuthAPI authAPI = new AuthAPI();
-
     //POST /house
     @Step("Создание дома")
-    public House createHouse(House house, Integer statusCode) {
-        return spec
+    public House createHouse(House house) {
+        return getSpec()
                 .removeHeader("Authorization")
-                .header("Authorization", authAPI.getToken())
-                .body(gson.toJson(house))
+                .header("Authorization", getToken())
                 .log().all()
+                .body(gson.toJson(house))
                 .when()
                 .post(BASE_URI + "/house")
                 .then()
@@ -27,30 +26,29 @@ public class HouseAdapter extends BaseAPI {
 
     //GET /house/{houseId}
     @Step("Получение дома по {houseId}")
-    public House getHouseById(Integer id, Integer statusCode) {
-        spec.body("");
-        return spec
+    public House getHouseById(int id) {
+        return getSpec()
                 .removeHeader("Authorization")
-                .header("Authorization", authAPI.getToken())
-                .request()
+                .header("Authorization", getToken())
                 .log().all()
                 .when()
                 .get(BASE_URI + "/house/" + id)
                 .then()
                 .log().all()
                 .statusCode(200)
+                .body("id", equalTo(id))
                 .extract()
                 .as(House.class);
     }
 
     //PUT /house/{houseId}
     @Step("Изменение дома по {houseId}")
-    public House changeHouse(House house, Integer id, Integer statusCode) {
-        return spec
+    public House changeHouse(House house, int id) {
+        return getSpec()
                 .removeHeader("Authorization")
-                .header("Authorization", authAPI.getToken())
-                .body(gson.toJson(house))
+                .header("Authorization", getToken())
                 .log().all()
+                .body(gson.toJson(house))
                 .when()
                 .put(BASE_URI + "/house/" + id)
                 .then()
@@ -62,12 +60,10 @@ public class HouseAdapter extends BaseAPI {
 
     //DELETE /house/{houseId}
     @Step("Удаление дома по {houseId}")
-    public void deleteHouse(Integer id, Integer statusCode) {
-        spec.body("");
-        spec
+    public void deleteHouse(int id) {
+        getSpec()
                 .removeHeader("Authorization")
-                .header("Authorization", authAPI.getToken())
-                .request()
+                .header("Authorization",  getToken())
                 .log().all()
                 .when()
                 .delete(BASE_URI + "/house/" + id)
@@ -80,11 +76,9 @@ public class HouseAdapter extends BaseAPI {
     //GET /houses
     @Step("Получение всех домов")
     public House[] getHouses(Integer statusCode) {
-        spec.body("");
-        return spec
+        return getSpec()
                 .removeHeader("Authorization")
-                .header("Authorization", authAPI.getToken())
-                .request()
+                .header("Authorization", getToken())
                 .log().all()
                 .when()
                 .get(BASE_URI + "/houses")
