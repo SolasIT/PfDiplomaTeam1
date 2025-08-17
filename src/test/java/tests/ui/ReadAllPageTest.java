@@ -20,7 +20,8 @@ public class ReadAllPageTest extends BaseTest {
         mainPage.open()
                 .isPageOpened()
                 .auth(email, password);
-        readAllPage.openPage()
+        readAllPage.open()
+                .isPageOpened()
                 .clickReload();
     }
 }

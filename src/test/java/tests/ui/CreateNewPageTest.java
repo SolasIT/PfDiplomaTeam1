@@ -21,22 +21,24 @@ public class CreateNewPageTest extends BaseTest {
         mainPage.open()
                 .isPageOpened()
                 .auth(email, password);
-        createNewPage.openPage()
+        createNewPage.open()
+                .isPageOpened()
                 .clickPushButton()
                 .getStatus();
         assertEquals("Status: Invalid input data", createNewPage.getStatus());
     }
 
-    @Test(description = "Проверка нажатия Push To API с отрицательными значениями инпутов",
-            testName = "Проверка нажатия Push To API с отрицательными значениями инпутов")
+    @Test(description = "Проверка нажатия Push To API с отрицательными значениями инпутов, добавленных через стрелки",
+            testName = "Проверка нажатия Push To API с отрицательными значениями инпутов, добавленных через стрелки")
     @Owner("Golubnichiy Vitaliy")
     @Feature("Create New")
-    @Description("Проверка нажатия Push To API с отрицательными значениями инпутов")
+    @Description("Проверка нажатия Push To API с отрицательными значениями инпутов, добавленных через стрелки")
     public void pushCreateWithNegativeNumbers(){
         mainPage.open()
                 .isPageOpened()
                 .auth(email, password);
-        createNewPage.openPage()
+        createNewPage.open()
+                .isPageOpened()
                 .decreaseFloorNumber()
                 .decreasePriceNumber()
                 .decreaseNotWarmAndNotCoveredPlacesNumber()
@@ -48,16 +50,17 @@ public class CreateNewPageTest extends BaseTest {
         assertEquals("Status: Invalid input data", createNewPage.getStatus());
     }
 
-    @Test(description = "Проверка нажатия Push To API с нулевыми значениями инпутов",
-            testName = "Проверка нажатия Push To API с нулевыми значениями инпутов")
+    @Test(description = "Проверка нажатия Push To API с нулевыми значениями инпутов, добавленных через стрелки",
+            testName = "Проверка нажатия Push To API с нулевыми значениями инпутов, добавленных через стрелки")
     @Owner("Golubnichiy Vitaliy")
     @Feature("Create New")
-    @Description("Проверка нажатия Push To API с нулевыми значениями инпутов")
+    @Description("Проверка нажатия Push To API с нулевыми значениями инпутов, добавленных через стрелки")
     public void pushCreateWithNull(){
         mainPage.open()
                 .isPageOpened()
                 .auth(email, password);
-        createNewPage.openPage()
+        createNewPage.open()
+                .isPageOpened()
                 .decreaseFloorNumber()
                 .decreasePriceNumber()
                 .decreaseNotWarmAndNotCoveredPlacesNumber()
@@ -75,22 +78,45 @@ public class CreateNewPageTest extends BaseTest {
         assertEquals("Status: Invalid input data", createNewPage.getStatus());
     }
 
-    @Test(description = "Проверка нажатия Push To API с положительными значениями инпутов",
-            testName = "Проверка нажатия Push To API с положительными значениями инпутов")
+    @Test(description = "Проверка нажатия Push To API с положительными значениями инпутов, добавленных через поля ввода",
+            testName = "Проверка нажатия Push To API с положительными значениями инпутов, добавленных через поля ввода")
     @Owner("Golubnichiy Vitaliy")
     @Feature("Create New")
-    @Description("Проверка нажатия Push To API с положительными значениями инпутов")
-    public void pushCreateWithPositiveNumbers(){
+    @Description("Проверка нажатия Push To API с положительными значениями инпутов, добавленных через поля ввода")
+    public void sentNegativeNumbersByInputs(){
         mainPage.open()
                 .isPageOpened()
                 .auth(email, password);
-        createNewPage.openPage()
-                .increaseFloorNumber()
-                .increasePriceNumber()
-                .increaseNotWarmAndNotCoveredPlacesNumber()
-                .increaseWarmAndNotCoveredPlacesNumber()
-                .increaseNotWarmAndCoveredPlacesNumber()
-                .increaseWarmAndCoveredPlacesNumber()
+        createNewPage.open()
+                .isPageOpened()
+                .sentFloorNumber("-111")
+                .sentPriceNumber("-111")
+                .sentWarmAndCoveredPlacesNumber("-111")
+                .sentWarmAndNotCoveredPlacesNumber("-111")
+                .sentNotWarmAndCoveredPlacesNumber("-111")
+                .sentNotWarmAndNotCoveredPlacesNumber("-111")
+                .clickPushButton()
+                .getStatus();
+        assertEquals("Status: Invalid input data", createNewPage.getStatus());
+    }
+
+    @Test(description = "Проверка нажатия Push To API с положительными значениями инпутов, добавленных через поля ввода",
+            testName = "Проверка нажатия Push To API с положительными значениями инпутов, добавленных через поля ввода")
+    @Owner("Golubnichiy Vitaliy")
+    @Feature("Create New")
+    @Description("Проверка нажатия Push To API с положительными значениями инпутов, добавленных через поля ввода")
+    public void sentPositiveNumbersByInputs(){
+        mainPage.open()
+                .isPageOpened()
+                .auth(email, password);
+        createNewPage.open()
+                .isPageOpened()
+                .sentFloorNumber("111")
+                .sentPriceNumber("111")
+                .sentWarmAndCoveredPlacesNumber("111")
+                .sentWarmAndNotCoveredPlacesNumber("111")
+                .sentNotWarmAndCoveredPlacesNumber("111")
+                .sentNotWarmAndNotCoveredPlacesNumber("111")
                 .clickPushButton()
                 .getStatus();
         assertEquals("Status: Successfully pushed, code: 201", createNewPage.getStatus());

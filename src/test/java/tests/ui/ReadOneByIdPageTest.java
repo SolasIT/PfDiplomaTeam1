@@ -5,8 +5,6 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.Link;
 import io.qameta.allure.Owner;
 import org.testng.annotations.Test;
-import pages.ReadOneByIdPage;
-import tests.ui.BaseTest;
 
 import static org.testng.AssertJUnit.assertEquals;
 
@@ -22,7 +20,8 @@ public class ReadOneByIdPageTest extends BaseTest {
         mainPage.open()
                 .isPageOpened()
                 .auth(email, password);
-        readOneByIdPage.openPage()
+        readOneByIdPage.open()
+                .isPageOpened()
                 .clickReadButton();
     }
 
@@ -36,7 +35,8 @@ public class ReadOneByIdPageTest extends BaseTest {
         mainPage.open()
                 .isPageOpened()
                 .auth(email, password);
-        readOneByIdPage.openPage()
+        readOneByIdPage.open()
+                .isPageOpened()
                 .decreaseInputNumber()
                 .clickReadButton();
         assertEquals("Status: Invalid input", readOneByIdPage.getStatus());
@@ -52,7 +52,8 @@ public class ReadOneByIdPageTest extends BaseTest {
         mainPage.open()
                 .isPageOpened()
                 .auth(email, password);
-        readOneByIdPage.openPage()
+        readOneByIdPage.open()
+                .isPageOpened()
                 .increaseInputNumber()
                 .decreaseInputNumber()
                 .clickReadButton();
@@ -69,10 +70,28 @@ public class ReadOneByIdPageTest extends BaseTest {
         mainPage.open()
                 .isPageOpened()
                 .auth(email, password);
-        readOneByIdPage.openPage()
+        readOneByIdPage.open()
+                .isPageOpened()
                 .sentInputNumber("999999999999999999")
                 .clickReadButton();
         assertEquals("Status: 204 house not found", readOneByIdPage.getStatus());
+    }
+
+    @Test(description = "Проверка поиска по несуществующему ID через ввод отрицательного числа",
+            testName = "Проверка поиска по несуществующему ID через ввод отрицательного числа")
+    @Owner("Golubnichiy Vitaliy")
+    @Link("http://82.142.167.37:4881/#/read/house")
+    @Feature("Read one by ID")
+    @Description("Проверка поиска по несуществующему ID через ввод отрицательного числа")
+    public void inputNegativeNumberId(){
+        mainPage.open()
+                .isPageOpened()
+                .auth(email, password);
+        readOneByIdPage.open()
+                .isPageOpened()
+                .sentInputNumber("-1")
+                .clickReadButton();
+        assertEquals("Status: Invalid input", readOneByIdPage.getStatus());
     }
 
 
@@ -86,8 +105,26 @@ public class ReadOneByIdPageTest extends BaseTest {
         mainPage.open()
                 .isPageOpened()
                 .auth(email, password);
-        readOneByIdPage.openPage()
+        readOneByIdPage.open()
+                .isPageOpened()
                 .increaseInputNumber()
+                .clickReadButton();
+        assertEquals("Status: 200 ok", readOneByIdPage.getStatus());
+    }
+
+    @Test(description = "Проверка поиска по существующему ID",
+            testName = "Проверка поиска по существующему ID")
+    @Owner("Golubnichiy Vitaliy")
+    @Link("http://82.142.167.37:4881/#/read/house")
+    @Feature("Read one by ID")
+    @Description("Проверка поиска по существующему ID")
+    public void inputExistentNumberId(){
+        mainPage.open()
+                .isPageOpened()
+                .auth(email, password);
+        readOneByIdPage.open()
+                .isPageOpened()
+                .sentInputNumber("1")
                 .clickReadButton();
         assertEquals("Status: 200 ok", readOneByIdPage.getStatus());
     }
