@@ -1,7 +1,8 @@
 package tests.api;
 
 import adapters.CarAdapter;
-import dto.api.Car;
+import db.DBRequests;
+import dto.api.cars.Car;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Link;
@@ -9,8 +10,9 @@ import io.qameta.allure.Owner;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
-import static dto.api.CarFactory.getCar;
+import java.sql.SQLException;
 
+import static dto.api.cars.CarFactory.getCar;
 
 public class CarAPITest {
     SoftAssert softAssert = new SoftAssert();
@@ -22,14 +24,17 @@ public class CarAPITest {
     @Link("http://82.142.167.37:4881/#/create/user")
     @Feature("Create New")
     @Description("Проверка создания авто API")
-    public void createCarAPI() {
+    public void createCarAPI() throws SQLException {
+        DBRequests db = new DBRequests();
         CarAdapter carAdapter = new CarAdapter();
         Car car = getCar("us");
         Car req = carAdapter.createCar(car);
+        Car dbreq = db.getCarByIdDB(req.getId());
         softAssert.assertEquals(car.getMark(), req.getMark(), "Марка не соответствует");
         softAssert.assertEquals(car.getEngineType(), req.getEngineType(), "Тип двигателя не соответствует");
         softAssert.assertEquals(car.getModel(), req.getModel(), "Модель не соответствует");
         softAssert.assertEquals(car.getPrice(), req.getPrice(), "Цена не соответствует");
+        softAssert.assertEquals(dbreq.getId(), req.getId(), "ID авто не найдено в БД");
         softAssert.assertAll();
     }
 

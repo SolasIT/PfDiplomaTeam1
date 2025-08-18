@@ -1,4 +1,4 @@
-package dto.api;
+package dto.api.cars;
 
 import com.github.javafaker.Faker;
 

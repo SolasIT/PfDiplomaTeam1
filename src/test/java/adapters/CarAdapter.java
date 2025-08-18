@@ -1,18 +1,16 @@
 package adapters;
 
-
-import dto.api.Car;
-
+import dto.api.cars.Car;
+import io.qameta.allure.Step;
 import static org.hamcrest.Matchers.equalTo;
 
 public class CarAdapter extends BaseAPI {
 
-    AuthAPI authAPI = new AuthAPI();
-
+    @Step("GET запрос на получение машины по id: {id}")
     public Car getCar(int id) {
-        return spec
-                .removeHeader("Authorization")
-                .header("Authorization", authAPI.getToken())
+        return getSpec()
+                .removeHeader("Authorization") // для избежания дублирующегося header'а Authorization
+                .header("Authorization", getToken())
                 .log().all()
                 .when()
                 .get(BASE_URI + "/car/" + String.valueOf(id))
@@ -23,10 +21,11 @@ public class CarAdapter extends BaseAPI {
                 .extract().as(Car.class);
     }
 
+    @Step("POST запрос на создание машины: {car}")
     public Car createCar(Car car) {
-        return spec
-                .removeHeader("Authorization")
-                .header("Authorization", authAPI.getToken())
+        return getSpec()
+                .removeHeader("Authorization") // для избежания дублирующегося header'а Authorization
+                .header("Authorization",  getToken())
                 .log().all()
                 .body(gson.toJson(car))
                 .when()
@@ -38,9 +37,9 @@ public class CarAdapter extends BaseAPI {
     }
 
     public Car getCarByUserId(int id) {
-        return spec
-                .removeHeader("Authorization")
-                .header("Authorization", authAPI.getToken())
+        return getSpec()
+                .removeHeader("Authorization") // для избежания дублирующегося header'а Authorization
+                .header("Authorization",  getToken())
                 .log().all()
                 .when()
                 .get(BASE_URI + "/user/" + String.valueOf(id) + "cars")
@@ -51,10 +50,11 @@ public class CarAdapter extends BaseAPI {
                 .extract().as(Car.class);
     }
 
+    @Step("PUT запрос на изменение иннформации машины с id:{id} данными: {car}")
     public Car changeCar(Car car, int id) {
-        return spec
-                .removeHeader("Authorization")
-                .header("Authorization", authAPI.getToken())
+        return getSpec()
+                .removeHeader("Authorization") // для избежания дублирующегося header'а Authorization
+                .header("Authorization",  getToken())
                 .log().all()
                 .body(gson.toJson(car))
                 .when()
@@ -65,10 +65,11 @@ public class CarAdapter extends BaseAPI {
                 .extract().as(Car.class);
     }
 
+    @Step("DELETE запрос на удалении иннформации машины с id: {id}")
     public void deleteCar(int id) {
-        spec
-                .removeHeader("Authorization")
-                .header("Authorization", authAPI.getToken())
+        getSpec()
+                .removeHeader("Authorization") // для избежания дублирующегося header'а Authorization
+                .header("Authorization",  getToken())
                 .log().all()
                 .when()
                 .delete(BASE_URI + "/car/" + String.valueOf(id))
