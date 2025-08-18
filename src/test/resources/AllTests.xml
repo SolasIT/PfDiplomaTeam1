@@ -19,6 +19,8 @@
             <class name="tests.ui.CreateNewPageTest"/>
             <class name="tests.ui.ReadAllPageTest"/>
             <class name="tests.ui.ReadOneByIdPageTest"/>
+            <class name="tests.ui.ReadAllUsersTest"/>
+            <class name="tests.ui.ReadUserWithCarsTest"/>
             <class name="tests.api.CarAPITest"/>
             <class name="tests.api.PersonControllerTest"/>
             <class name="tests.api.HouseAPITest"/>

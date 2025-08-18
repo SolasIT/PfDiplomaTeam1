@@ -23,7 +23,6 @@ import static com.codeborne.selenide.Selenide.closeWebDriver;
 
 @Listeners(TestListener.class)
 public class BaseTest {
-
     SoftAssert softAssert;
     MainPage mainPage;
     CarsCreateNewPage carsCreateNewPage;
@@ -34,8 +33,11 @@ public class BaseTest {
     AllDeletePage allDeletePage;
     SettleToHousePage settleToHousePage;
     CreateNewPage createNewPage;
-    ReadAllPage readAllPage;
     ReadOneByIdPage readOneByIdPage;
+    ReadAllPage readAllPage;
+    ReadAllUsersPage readAllUsersPage;
+    ReadUserWithCarsPage readUserWithCarsPage;
+
 
     String email = System.getProperty("email", PropertyReader.getProperty("email"));
     String password = System.getProperty("password", PropertyReader.getProperty("password"));
@@ -93,6 +95,8 @@ public class BaseTest {
         createNewPage = new CreateNewPage();
         readAllPage = new ReadAllPage();
         readOneByIdPage = new ReadOneByIdPage();
+        readAllUsersPage = new ReadAllUsersPage();
+        readUserWithCarsPage = new ReadUserWithCarsPage();
     }
 
     @AfterMethod(alwaysRun = true)
