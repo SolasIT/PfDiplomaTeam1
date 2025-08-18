@@ -6,11 +6,10 @@ import io.qameta.allure.Link;
 import io.qameta.allure.Owner;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import tests.ui.BaseTest;
 
 import static org.testng.AssertJUnit.assertEquals;
 
-public class AllDeleteTest extends BaseTest {
+public class AllDeleteTest extends BaseTest{
 
     @DataProvider(name = "Delete")
     public Object[][] users() {

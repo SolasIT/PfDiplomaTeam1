@@ -109,7 +109,7 @@ public class BaseTest {
             closeWebDriver();
         }
     }
-    
+    //Созданние скринов
         @Attachment(value = "{name}", type = "image/png")
     private static byte[] saveScreen(String name,byte[] image){
         return image;
