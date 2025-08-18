@@ -14,8 +14,7 @@ public class ReadUserWithCarsTest extends BaseTest {
     public Object[][] fieldsValues() {
         return new Object[][]{
                 {"user_input", true, "1"},
-                {"user_input", false, "-1"},
-
+                {"user_input", false, "-1"}
         };
     }
 
@@ -38,7 +37,7 @@ public class ReadUserWithCarsTest extends BaseTest {
     }
 
     @Test(dataProvider = "Валидные данные",
-            description = "Ввод цифр в поля ввода")
+            description = "Ввод цифр в поля ввода", testName = "Проверка поля с валидными данными")
     @Owner("Malkov Artem")
     @Description("Позитивная проверка на ввод цифр в поля ввода")
     public void positiveInputInFields(String fieldId, String text) {
@@ -54,7 +53,7 @@ public class ReadUserWithCarsTest extends BaseTest {
     }
 
     @Test(dataProvider = "Не валидные данные",
-            description = "Ввод цифр в поля ввода")
+            description = "Ввод цифр в поля ввода", testName = "Проверка поля с не валидными данными")
     @Owner("Malkov Artem")
     @Description("Негативная проверка на ввод цифр,букв, символов в поля ввода")
     public void negativeInputInFields(String fieldId, String text) {
@@ -69,7 +68,8 @@ public class ReadUserWithCarsTest extends BaseTest {
     }
 
     @Test(dataProvider = "Значения для поля ввода",
-            description = "Проверяет увеличение/уменьшение значений в поле ввода READ  при нажатии на стрелки"            )
+            description = "Проверка увеличение/уменьшение значений в поле ввода READ  при нажатии на стрелки",
+            testName = "Проверка увеличение/уменьшение значений в поле ввода READ  при нажатии на стрелки"            )
     @Owner("Malkov Artem")
     @Description("Проверка изменения значения в поле ввода по нажатию на стрелочки")
     public void changeFieldsValue(String fieldId, boolean isIncrease, String newValue) {

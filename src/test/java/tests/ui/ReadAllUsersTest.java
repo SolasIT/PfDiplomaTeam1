@@ -23,7 +23,7 @@ public class ReadAllUsersTest extends BaseTest {
                 .isPageOpened();
     }
 
-    @Test(description = "Проверка видимости элементов таблицы")
+    @Test(description = "Проверка видимости элементов таблицы", testName= "Проверка видимости элементов таблицы")
     @Owner("Malkov Artem")
     @Feature("User Read All")
     public void testElements() {
@@ -34,7 +34,7 @@ public class ReadAllUsersTest extends BaseTest {
         readAllUsersPage.getMoneyColumn().shouldBe(exactText("Money:"));
     }
 
-    @Test(description = "Сортировка по возростанию ID")
+    @Test(description = "Сортировка по возростанию/убыванию ID",testName = "Сортировка по возростанию/убыванию ID")
     @Owner("Malkov Artem")
     @Feature("User Read All")
     public void testSortId() {
@@ -48,6 +48,6 @@ public class ReadAllUsersTest extends BaseTest {
         List<Integer> decreasingIds = carsReadAllPage.getIds();
         Set<Integer> decreasingSortedIds = new TreeSet<>(decreasingIds);
         softAssert.assertEquals(decreasingIds, new ArrayList<>(decreasingSortedIds),
-                "ID должны быть отсортированы по возрастанию");
+                "ID должны быть отсортированы по убыванию");
     }
 }

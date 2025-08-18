@@ -26,6 +26,12 @@ public class BaseTest {
     BuyOrSellCarPage buyOrSellCarPage;
     AllDeletePage allDeletePage;
     SettleToHousePage settleToHousePage;
+    CreateNewPage createNewPage;
+    ReadOneByIdPage readOneByIdPage;
+    ReadAllPage readAllPage;
+    ReadAllUsersPage readAllUsersPage;
+    ReadUserWithCarsPage readUserWithCarsPage;
+
 
     String email = System.getProperty("email", PropertyReader.getProperty("email"));
     String password = System.getProperty("password", PropertyReader.getProperty("password"));
@@ -70,6 +76,11 @@ public class BaseTest {
         buyOrSellCarPage = new BuyOrSellCarPage();
         allDeletePage = new AllDeletePage();
         settleToHousePage = new SettleToHousePage();
+        createNewPage = new CreateNewPage();
+        readAllPage = new ReadAllPage();
+        readOneByIdPage = new ReadOneByIdPage();
+        readAllUsersPage = new ReadAllUsersPage();
+        readUserWithCarsPage = new ReadUserWithCarsPage();
     }
 
     @AfterMethod(alwaysRun = true)
