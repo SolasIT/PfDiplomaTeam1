@@ -93,7 +93,7 @@ public class SettleToHousePage extends BasePage {
         }
         log.info("Pushing button to proceeding");
         $(PUSH_TO_API_BUTTON).click();
-        sleep(100);
+        sleep(1500);
         log.info("Button is pushed");
         return this;
     }

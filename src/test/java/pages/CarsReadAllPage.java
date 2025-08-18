@@ -13,6 +13,7 @@ import java.util.List;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.byXpath;
 import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.sleep;
 
 @Log4j2
 public class CarsReadAllPage extends BasePage {
@@ -40,6 +41,7 @@ public class CarsReadAllPage extends BasePage {
     public CarsReadAllPage isPageOpened() {
         try {
             $(ID_COLUMN).shouldBe(visible);
+            sleep(1500);
             log.info("CarsReadAllPage is opened");
         } catch (Exception e) {
             log.error("Page isn't opened: {}", e.getMessage());

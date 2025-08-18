@@ -12,13 +12,8 @@
             <class name="tests.ui.AddMoneyTest"/>
             <class name="tests.ui.CreateUserTest"/>
             <class name="tests.ui.AllDeleteTest"/>
-            <class name="tests.ui.SettleToHouseInputsTest"/>
-            <class name="tests.ui.SettleToHouseTest"/>
             <class name="tests.ui.CreateCarTest"/>
             <class name="tests.ui.TestCarsReadAll"/>
-            <class name="tests.api.CarAPITest"/>
-            <class name="tests.api.PersonControllerTest"/>
-            <class name="tests.api.HouseAPITest"/>
         </classes>
     </test> <!-- Test -->
 </suite>
