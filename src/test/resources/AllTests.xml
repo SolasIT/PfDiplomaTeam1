@@ -19,6 +19,7 @@
             <class name="tests.api.CarAPITest"/>
             <class name="tests.api.PersonControllerTest"/>
             <class name="tests.api.HouseAPITest"/>
+            <class name="tests.ui.AllPostTest"/>
         </classes>
     </test> <!-- Test -->
 </suite>

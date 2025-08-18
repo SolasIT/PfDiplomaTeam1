@@ -14,6 +14,7 @@
             <class name="tests.ui.AllDeleteTest"/>
             <class name="tests.ui.CreateCarTest"/>
             <class name="tests.ui.TestCarsReadAll"/>
+            <class name="tests.ui.AllPostTest"/>
         </classes>
     </test> <!-- Test -->
 </suite>
