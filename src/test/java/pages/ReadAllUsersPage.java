@@ -31,7 +31,7 @@ public class ReadAllUsersPage extends BasePage {
     @Override
     @Step("Открытие страницы Read All")
     public ReadAllUsersPage open() {
-            log.info("Открытие страницы User Read All");
+            log.info("Open User Read All Page");
             Selenide.open(BASE_URL + "#/read/users");
             return this;
         }
