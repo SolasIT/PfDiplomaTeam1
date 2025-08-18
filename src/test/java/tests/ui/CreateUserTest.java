@@ -7,7 +7,6 @@ import io.qameta.allure.Link;
 import io.qameta.allure.Owner;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import tests.ui.BaseTest;
 
 import static dto.ui.UserFactory.getUser;
 import static org.testng.AssertJUnit.assertEquals;
