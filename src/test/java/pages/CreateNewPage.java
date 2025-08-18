@@ -72,7 +72,6 @@ public class CreateNewPage extends BasePage {
         return this;
     }
 
-
     @Step("Нажатие стрелки вверх в поле ввода Warm And Covered Places Number")
     public CreateNewPage increaseWarmAndCoveredPlacesNumber(){
         log.info("Sent Arrow Up to WarmAndCoveredPlacesNumber input");
@@ -182,7 +181,8 @@ public class CreateNewPage extends BasePage {
         log.info("Getting operation status");
         return $(STATUS_TEXT).getText();
     }
-
+    
+    @Step("Получение ID Дома")
     public CreateNewPage getHouseId(){
         log.info("Getting house ID");
         $(NEW_HOUSE_ID).getText();
