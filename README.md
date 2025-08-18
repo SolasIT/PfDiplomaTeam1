@@ -75,10 +75,48 @@
 ---
 
 ### Houses Test (Голубничий Виталий)
+- **Read All**: присутствует таблица с заголовками столбцов: ID, Floor Count, Price, Parking Places, Lodgers
+- **Read one by ID**
+- Нажать на стрелку вверх и нажать Send, получить запись с ID = 1
+- Нажать стрелку вниз дважды и нажать Send, получить статус Invalid Input
+- Нажать на стрелку вверх и нажать Send, получить статус Invalid Input
+- Ввести число 9999999999999999 и нажать Send, получить статус Status: 204 house not found
+- **Create new**
+- Нажать кнопку Push to API без заполнения данных, получить статус Invalid Input Data
+- Нажать на стрелки вниз в каждом инпуте, нажать кнопку Push to API, получить статус Invalid Input Data
+- Нажать на стрелки вверх в каждом инпуте, нажать кнопку Push to API, получить статус Invalid Input Data
+- Нажать на стрелки вверх в каждом инпуте, нажать кнопку Push to API, получить статус Successfully pushed, code: 201
 
 ---
 
 ### ALL POST Test (Вербицкая Дарья)
+- **Create new User**
+- Проверка валидации полей формы -  все поля обязательные - получение ошибки Invalid request data
+- Некорректные данные в полях формы - Request failed with status code 400
+- Успешное создание пользователя. - Successfully pushed, code: 201, Получение id нового пользователя
+- **Add money**
+- Отправка пустой формы - получение Incorrect input data
+- Проверка валидации полей формы -  все поля обязательные - получение ошибки Incorrect input data
+- Отправка id несуществующего в БД - Request failed with status code 404
+- Отправка корректного id -  Successfully pushed, code: 200. Получение обновленный суммы пользователя (не работает тест)
+- **Buy or Sell car**
+- Отправка пустой формы - получение Incorrect input data
+- Проверка валидации полей формы -  все поля обязательные - получение ошибки Incorrect input data
+- Отправка id пользователя / машины несуществующего в БД  - Request failed with status code 404
+- Отправка корректного id -  Successfully pushed, code: 200
+- **Create new car**
+- Проверка валидации полей формы -  все поля обязательные - получение ошибки Invalid request data
+- Некорректные данные в полях формы - Request failed with status code 400
+- Успешное создание автомобиля. - Successfully pushed, code: 201, Получение id нового авто
+- **Delete User**
+- Проверка валидации поля, пустое поле - получение ошибки Bad request
+- Некорректные данные в поле формы - Bad request
+- **Delete House**
+- Проверка валидации поля, пустое поле - получение ошибки Bad request
+- Некорректные данные в поле формы - Bad request
+- **Delete Car**
+- Валидации поля, пустое поле - получение ошибки Bad request
+- Некорректные данные в поле формы - Bad request
 
 ---
 
