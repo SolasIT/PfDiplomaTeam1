@@ -37,6 +37,7 @@ public class BaseTest {
     ReadAllPage readAllPage;
     ReadAllUsersPage readAllUsersPage;
     ReadUserWithCarsPage readUserWithCarsPage;
+    AllPostPage allPostPage;
 
 
     String email = System.getProperty("email", PropertyReader.getProperty("email"));
@@ -97,6 +98,7 @@ public class BaseTest {
         readOneByIdPage = new ReadOneByIdPage();
         readAllUsersPage = new ReadAllUsersPage();
         readUserWithCarsPage = new ReadUserWithCarsPage();
+        allPostPage = new AllPostPage();
     }
 
     @AfterMethod(alwaysRun = true)

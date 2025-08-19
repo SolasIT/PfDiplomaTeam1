@@ -3,9 +3,6 @@ package tests.ui;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
 import org.testng.annotations.Test;
-import pages.AllPostPage;
-import pages.MainPage;
-import utils.PropertyReader;
 
 public class AllPostTest extends BaseTest {
 
