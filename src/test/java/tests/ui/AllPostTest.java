@@ -7,6 +7,7 @@ import org.testng.annotations.Test;
 import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.$;
 import static org.testng.Assert.assertTrue;
+import static org.testng.AssertJUnit.assertEquals;
 
 public class AllPostTest extends BaseTest {
 
@@ -21,12 +22,8 @@ public class AllPostTest extends BaseTest {
                 .auth(email, password);
         allPostPage.open()
                 .isPageOpened()
-                .clickPushToApiButtonFormCreateUser()
-                .checkStatusForCreateUserForm();
-        assertTrue(
-                $(withText("Status: Invalid request data")).isDisplayed(),
-                "Ожидался статус 'Status: Invalid request data'"
-        );
+                .clickPushToApiButtonFormCreateUser();
+        assertEquals("Status: Invalid request data", allPostPage.checkStatusForCreateUserForm());
     }
 
     @Test(description = "Отправка некорректных данных при создании пользователя — ошибка 400")
@@ -40,12 +37,8 @@ public class AllPostTest extends BaseTest {
                 .isPageOpened()
                 .setFirstNameWithJs("123")
                 .fillFormCreateUserWithInvalidData()
-                .clickPushToApiButtonFormCreateUser()
-                .checkStatusForCreateUserForm();
-        assertTrue(
-                $(withText("Status: AxiosError: Request failed with status code 400")).isDisplayed(),
-                "Ожидался статус 'Status: AxiosError: Request failed с status code 400'"
-        );
+                .clickPushToApiButtonFormCreateUser();
+        assertEquals("Status: AxiosError: Request failed with status code 400", allPostPage.checkStatusForCreateUserForm());
     }
 
     @Test(description = "Успешное создание нового пользователя")
@@ -58,12 +51,8 @@ public class AllPostTest extends BaseTest {
         allPostPage.open()
                 .isPageOpened()
                 .fillFormCreateUserWithValidData("MALE")
-                .clickPushToApiButtonFormCreateUser()
-                .checkStatusForCreateUserForm();
-        assertTrue(
-                $(withText("Status: Successfully pushed")).isDisplayed(),
-                "Ожидался статус 'Status: Successfully pushed'"
-        );
+                .clickPushToApiButtonFormCreateUser();
+        assertEquals("Status: Successfully pushed, code: 201", allPostPage.checkStatusForCreateUserForm());
     }
 
     // Add money Form
@@ -77,12 +66,8 @@ public class AllPostTest extends BaseTest {
                 .auth(email, password);
         allPostPage.open()
                 .isPageOpened()
-                .clickPushToApiButtonFormAddMoney()
-                .checkStatusForAddMoneyForm();
-        assertTrue(
-                $(withText("Status: Incorrect input data")).isDisplayed(),
-                "Ожидался статус 'Status: Incorrect input data'"
-        );
+                .clickPushToApiButtonFormAddMoney();
+        assertEquals("Status: Incorrect input data", allPostPage.checkStatusForAddMoneyForm());
     }
 
     @Test(description = "Успешное начисление денег пользователю")
@@ -98,12 +83,8 @@ public class AllPostTest extends BaseTest {
                 .clickPushToApiButtonFormCreateUser()
                 .saveNewUserId();
         allPostPage.fillFormAddMoneyWithValidData()
-                .clickPushToApiButtonFormAddMoney()
-                .checkStatusForAddMoneyForm();
-        assertTrue(
-                $(withText("Status: Successfully pushed")).isDisplayed(),
-                "Ожидался статус 'Status: Successfully pushed'"
-        );
+                .clickPushToApiButtonFormAddMoney();
+        assertEquals("Status: Successfully pushed, code: 200", allPostPage.checkStatusForAddMoneyForm());
     }
 
     @Test(description = "Отправка некорректных данных при начислениии денег пользователю — ошибка 404")
@@ -117,12 +98,8 @@ public class AllPostTest extends BaseTest {
                 .isPageOpened()
                 .setIDWithJs("11000")
                 .fillFormAddMoneyWithInvalidData()
-                .clickPushToApiButtonFormAddMoney()
-                .checkStatusForAddMoneyForm();
-        assertTrue(
-                $(withText("Status: AxiosError: Request failed with status code 404")).isDisplayed(),
-                "Ожидался статус 'Status: AxiosError: Request failed с status code 404'"
-        );
+                .clickPushToApiButtonFormAddMoney();
+        assertEquals("Status: AxiosError: Request failed with status code 404", allPostPage.checkStatusForAddMoneyForm());
     }
 
     // Create Car Form
@@ -136,12 +113,8 @@ public class AllPostTest extends BaseTest {
                 .auth(email, password);
         allPostPage.open()
                 .isPageOpened()
-                .clickPushToApiButtonFormCreateCar()
-                .checkStatusForCreateCarForm();
-        assertTrue(
-                $(withText("Status: Invalid request data")).isDisplayed(),
-                "Ожидался статус 'Invalid request data'"
-        );
+                .clickPushToApiButtonFormCreateCar();
+        assertEquals("Status: Invalid request data", allPostPage.checkStatusForCreateCarForm());
     }
 
     @Test(description = "Отправка некорректных данных при создании автомобиля — ошибка 400")
@@ -154,12 +127,8 @@ public class AllPostTest extends BaseTest {
         allPostPage.open()
                 .isPageOpened()
                 .fillFormCreateCarWithInvalidData()
-                .clickPushToApiButtonFormCreateCar()
-                .checkStatusForCreateCarForm();
-        assertTrue(
-                $(withText("Status: AxiosError: Request failed with status code 400")).isDisplayed(),
-                "Ожидался статус 'Status: AxiosError: Request failed with status code 400'"
-        );
+                .clickPushToApiButtonFormCreateCar();
+        assertEquals("Status: AxiosError: Request failed with status code 400", allPostPage.checkStatusForCreateCarForm());
     }
 
     @Test(description = "Успешное создание нового автомобиля")
@@ -172,12 +141,8 @@ public class AllPostTest extends BaseTest {
         allPostPage.open()
                 .isPageOpened()
                 .fillFormCreateCarWithValidData()
-                .clickPushToApiButtonFormCreateCar()
-                .checkStatusForCreateCarForm();
-        assertTrue(
-                $(withText("Status: Successfully pushed")).isDisplayed(),
-                "Ожидался статус 'Successfully pushed'"
-        );
+                .clickPushToApiButtonFormCreateCar();
+        assertEquals("Status: Successfully pushed, code: 201", allPostPage.checkStatusForCreateCarForm());
     }
 
     // Buy or sell car Form
@@ -191,12 +156,8 @@ public class AllPostTest extends BaseTest {
                 .auth(email, password);
         allPostPage.open()
                 .isPageOpened()
-                .clickPushToApiButtonFormSellBuyCar()
-                .checkStatusForSellCarForm();
-        assertTrue(
-                $(withText("Status: Incorrect input data")).isDisplayed(),
-                "Ожидался статус 'Status: Incorrect input data'"
-        );
+                .clickPushToApiButtonFormSellBuyCar();
+        assertEquals("Status: Incorrect input data", allPostPage.checkStatusForSellCarForm());
     }
 
     @Test(description = "Отправка некорректных данных при Продаже /покупке автомобиля  — ошибка 404")
@@ -209,12 +170,8 @@ public class AllPostTest extends BaseTest {
         allPostPage.open()
                 .isPageOpened()
                 .fillFormSellOrBuyCarWithInvalidData("buyCar")
-                .clickPushToApiButtonFormSellBuyCar()
-                .checkStatusForSellCarForm();
-        assertTrue(
-                $(withText("Status: AxiosError: Request failed with status code 404")).isDisplayed(),
-                "Ожидался статус 'Status: AxiosError: Request failed с status code 404'"
-        );
+                .clickPushToApiButtonFormSellBuyCar();
+        assertEquals("Status: AxiosError: Request failed with status code 404", allPostPage.checkStatusForSellCarForm());
     }
 
     @Test(description = "Успешная продажа / покупка автомобиля")
@@ -233,11 +190,7 @@ public class AllPostTest extends BaseTest {
                 .clickPushToApiButtonFormCreateCar()
                 .saveNewCarId();
         allPostPage.fillFormSellOrBuyCarWithValidData("buyCar")
-                .clickPushToApiButtonFormSellBuyCar()
-                .checkStatusForSellCarForm();
-        assertTrue(
-                $(withText("Status: Successfully pushed")).isDisplayed(),
-                "Ожидался статус 'Successfully pushed'"
-        );
+                .clickPushToApiButtonFormSellBuyCar();
+        assertEquals("Status: Successfully pushed, code: 200", allPostPage.checkStatusForSellCarForm());
     }
 }

@@ -166,31 +166,31 @@ public class AllPostPage extends BasePage {
     }
 
     @Step("Проверка статуса ответа от сервера в форме 'Cоздание пользователя'")
-    public SelenideElement checkStatusForCreateUserForm() {
+    public String checkStatusForCreateUserForm() {
         String statusText = STATUS_BUTTON_CREATE_USER.shouldBe(visible).getText();
         log.info("Фактический статус: {}", statusText);
-        return STATUS_BUTTON_CREATE_USER.shouldBe(visible);
+        return statusText;
     }
 
     @Step("Проверка статуса ответа от сервера в форме 'Создание автомобиля'")
-    public SelenideElement checkStatusForCreateCarForm() {
+    public String checkStatusForCreateCarForm() {
         String statusText = STATUS_BUTTON_CREATE_CAR.shouldBe(visible).getText();
         log.info("Фактический статус: {}", statusText);
-        return STATUS_BUTTON_CREATE_CAR.shouldBe(visible);
+        return statusText;
     }
 
     @Step("Проверка статуса ответа от сервера в форме Начисление денег пользователю")
-    public SelenideElement checkStatusForAddMoneyForm() {
+    public String checkStatusForAddMoneyForm() {
         String statusText = STATUS_BUTTON_ADD_MONEY.shouldBe(visible).getText();
         log.info("Фактический статус: {}", statusText);
-        return STATUS_BUTTON_ADD_MONEY.shouldBe(visible);
+        return statusText;
     }
 
     @Step("Проверка статуса ответа от сервера в форме Покупка / продажа автомобиля")
-    public SelenideElement checkStatusForSellCarForm() {
+    public String checkStatusForSellCarForm() {
         String statusText = STATUS_BUTTON_SELL_CAR.shouldBe(visible).getText();
         log.info("Фактический статус: {}", statusText);
-        return STATUS_BUTTON_SELL_CAR.shouldBe(visible);
+        return statusText;
     }
 
     @Override
