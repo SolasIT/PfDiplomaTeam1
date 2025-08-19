@@ -9,12 +9,6 @@ import utils.PropertyReader;
 
 public class AllPostTest extends BaseTest {
 
-    AllPostPage allPostPage = new AllPostPage();
-    MainPage mainPage = new MainPage();
-
-    String email = System.getProperty("email", PropertyReader.getProperty("email"));
-    String password = System.getProperty("password", PropertyReader.getProperty("password"));
-
     // Create user Form
 
     @Test(description = "Отправка пустой формы 'Создание пользователя' — ошибка валидации")
