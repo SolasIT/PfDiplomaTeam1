@@ -131,7 +131,8 @@ public class AllPostPage extends BasePage {
     @Step("Нажатие на кнопку отправки запроса 'Push to API' в форме создание пользователя")
     public AllPostPage clickPushToApiButtonFormCreateUser() {
         PUSH_BUTTON_CREATE_USER.shouldBe(visible).click();
-        log.info("Click to PUSH_BUTTON_CREATE_USER");
+        Selenide.sleep(1500);
+        log.info("PUSH_BUTTON_CREATE_USER was clicked");
         return this;
     }
 
@@ -140,9 +141,9 @@ public class AllPostPage extends BasePage {
         PUSH_BUTTON_CREATE_CAR.shouldBe(visible);
         executeJavaScript("arguments[0].scrollIntoView(true);", PUSH_BUTTON_CREATE_CAR);
         PUSH_BUTTON_CREATE_CAR.shouldBe(enabled);
-        Selenide.sleep(1500);
         executeJavaScript("arguments[0].click();", PUSH_BUTTON_CREATE_CAR);
-        log.info("Click to PUSH_BUTTON_CREATE_CAR");
+        Selenide.sleep(1500);
+        log.info("PUSH_BUTTON_CREATE_CAR was clicked");
         return this;
     }
 
@@ -151,7 +152,6 @@ public class AllPostPage extends BasePage {
         INPUT_ID_ADD_MONEY.click();
         PUSH_BUTTON_ADD_MONEY.shouldBe(visible).shouldBe(enabled).click();
         Selenide.sleep(1500);
-        PUSH_BUTTON_ADD_MONEY.shouldBe(visible).shouldBe(enabled).click();
         log.info("Click to PUSH_BUTTON_ADD_MONEY");
         return this;
     }
@@ -161,37 +161,36 @@ public class AllPostPage extends BasePage {
         INPUT_ID_SELL_CAR.click();
         PUSH_BUTTON_SELL_CAR.shouldBe(visible).shouldBe(enabled).click();
         Selenide.sleep(1500);
-        PUSH_BUTTON_SELL_CAR.shouldBe(visible).shouldBe(enabled).click();
         log.info("Click to PUSH_BUTTON_SELL_CAR");
         return this;
     }
 
     @Step("Проверка статуса ответа от сервера в форме 'Cоздание пользователя'")
-    public AllPostPage checkStatusForCreateUserForm(String text) {
-        STATUS_BUTTON_CREATE_USER.shouldHave(text(text));
-        log.info("Got status message");
-        return this;
+    public SelenideElement checkStatusForCreateUserForm() {
+        String statusText = STATUS_BUTTON_CREATE_USER.shouldBe(visible).getText();
+        log.info("Фактический статус: {}", statusText);
+        return STATUS_BUTTON_CREATE_USER.shouldBe(visible);
     }
 
     @Step("Проверка статуса ответа от сервера в форме 'Создание автомобиля'")
-    public AllPostPage checkStatusForCreateCarForm(String text) {
-        STATUS_BUTTON_CREATE_CAR.shouldHave(text(text));
-        log.info("Got status message");
-        return this;
+    public SelenideElement checkStatusForCreateCarForm() {
+        String statusText = STATUS_BUTTON_CREATE_CAR.shouldBe(visible).getText();
+        log.info("Фактический статус: {}", statusText);
+        return STATUS_BUTTON_CREATE_CAR.shouldBe(visible);
     }
 
-    @Step("Проверка статуса ответа от сервера в форме Начисление денег пользовател")
-    public AllPostPage checkStatusForAddMoneyForm(String text) {
-        STATUS_BUTTON_ADD_MONEY.shouldHave(text(text));
-        log.info("Got status message");
-        return this;
+    @Step("Проверка статуса ответа от сервера в форме Начисление денег пользователю")
+    public SelenideElement checkStatusForAddMoneyForm() {
+        String statusText = STATUS_BUTTON_ADD_MONEY.shouldBe(visible).getText();
+        log.info("Фактический статус: {}", statusText);
+        return STATUS_BUTTON_ADD_MONEY.shouldBe(visible);
     }
 
     @Step("Проверка статуса ответа от сервера в форме Покупка / продажа автомобиля")
-    public AllPostPage checkStatusForSellCarForm(String text) {
-        STATUS_BUTTON_SELL_CAR.shouldHave(text(text));
-        log.info("Got status message");
-        return this;
+    public SelenideElement checkStatusForSellCarForm() {
+        String statusText = STATUS_BUTTON_SELL_CAR.shouldBe(visible).getText();
+        log.info("Фактический статус: {}", statusText);
+        return STATUS_BUTTON_SELL_CAR.shouldBe(visible);
     }
 
     @Override
