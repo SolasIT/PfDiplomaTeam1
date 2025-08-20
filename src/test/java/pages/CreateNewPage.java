@@ -220,6 +220,7 @@ public class CreateNewPage extends BasePage {
     public CreateNewPage isPageOpened() {
         log.info("Create new page is open");
         $(FLOOR_INPUT).shouldBe(Condition.visible);
+        sleep(1500);
         return this;
     }
 }
