@@ -17,6 +17,7 @@
             <class name="tests.ui.CreateNewPageTest"/>
             <class name="tests.ui.ReadAllPageTest"/>
             <class name="tests.ui.ReadOneByIdPageTest"/>
+            <class name="tests.ui.AllPostTest"/>
         </classes>
     </test> <!-- Test -->
 </suite>
