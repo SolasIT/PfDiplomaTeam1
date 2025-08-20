@@ -23,8 +23,7 @@ public class CreateNewPageTest extends BaseTest {
                 .auth(email, password);
         createNewPage.open()
                 .isPageOpened()
-                .clickPushButton()
-                .getStatus();
+                .clickPushButton();
         assertEquals("Status: Invalid input data", createNewPage.getStatus());
     }
 
@@ -45,8 +44,7 @@ public class CreateNewPageTest extends BaseTest {
                 .decreaseWarmAndNotCoveredPlacesNumber()
                 .decreaseNotWarmAndCoveredPlacesNumber()
                 .decreaseWarmAndCoveredPlacesNumber()
-                .clickPushButton()
-                .getStatus();
+                .clickPushButton();
         assertEquals("Status: Invalid input data", createNewPage.getStatus());
     }
 
@@ -73,16 +71,15 @@ public class CreateNewPageTest extends BaseTest {
                 .increaseWarmAndNotCoveredPlacesNumber()
                 .increaseNotWarmAndCoveredPlacesNumber()
                 .increaseWarmAndCoveredPlacesNumber()
-                .clickPushButton()
-                .getStatus();
+                .clickPushButton();
         assertEquals("Status: Invalid input data", createNewPage.getStatus());
     }
 
-    @Test(description = "Проверка нажатия Push To API с положительными значениями инпутов, добавленных через поля ввода",
-            testName = "Проверка нажатия Push To API с положительными значениями инпутов, добавленных через поля ввода")
+    @Test(description = "Проверка нажатия Push To API с отрицательными значениями инпутов, добавленных через поля ввода",
+            testName = "Проверка нажатия Push To API с отрицательными значениями инпутов, добавленных через поля ввода")
     @Owner("Golubnichiy Vitaliy")
     @Feature("Create New")
-    @Description("Проверка нажатия Push To API с положительными значениями инпутов, добавленных через поля ввода")
+    @Description("Проверка нажатия Push To API с отрицательными значениями инпутов, добавленных через поля ввода")
     public void sentNegativeNumbersByInputs(){
         mainPage.open()
                 .isPageOpened()
@@ -95,8 +92,7 @@ public class CreateNewPageTest extends BaseTest {
                 .sentWarmAndNotCoveredPlacesNumber("-111")
                 .sentNotWarmAndCoveredPlacesNumber("-111")
                 .sentNotWarmAndNotCoveredPlacesNumber("-111")
-                .clickPushButton()
-                .getStatus();
+                .clickPushButton();
         assertEquals("Status: Invalid input data", createNewPage.getStatus());
     }
 
@@ -117,8 +113,7 @@ public class CreateNewPageTest extends BaseTest {
                 .sentWarmAndNotCoveredPlacesNumber("111")
                 .sentNotWarmAndCoveredPlacesNumber("111")
                 .sentNotWarmAndNotCoveredPlacesNumber("111")
-                .clickPushButton()
-                .getStatus();
+                .clickPushButton();
         assertEquals("Status: Successfully pushed, code: 201", createNewPage.getStatus());
     }
 }

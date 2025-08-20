@@ -28,6 +28,7 @@ public class CreateNewPage extends BasePage {
     public CreateNewPage increaseFloorNumber(){
         log.info("Sent Arrow Up to Floor input");
         $(FLOOR_INPUT).click();
+        sleep(500);
         $(FLOOR_INPUT).sendKeys(Keys.ARROW_UP);
         return this;
     }
@@ -44,6 +45,7 @@ public class CreateNewPage extends BasePage {
     public CreateNewPage sentFloorNumber(String floorNumber){
         log.info("Sent " + floorNumber + " to Floor input");
         $(FLOOR_INPUT).click();
+        sleep(500);
         $(FLOOR_INPUT).setValue(floorNumber);
         return this;
     }
@@ -52,6 +54,7 @@ public class CreateNewPage extends BasePage {
     public CreateNewPage increasePriceNumber(){
         log.info("Sent Arrow Up to Price input");
         $(PRICE_INPUT).click();
+        sleep(500);
         $(PRICE_INPUT).sendKeys(Keys.ARROW_UP);
         return this;
     }
@@ -171,7 +174,7 @@ public class CreateNewPage extends BasePage {
     @Step("Нажатие кнопки Push")
     public CreateNewPage clickPushButton(){
         log.info("Click on Push button");
-        $(BUTTON_PUSH).shouldBe(Condition.visible, Condition.enabled).click();
+        $(BUTTON_PUSH).click();
         sleep(1500);
         return this;
     }

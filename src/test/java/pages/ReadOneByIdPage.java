@@ -9,6 +9,7 @@ import org.openqa.selenium.Keys;
 import lombok.extern.log4j.Log4j2;
 
 import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.sleep;
 
 @Log4j2
 public class ReadOneByIdPage extends BasePage {
@@ -20,6 +21,7 @@ public class ReadOneByIdPage extends BasePage {
 @Step("Нажатие кнопки Read")
     public ReadOneByIdPage clickReadButton(){
         log.info("Push on Read button");
+        sleep(1500);
         $(BUTTON_READ).shouldBe(Condition.visible, Condition.enabled).click();
         return this;
     }
