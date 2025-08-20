@@ -96,7 +96,7 @@ public class AllPostTest extends BaseTest {
                 .auth(email, password);
         allPostPage.open()
                 .isPageOpened()
-                .setIDWithJs("11000")
+                .setIDWithJs("110000")
                 .fillFormAddMoneyWithInvalidData()
                 .clickPushToApiButtonFormAddMoney();
         assertEquals("Status: AxiosError: Request failed with status code 404", allPostPage.checkStatusForAddMoneyForm());

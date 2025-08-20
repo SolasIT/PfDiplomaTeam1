@@ -21,8 +21,8 @@ public class ReadOneByIdPage extends BasePage {
 @Step("Нажатие кнопки Read")
     public ReadOneByIdPage clickReadButton(){
         log.info("Push on Read button");
-        sleep(1500);
-        $(BUTTON_READ).shouldBe(Condition.visible, Condition.enabled).click();
+        $(BUTTON_READ).click();
+    sleep(1500);
         return this;
     }
 

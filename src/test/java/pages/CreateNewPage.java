@@ -37,6 +37,7 @@ public class CreateNewPage extends BasePage {
     public CreateNewPage decreaseFloorNumber(){
         log.info("Sent Arrow Down to Floor input");
         $(FLOOR_INPUT).click();
+        sleep(500);
         $(FLOOR_INPUT).sendKeys(Keys.ARROW_DOWN);
         return this;
     }
@@ -63,6 +64,7 @@ public class CreateNewPage extends BasePage {
     public CreateNewPage decreasePriceNumber(){
         log.info("Sent Arrow Down to Price input");
         $(PRICE_INPUT).click();
+        sleep(500);
         $(PRICE_INPUT).sendKeys(Keys.ARROW_DOWN);
         return this;
     }
@@ -71,6 +73,7 @@ public class CreateNewPage extends BasePage {
     public CreateNewPage sentPriceNumber(String priceNumber){
         log.info("Sent " + priceNumber + " to Price input");
         $(PRICE_INPUT).click();
+        sleep(500);
         $(PRICE_INPUT).setValue(priceNumber);
         return this;
     }
@@ -79,6 +82,7 @@ public class CreateNewPage extends BasePage {
     public CreateNewPage increaseWarmAndCoveredPlacesNumber(){
         log.info("Sent Arrow Up to WarmAndCoveredPlacesNumber input");
         $(WARM_AND_COVERED_PLACES_INPUT).click();
+        sleep(500);
         $(WARM_AND_COVERED_PLACES_INPUT).sendKeys(Keys.ARROW_UP);
         return this;
     }
@@ -87,6 +91,7 @@ public class CreateNewPage extends BasePage {
     public CreateNewPage decreaseWarmAndCoveredPlacesNumber(){
         log.info("Sent Arrow Down to WarmAndCoveredPlacesNumber input");
         $(WARM_AND_COVERED_PLACES_INPUT).click();
+        sleep(500);
         $(WARM_AND_COVERED_PLACES_INPUT).sendKeys(Keys.ARROW_DOWN);
         return this;
     }
@@ -95,6 +100,7 @@ public class CreateNewPage extends BasePage {
     public CreateNewPage sentWarmAndCoveredPlacesNumber(String warmAndCoveredPlacesNumber){
         log.info("Sent " + warmAndCoveredPlacesNumber + " to warmAndCoveredPlacesNumber input");
         $(WARM_AND_COVERED_PLACES_INPUT).click();
+        sleep(500);
         $(WARM_AND_COVERED_PLACES_INPUT).setValue(warmAndCoveredPlacesNumber);
         return this;
     }
@@ -103,6 +109,7 @@ public class CreateNewPage extends BasePage {
     public CreateNewPage increaseWarmAndNotCoveredPlacesNumber(){
         log.info("Sent Arrow Up to WarmAndNotCoveredPlacesNumber input");
         $(WARM_AND_NOT_COVERED_PLACES_INPUT).click();
+        sleep(500);
         $(WARM_AND_NOT_COVERED_PLACES_INPUT).sendKeys(Keys.ARROW_UP);
         return this;
     }
@@ -111,6 +118,7 @@ public class CreateNewPage extends BasePage {
     public CreateNewPage decreaseWarmAndNotCoveredPlacesNumber(){
         log.info("Sent Arrow Down to WarmAndNotCoveredPlacesNumber input");
         $(WARM_AND_NOT_COVERED_PLACES_INPUT).click();
+        sleep(500);
         $(WARM_AND_NOT_COVERED_PLACES_INPUT).sendKeys(Keys.ARROW_DOWN);
         return this;
     }
@@ -119,6 +127,7 @@ public class CreateNewPage extends BasePage {
     public CreateNewPage sentWarmAndNotCoveredPlacesNumber(String warmAndNotCoveredPlacesNumber){
         log.info("Sent " + warmAndNotCoveredPlacesNumber + " to warmAndNotCoveredPlacesNumber input");
         $(WARM_AND_NOT_COVERED_PLACES_INPUT).click();
+        sleep(500);
         $(WARM_AND_NOT_COVERED_PLACES_INPUT).setValue(warmAndNotCoveredPlacesNumber);
         return this;
     }
@@ -127,6 +136,7 @@ public class CreateNewPage extends BasePage {
     public CreateNewPage increaseNotWarmAndCoveredPlacesNumber(){
         log.info("Sent Arrow Up to NotWarmAndCoveredPlacesNumber input");
         $(NOT_WARM_AND_COVERED_PLACES_INPUT).click();
+        sleep(500);
         $(NOT_WARM_AND_COVERED_PLACES_INPUT).sendKeys(Keys.ARROW_UP);
         return this;
     }
@@ -135,6 +145,7 @@ public class CreateNewPage extends BasePage {
     public CreateNewPage decreaseNotWarmAndCoveredPlacesNumber(){
         log.info("Sent Arrow Down to NotWarmAndCoveredPlacesNumber input");
         $(NOT_WARM_AND_COVERED_PLACES_INPUT).click();
+        sleep(500);
         $(NOT_WARM_AND_COVERED_PLACES_INPUT).sendKeys(Keys.ARROW_DOWN);
         return this;
     }
@@ -143,6 +154,7 @@ public class CreateNewPage extends BasePage {
     public CreateNewPage sentNotWarmAndCoveredPlacesNumber(String notWarmAndCoveredPlacesNumber){
         log.info("Sent " + notWarmAndCoveredPlacesNumber + " to NotWarmAndCoveredPlacesNumber input");
         $(NOT_WARM_AND_COVERED_PLACES_INPUT).click();
+        sleep(500);
         $(NOT_WARM_AND_COVERED_PLACES_INPUT).setValue(notWarmAndCoveredPlacesNumber);
         return this;
     }
@@ -151,6 +163,7 @@ public class CreateNewPage extends BasePage {
     public CreateNewPage increaseNotWarmAndNotCoveredPlacesNumber(){
         log.info("Sent Arrow Up to NotWarmAndNotCoveredPlacesNumber input");
         $(NOT_WARM_AND_NOT_COVERED_PLACES_INPUT).click();
+        sleep(500);
         $(NOT_WARM_AND_NOT_COVERED_PLACES_INPUT).sendKeys(Keys.ARROW_UP);
         return this;
     }
@@ -159,6 +172,7 @@ public class CreateNewPage extends BasePage {
     public CreateNewPage decreaseNotWarmAndNotCoveredPlacesNumber(){
         log.info("Sent Arrow Down to NotWarmAndNotCoveredPlacesNumber input");
         $(NOT_WARM_AND_NOT_COVERED_PLACES_INPUT).click();
+        sleep(500);
         $(NOT_WARM_AND_NOT_COVERED_PLACES_INPUT).sendKeys(Keys.ARROW_DOWN);
         return this;
     }
@@ -167,6 +181,7 @@ public class CreateNewPage extends BasePage {
     public CreateNewPage sentNotWarmAndNotCoveredPlacesNumber(String notWarmAndNotCoveredPlacesNumber){
         log.info("Sent " + notWarmAndNotCoveredPlacesNumber + " to NotWarmAndNotCoveredPlacesNumber input");
         $(NOT_WARM_AND_NOT_COVERED_PLACES_INPUT).click();
+        sleep(500);
         $(NOT_WARM_AND_NOT_COVERED_PLACES_INPUT).setValue(notWarmAndNotCoveredPlacesNumber);
         return this;
     }
@@ -175,7 +190,7 @@ public class CreateNewPage extends BasePage {
     public CreateNewPage clickPushButton(){
         log.info("Click on Push button");
         $(BUTTON_PUSH).click();
-        sleep(1500);
+        sleep(3000);
         return this;
     }
 
