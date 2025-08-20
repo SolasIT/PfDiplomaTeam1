@@ -190,7 +190,7 @@ public class CreateNewPage extends BasePage {
     public CreateNewPage clickPushButton(){
         log.info("Click on Push button");
         $(BUTTON_PUSH).click();
-        sleep(3000);
+        sleep(1500);
         return this;
     }
 
